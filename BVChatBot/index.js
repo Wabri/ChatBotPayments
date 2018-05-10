@@ -1,4 +1,3 @@
-
 // Express is require to run chat in a local server
 // Express (https://expressjs.com/)
 
@@ -7,12 +6,13 @@ const express = require('express');
 const app = express();
 
 // Set workdirectory of app
-app.use(express.static(__dirname));
+app.use(express.static(__dirname + '/css'));
+app.use(express.static(__dirname + '/script'));
 
 // Open port 5000
 const server = app.listen(5000);
 
 // When someone send a request to app then send index.html
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
     res.sendFile('index.html');
 });
