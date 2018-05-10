@@ -8,6 +8,7 @@ const app = express();
 // Set workdirectory of app
 app.use(express.static(__dirname + '/css'));
 app.use(express.static(__dirname + '/script'));
+app.use(express.static(__dirname));
 
 // Open port 5000
 const server = app.listen(5000);

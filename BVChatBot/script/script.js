@@ -7,6 +7,10 @@ const recognition = new SpeechRecognition();
 // Socket.io (https://socket.io/)
 const socket = io();
 
+// API.AI is an ai system for natural language processing, take text and give a response
+// API.AI (https://dialogflow.com/docs/getting-started/basics)
+const apiai = require('aiai')(APIAI_TOKEN); // this was not configure yet
+
 // Properties of recognition
 recognition.lang = 'it-IT';
 recognition.interimResults = false;
@@ -24,7 +28,7 @@ recognition.addEventListener('result', (e) => {
     console.log('Confidence: ' + e.result[0][0].confidence);
 
     // socket.emit register a new handler (text) for the given event ('chatMessage')
-    socket.emit('chatMessage', text);
+    socket.emit('chat message', text);
 });
 
 
