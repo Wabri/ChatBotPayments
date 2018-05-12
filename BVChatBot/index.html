@@ -15,18 +15,16 @@
     <section>
         <h1>BVChatBot</h1>
 
-        <button>
-            <i class="fa fa-microphone"></i>
+        <button id="talk">
+            <i class="fa fa-microphone" aria-hidden="true"></i>
         </button>
 
-        <div>
-            <p>You said:
-                <em class="output-you">...</em>
-            </p>
-            <p>Bot replied:
-                <em class="output-bot">...</em>
-            </p>
-        </div>
+        <h2>You said:
+            <em class="output-you">...</em>
+        </h2>
+        <h2>Bot replied:
+            <em class="output-bot">...</em>
+            </h2>
     </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js">

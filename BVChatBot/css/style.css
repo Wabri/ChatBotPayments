@@ -8,7 +8,7 @@ body {
   margin: 0;
   font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
   font-weight: 300;
-  background: #f7f7f7 url(../images/geometry.png) 0 0 no-repeat;
+  background: #f7f7f7 url(../background/backgroundImage.jpg) 0 0 no-repeat;
   background-size: cover;
   color: #333;
 }

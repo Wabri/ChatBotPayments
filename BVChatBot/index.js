@@ -7,11 +7,18 @@ const app = express();
 // Set workdirectory of app
 app.use(express.static(__dirname + '/css'));
 app.use(express.static(__dirname + '/script'));
+app.use(express.static(__dirname + '/background'));
 app.use(express.static(__dirname));
 
 // Open port 5000 or the port in dotenv config file
 const server = app.listen(process.env.PORT || 5000, () => {
-  console.log('Express server listening on port %d in %s mode', server.address().port, app.settings.env);
+    console.log('Express server listening on port %d in %s mode', server.address().port, app.settings.env);
+});
+
+
+const io = require('socket.io')(server);
+io.on('connection', function(socket){
+  console.log('a user connected');
 });
 
 // When someone send a request to app then send index.html
@@ -34,6 +41,7 @@ io.on('connection', function (socket) {
         // if event catch is response than get the text of response of ai then emit event bot reply with aiText
         request.on('response', (response) => {
             let aiText = response.result.fullfillment.speech;
+            console.log('Bot reply: ' + aiText);
             socket.emit('bot reply', aiText);
         });
 
