@@ -13,8 +13,11 @@ require('dotenv').config()
 
 // API.AI is an ai system for natural language processing, take text and give a response
 // API.AI (https://github.com/dialogflow/dialogflow-nodejs-client-v2)
-const apiai = require('aiai')(process.env.APIAI_TOKEN); // this was not configure yet
+const apiai = require('aiai')(process.env.APIAI_TOKEN);
 
+// this is use to modify the field .output-you and .output-bot implemented in the index.html
+const outputYou = document.querySelector('.output-you');
+const outputBot = document.querySelector('.output-bot');
 
 // Properties of recognition
 recognition.lang = 'it-IT';
@@ -25,8 +28,14 @@ document.querySelector('button').addEventListener('click', () => {
     recognition.start();
 });
 
+recognition.addEventListener('speechstart', () => {
+  console.log('Speech has been detected.');
+});
+
 // When recognition produce a result we can catch this event with this
 recognition.addEventListener('result', (e) => {
+    console.log('Result has been detected.');
+
     let last = e.result.length - 1; // catch the length the result
     let text = e.result[last][0].transcript; // transform the audio result in text
 
@@ -36,32 +45,12 @@ recognition.addEventListener('result', (e) => {
     socket.emit('chat message', text);
 });
 
-// socket connection to socket
-io.on('connection', function (socket) {
-    // when chat message event catch by socket with text message than do this
-    socket.on('chat message', (text) => {
-        // print text to console
-        console.log('Processing: ' + text);
+recognition.addEventListener('speechend', () => {
+  recognition.stop();
+});
 
-        // request the text of the APIAI_SESSION_ID
-        let request = apiai.textRequest(text, {
-            sessionID: process.env.APIAI_SESSION_ID
-        });
-
-        // if event catch is response than get the text of response of ai then emit event bot reply with aiText
-        request.on('response', (response) => {
-            let aiText = response.result.fullfillment.speech;
-            socket.emit('bot reply', aiText);
-        });
-
-        // if event error catched than print the error in console
-        request.on('error', (error) => {
-            console.log(error);
-        });
-
-        // end the textRequest for this chat message
-        request.end();
-    });
+recognition.addEventListener('error', (e) => {
+  outputBot.textContent = 'Error: ' + e.error;
 });
 
 // this function create a audio with the voice synth of the text  
@@ -75,6 +64,6 @@ function synthVoice(text) {
 }
 
 // when bot reply event catch let's produce text audio reply
-socket.on('bot reply', function(replyText) {
-  synthVoice(replyText);
+socket.on('bot reply', function (replyText) {
+    synthVoice(replyText);
 });
