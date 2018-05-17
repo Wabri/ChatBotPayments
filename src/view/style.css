@@ -1,0 +1,320 @@
+/* Fix user-agent */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+    font-weight: 300;
+    background: #f7f7f7 url(backgroundImage.jpg) 0 0 no-repeat;
+    background-size: cover;
+    color: #333;
+}
+
+footer {
+    font-size: 0.75em;
+    color: silver;
+    position: fixed;
+    bottom: 1em;
+    left: 1em;
+}
+
+footer a {
+    color: #f80;
+}
+
+header {
+    margin: 2em 0;
+    text-align: center;
+}
+
+button {
+    display: block;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100px;
+    height: 100px;
+    border: 0;
+    border-radius: 50%;
+    padding: .7em 1em;
+    margin: 4em auto 3em;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(180deg, #39C2C9 0%, #3FC8C9 80%, #3FC8C9 100%);
+    box-shadow: 2px 5px 30px rgba(63, 200, 201, .4);
+    will-change: transform, filter;
+    transition: all 0.3s ease-out;
+}
+
+button .fa {
+    font-size: 80px;
+    line-height: 80px;
+    margin: 0;
+    text-shadow: 1px 2px 2px #2a8b90;
+}
+
+button:hover {
+    transform: scale(.92);
+}
+
+button:active {
+    filter: brightness(.8);
+}
+
+button:focus {
+    outline: 0;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 1.3em;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-left: 10px;
+}
+
+.fa-github::before {
+    content: "\f09b";
+}
+
+ul {
+    list-style: none;
+    word-wrap: break-word;
+}
+
+/* Pages */
+
+.pages {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.page {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+
+/* Chat page */
+
+.chat.page {
+    display: none;
+}
+
+/* Font */
+
+.messages {
+    font-size: 150%;
+}
+
+.inputMessage {
+    font-size: 100%;
+}
+
+.log {
+    color: gray;
+    font-size: 70%;
+    margin: 5px;
+    text-align: center;
+}
+
+/* Messages */
+
+.chatArea {
+    height: 100%;
+    padding-bottom: 60px;
+}
+
+.messages {
+    height: 100%;
+    margin: 0;
+    overflow-y: scroll;
+    padding: 10px 20px 10px 20px;
+}
+
+.message.typing .messageBody {
+    color: gray;
+}
+
+.username {
+    font-weight: 700;
+    overflow: hidden;
+    padding-right: 15px;
+    text-align: right;
+}
+
+/* Input */
+
+.inputMessage {
+    border: 10px solid #000;
+    bottom: 0;
+    height: 60px;
+    left: 0;
+    outline: none;
+    padding-left: 10px;
+    position: absolute;
+    right: 0;
+    width: 100%;
+}
+
+/* Fix user-agent */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, input {
+  font-family:
+    "HelveticaNeue-Light",
+    "Helvetica Neue Light",
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    "Lucida Grande",
+    sans-serif;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+  word-wrap: break-word;
+}
+
+/* Pages */
+
+.pages {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.page {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+/* Login Page */
+
+.login.page {
+  background-color: #000;
+}
+
+.login.page .form {
+  height: 100px;
+  margin-top: -100px;
+  position: absolute;
+
+  text-align: center;
+  top: 50%;
+  width: 100%;
+}
+
+.login.page .form .usernameInput {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #fff;
+  outline: none;
+  padding-bottom: 15px;
+  text-align: center;
+  width: 400px;
+}
+
+.login.page .title {
+  font-size: 200%;
+}
+
+.login.page .usernameInput {
+  font-size: 200%;
+  letter-spacing: 3px;
+}
+
+.login.page .title, .login.page .usernameInput {
+  color: #fff;
+  font-weight: 100;
+}
+
+/* Chat page */
+
+.chat.page {
+  display: none;
+}
+
+/* Font */
+
+.messages {
+  font-size: 150%;
+}
+
+.inputMessage {
+  font-size: 100%;
+}
+
+.log {
+  color: gray;
+  font-size: 70%;
+  margin: 5px;
+  text-align: center;
+}
+
+/* Messages */
+
+.chatArea {
+  height: 100%;
+  padding-bottom: 60px;
+}
+
+.messages {
+  height: 100%;
+  margin: 0;
+  overflow-y: scroll;
+  padding: 10px 20px 10px 20px;
+}
+
+.message.typing .messageBody {
+  color: gray;
+}
+
+.username {
+  font-weight: 700;
+  overflow: hidden;
+  padding-right: 15px;
+  text-align: right;
+}
+
+/* Input */
+
+.inputMessage {
+  border: 10px solid #000;
+  bottom: 0;
+  height: 60px;
+  left: 0;
+  outline: none;
+  padding-left: 10px;
+  position: absolute;
+  right: 0;
+  width: 100%;
+}

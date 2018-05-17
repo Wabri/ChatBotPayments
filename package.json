@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "Gabriele Puliti",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "apiai": "^4.0.3",
     "dotenv": "^5.0.1",

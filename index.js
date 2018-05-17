@@ -9,10 +9,8 @@ var app = express();
 require('dotenv').config()
 
 // Set workdirectory of app
-app.use(express.static(__dirname + '/css'));
-app.use(express.static(__dirname + '/script'));
-app.use(express.static(__dirname + '/background'));
-app.use(express.static(__dirname));
+app.use(express.static(__dirname + '/src'));
+app.use(express.static(__dirname + '/src/view'));
 
 // When someone send a request to app then send index.html
 app.get('/', function (req, res) {
@@ -30,31 +28,36 @@ const apiai = require('apiai')(process.env.APIAI_TOKEN);
 
 const io = require('socket.io')(server);
 
-// socket connection to socket
-io.on('connection', socket => {
-    // when chat message event catch by socket with text message than do this
+io.on('connection', (socket) => {
+    // event 'chat message' catch from socket
     socket.on('chat message', (message) => {
-
         // print message on console
-        console.log('**** Processing: ' + message + ' ****');
-
+        console.log('Ricevuto un messaggio utente: ' + message);
         // request the text of the APIAI_SESSION_ID
-        const request = apiai.textRequest(message, {
-            sessionId: process.env.APIAI_SESSION_ID
+        const apiaiRequest = apiai.textRequest(message, {
+            sessionID: process.env.APIAI_SESSION_ID
         });
-
-        // if event catch is response than get the text of response of ai then emit event bot reply with aiText
-        request.on('response', res => {
-            console.log('**** Bot response:' + res.result.fulfillment.speech + ' ****');
-            socket.emit('bot response', res.result.fulfillment.speech);
+        // request bot reply
+        apiaiRequest.on('response', (response) => {
+            let aiText = response.result.fulfillment.speech;
+            console.log('Risposta bot: ' + aiText);
+            socket.emit('bot reply', aiText);
         });
-
         // if event error catched than print the error in console
-        request.on('error', error => {
+        apiaiRequest.on('error', error => {
             console.log(error);
         });
-
         // end the textRequest for this chat message
-        request.end();
+        apiaiRequest.end();
+    });
+    // event 'connect' catch from socket
+    socket.on('connect', () => {
+        console.log('Utente connesso');
+        var $welcomeMessage = "Salve";
+        socket.emit('bot reply', $welcomeMessage);
+    });
+    // event 'disconnect' catch from socket
+    socket.on('disconnect', () => {
+        console.log('Utente disconnesso');
     });
 });
