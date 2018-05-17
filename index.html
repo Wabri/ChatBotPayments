@@ -12,9 +12,8 @@
 </head>
 
 <body>
+    <h1>BVChatBot</h1>
     <section>
-        <h1>BVChatBot</h1>
-
         <button id="talk">
             <i class="fa fa-microphone" aria-hidden="true"></i>
         </button>
@@ -24,12 +23,19 @@
         </h2>
         <h2>Bot replied:
             <em class="output-bot">...</em>
-            </h2>
+        </h2>
     </section>
+    <ul class="pages">
+        <li class="chat page">
+            <div class="chatArea">
+                <ul class="messages"></ul>
+            </div>
+            <input class="inputMessage" placeholder="Type here..." />
+        </li>
+    </ul>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js">
-    </script>
-
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="script/script.js">
     </script>
 </body>
