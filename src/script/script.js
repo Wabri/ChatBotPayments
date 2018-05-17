@@ -15,7 +15,7 @@ recognition.interimResults = false;
 // Socket.io (https://socket.io/)
 var socket = io();
 
-document.querySelector('button').addEventListener('click', () => {
+document.querySelector('button#talk').addEventListener('click', () => {
     recognition.start();
 });
 
@@ -47,8 +47,7 @@ function synthVoice(text) {
 
 // when bot reply event catch let's produce text audio
 socket.on('bot reply', (botMessage) => {
-    var who = 'bot';
-    addChatMessage(botMessage, who);
+    addChatMessage(botMessage);
     synthVoice(botMessage)
 });
 
