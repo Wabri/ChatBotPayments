@@ -19,19 +19,22 @@
             <i class="fa fa-microphone" aria-hidden="true"></i>
         </button>
 
-        <h2>You said:
-            <em class="output-you">...</em>
-        </h2>
-        <h2>Bot replied:
-            <em class="output-bot">...</em>
-            </h2>
-    </section>
+        <section class="messages">
+            <article class="you">
+                You:
+                <span id="you" default-message="ascolto ..."> &nbsp; &lt; Il tuo messaggio &gt;</span>
+            </article>
+            <article class="bot">
+                Bot:
+                <span id="bot" default-message="..."> &nbsp; &lt; Risposta del bot &gt;</span>
+            </article>
+        </section>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js">
-    </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js">
+        </script>
 
-    <script src="script/script.js">
-    </script>
+        <script src="script/script.js">
+        </script>
 </body>
 
 </html>

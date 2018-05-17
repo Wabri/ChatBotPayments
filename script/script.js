@@ -1,69 +1,83 @@
+const messengerObj = messenger();
+const btn = document.querySelector('button#talk');
+
+// This is the interaction with button in index.html
+btn.onclick = function () {
+    messengerObj.you();
+    recognition.start();
+};
+
 // SpeechRecognition is the controller interface of the web speech api for voice recognition
 // SpeechRecognition (https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 
-// Now use Socket.io for bidirectional communication between web clients and servers
-// Socket.io (https://socket.io/)
-const socket = io();
-
-// Dotenv loads environment variables from a .env file into process.env.
-// Dotenv (https://github.com/motdotla/dotenv)
-require('dotenv').config()
-
-// API.AI is an ai system for natural language processing, take text and give a response
-// API.AI (https://github.com/dialogflow/dialogflow-nodejs-client-v2)
-const apiai = require('aiai')(process.env.APIAI_TOKEN);
-
-// this is use to modify the field .output-you and .output-bot implemented in the index.html
-const outputYou = document.querySelector('.output-you');
-const outputBot = document.querySelector('.output-bot');
-
 // Properties of recognition
 recognition.lang = 'it-IT';
 recognition.interimResults = false;
 
-// This is the interaction with button in index.html
-document.querySelector('button').addEventListener('click', () => {
-    recognition.start();
-});
-
-recognition.addEventListener('speechstart', () => {
-  console.log('Speech has been detected.');
-});
-
 // When recognition produce a result we can catch this event with this
-recognition.addEventListener('result', (e) => {
-    console.log('Result has been detected.');
+recognition.addEventListener('result', e => {
+    var message = e.results[0][0].transcript;
 
-    let last = e.result.length - 1; // catch the length the result
-    let text = e.result[last][0].transcript; // transform the audio result in text
-
-    console.log('Confidence: ' + e.result[0][0].confidence); // print to console the confidence text
+    messengerObj.you(message);
+    messengerObj.bot();
 
     // socket.emit register a new handler (text) for the given event ('chatMessage')
-    socket.emit('chat message', text);
+    socket.emit('chat message', message);
 });
 
-recognition.addEventListener('speechend', () => {
-  recognition.stop();
-});
+recognition.onsoundstart = toggleBtnAnimation;
+recognition.onsoundend = toggleBtnAnimation;
 
-recognition.addEventListener('error', (e) => {
-  outputBot.textContent = 'Error: ' + e.error;
+function toggleBtnAnimation() {
+    if (btn.classList.contains('animate')) {
+        // remove class after animation is done
+        var event = btn.addEventListener("animationiteration", ele => {
+            console.log('ended');
+            btn.classList.remove('animate');
+            btn.removeEventListener('animationiteration', event);
+        });
+    } else {
+        btn.classList.add('animate');
+    }
+}
+
+// Now use Socket.io for bidirectional communication between web clients and servers
+// Socket.io (https://socket.io/)
+const socket = io();
+
+// when bot reply event catch let's produce text audio reply
+socket.on('bot response', botMessage => {
+    synthVoice(botMessage);
+    messengerObj.bot(botMessage);
 });
 
 // this function create a audio with the voice synth of the text  
 function synthVoice(text) {
     const synth = window.speechSynthesis;
-    //The SpeechSynthesisUtterance interface of the Web Speech API represents a speech request. 
+    // The SpeechSynthesisUtterance interface of the Web Speech API represents a speech request. 
     // It contains the content the speech service should read and information about how to read it.
-    const utterance = new SpeechSynthesisUtterance();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'it-IT';
     utterance.text = text + ' wow!';
     synth.speak(utterance);
 }
 
-// when bot reply event catch let's produce text audio reply
-socket.on('bot reply', function (replyText) {
-    synthVoice(replyText);
-});
+// Handle updating of bot & you messages
+function messenger() {
+    // this is use to modify the field .output-you and .output-bot implemented in the index.html
+    const you = document.querySelector('#you');
+    const bot = document.querySelector('#bot');
+
+    function updateMessage(msg) {
+        console.log('this is ', this);
+        msg = msg || this.getAttribute('default-message');
+        this.innerHTML = '&nbsp;' + msg;
+    }
+
+    return {
+        bot: updateMessage.bind(bot),
+        you: updateMessage.bind(you)
+    }
+}
