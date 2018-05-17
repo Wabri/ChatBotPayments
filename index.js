@@ -9,7 +9,7 @@ var app = express();
 require('dotenv').config()
 
 // Set workdirectory of app
-app.use(express.static(__dirname + '/src'));
+app.use(express.static(__dirname + '/src/script'));
 app.use(express.static(__dirname + '/src/view'));
 
 // When someone send a request to app then send index.html
@@ -49,15 +49,5 @@ io.on('connection', (socket) => {
         });
         // end the textRequest for this chat message
         apiaiRequest.end();
-    });
-    // event 'connect' catch from socket
-    socket.on('connect', () => {
-        console.log('Utente connesso');
-        var $welcomeMessage = "Salve";
-        socket.emit('bot reply', $welcomeMessage);
-    });
-    // event 'disconnect' catch from socket
-    socket.on('disconnect', () => {
-        console.log('Utente disconnesso');
     });
 });

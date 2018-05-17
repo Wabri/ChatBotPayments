@@ -6,6 +6,7 @@ var $messages = $('.messages');
 // SpeechRecognition (https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
+
 // Properties of recognition
 recognition.lang = 'it-IT';
 recognition.interimResults = false;
@@ -14,12 +15,24 @@ recognition.interimResults = false;
 // Socket.io (https://socket.io/)
 var socket = io();
 
+document.querySelector('button').addEventListener('click', () => {
+    recognition.start();
+});
+
+recognition.addEventListener('speechstart', () => {
+    recognition.start();
+});
+
 // When recognition produce a result we can catch this event with this
 recognition.addEventListener('result', e => {
     var message = e.result[0][0].transcript;
 
     socket.emit('chat message', message);
 });
+
+recognition.addEventListener('speechend', () => {
+    recognition.stop();
+})
 
 // this function create a audio with the voice synth of the text  
 function synthVoice(text) {
