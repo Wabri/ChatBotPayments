@@ -1,3 +1,8 @@
+var $inputMessage = $('.inputMessage'); // Input message input box
+var $messages = $('.messages'); // Messages area
+var $chatPage = $('.chat.page'); // The chat page
+
+
 // SpeechRecognition is the controller interface of the web speech api for voice recognition
 // SpeechRecognition (https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -29,7 +34,7 @@ document.querySelector('button').addEventListener('click', () => {
 });
 
 recognition.addEventListener('speechstart', () => {
-  console.log('Speech has been detected.');
+    console.log('Speech has been detected.');
 });
 
 // When recognition produce a result we can catch this event with this
@@ -46,11 +51,11 @@ recognition.addEventListener('result', (e) => {
 });
 
 recognition.addEventListener('speechend', () => {
-  recognition.stop();
+    recognition.stop();
 });
 
 recognition.addEventListener('error', (e) => {
-  outputBot.textContent = 'Error: ' + e.error;
+    outputBot.textContent = 'Error: ' + e.error;
 });
 
 // this function create a audio with the voice synth of the text  
@@ -67,3 +72,44 @@ function synthVoice(text) {
 socket.on('bot reply', function (replyText) {
     synthVoice(replyText);
 });
+
+const sendMessage = () => {
+    var message = $inputMessage.val();
+    message.cleenInput(message);
+
+    socket.emit('chat message', message);
+}
+
+const cleanInput = (input) => {
+    return $('<div/>').text(input).html();
+}
+
+const log = (message, options) => {
+    var $el = $('<li>').addClass('log').text(message);
+    addMessageElement($el);
+}
+
+const addMessageElement = (el) => {
+    var $el = $(el);
+    $messages.hide().fadeIn(150);
+    $messages.append($el);
+    $messages[0].scrollTop = $messages[0].scrollHeight;
+}
+
+const addChatMessage = (data, options) => {
+    var $typingMessages = getTypingMessages(data);
+
+    var $usernameDiv = $('<span class="username"/>')
+        .text(data.username)
+        .css('color', getUsernameColor(data.username));
+    var $messageBodyDiv = $('<span class="messageBody">')
+        .text(data.message);
+
+    var typingClass = data.typing ? 'typing' : '';
+    var $messageDiv = $('<li class="message"/>')
+        .data('username', data.username)
+        .addClass(typingClass)
+        .append($usernameDiv, $messageBodyDiv);
+
+    addMessageElement($messageDiv, options);
+}

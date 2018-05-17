@@ -17,8 +17,9 @@ const server = app.listen(process.env.PORT || 5000, () => {
 
 
 const io = require('socket.io')(server);
-io.on('connection', function(socket){
-  console.log('a user connected');
+io.on('connection', function (socket) {
+    socket.emit('bot reply', 'Hello, what do you want to do?');
+    console.log('a user connected');
 });
 
 // When someone send a request to app then send index.html
@@ -52,5 +53,13 @@ io.on('connection', function (socket) {
 
         // end the textRequest for this chat message
         request.end();
+    });
+
+    socket.on('disconnect', () => {
+        console.log("user disconnected!")
+    });
+
+    socket.on('connect', () => {
+        console.log("user connected!")
     });
 });
