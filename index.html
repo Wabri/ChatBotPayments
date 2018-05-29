@@ -9,6 +9,11 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
 </head>
 
 <body>
@@ -22,19 +27,38 @@
         <section class="messages">
             <article class="you">
                 You:
-                <span id="you" default-message="ascolto ..."> &nbsp; &lt; Il tuo messaggio &gt;</span>
+                <span id="you" default-message="ascolto ..."> &nbsp; Il tuo messaggio </span>
             </article>
             <article class="bot">
                 Bot:
-                <span id="bot" default-message="..."> &nbsp; &lt; Risposta del bot &gt;</span>
+                <span id="bot" default-message="..."> &nbsp; Risposta del bot </span>
             </article>
         </section>
+
+        <ul id="messages"></ul>
+          <form action="">
+            <input id="m" autocomplete="off" /><button>Send</button>
+          </form>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js">
         </script>
 
         <script src="script/script.js">
         </script>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        <script>
+          $(function () {
+            var socket = io();
+            $('form').submit(function(){
+              socket.emit('chat message', $('#m').val());
+              $('#m').val('');
+              return false;
+            });
+          });
+        </script>
+        
 </body>
 
 </html>
