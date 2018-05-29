@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chat Bot Best Vision</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <ul class="pages">
+        <li class="chat page">
+            <div class="chatArea">
+                <ul class="messages">
+                </ul>
+            </div>
+            <input class="inputMessage" placeholder="Scrivi qui..." />
+        </li>
+    </ul>
+
+    <button id="talk"><i class="fa fa-microphone" aria-hidden="true"></i></button>
+
+    <!-- Socket.io -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js">
+    </script>
+    <!-- jQuery to manipulate message -->
+    <script src="https://code.jquery.com/jqyery-1.10.2.min.js"></script>
+    <script src="../script/script.js"></script>
+</body>
+
+</html>
