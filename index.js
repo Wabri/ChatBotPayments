@@ -1,3 +1,5 @@
+var http = require('http');
+
 // Express is require to run chat in a local server
 // Express (https://expressjs.com/)
 // Creation of server
@@ -15,13 +17,14 @@ app.use(express.static(__dirname + '/background'));
 app.use(express.static(__dirname));
 
 // When someone send a request to app then send index.html
-app.get('/', function (req, res) {
-    res.sendFile('index.html');
+app.get('/', function(req, res) {
+  res.sendFile('index.html');
 });
 
 // Open port 5000 or the port in dotenv config file
 const server = app.listen(process.env.PORT || 5000, () => {
-    console.log('Express server listening on port %d in %s mode', server.address().port, app.settings.env);
+  console.log('Express server listening on port %d in %s mode', server.address()
+    .port, app.settings.env);
 });
 
 // API.AI is an ai system for natural language processing, take text and give a
@@ -33,30 +36,60 @@ const io = require('socket.io')(server);
 
 // socket connection to socket
 io.on('connection', socket => {
-    // when chat message event catch by socket with text message than do this
-    socket.on('chat message', (message) => {
+  // when chat message event catch by socket with text message than do this
+  socket.on('chat message', (message) => {
 
-        // print message on console
-        console.log('**** Processing: ' + message + ' ****');
+    // print message on console
+    console.log('**** Processing: ' + message + ' ****');
 
-        // request the text of the APIAI_SESSION_ID
-        const request = apiai.textRequest(message, {
-            sessionId: process.env.APIAI_SESSION_ID
-        });
-
-        // if event catch is response than get the text of response of ai then
-		// emit event bot reply with aiText
-        request.on('response', res => {
-            console.log('**** Bot response: ' + res.result.fulfillment.speech + ' ****');
-            socket.emit('bot response', res.result.fulfillment.speech);
-        });
-
-        // if event error catched than print the error in console
-        request.on('error', error => {
-            console.log(error);
-        });
-
-        // end the textRequest for this chat message
-        request.end();
+    // request the text of the APIAI_SESSION_ID
+    const request = apiai.textRequest(message, {
+      sessionId: process.env.APIAI_SESSION_ID
     });
+
+    /*
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "http://localhost:8080/v1/api/dataById?id=12",
+          true);
+        xhttp.setRequestHeader("Content-type",
+          "application/json");
+        xhttp.send();
+        var response = JSON.parse(xhttp.responseText);
+        console.log('Get result:' + response)
+    */
+
+    http.get('http://localhost:8080/v1/api/dataById?id=12', (
+      resp) => {
+      let data = '';
+
+      // A chunk of data has been recieved.
+      resp.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      // The whole response has been received. Print out the result.
+      resp.on('end', () => {
+        console.log(JSON.parse(data));
+      });
+
+    }).on("error", (err) => {
+      console.log("Error: " + err.message);
+    });
+
+    // if event catch is response than get the text of response of ai then
+    // emit event bot reply with aiText
+    request.on('response', res => {
+      console.log('**** Bot response: ' + res.result.fulfillment.speech +
+        ' ****');
+      socket.emit('bot response', res.result.fulfillment.speech);
+    });
+
+    // if event error catched than print the error in console
+    request.on('error', error => {
+      console.log(error);
+    });
+
+    // end the textRequest for this chat message
+    request.end();
+  });
 });
