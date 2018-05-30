@@ -24,7 +24,8 @@ const server = app.listen(process.env.PORT || 5000, () => {
     console.log('Express server listening on port %d in %s mode', server.address().port, app.settings.env);
 });
 
-// API.AI is an ai system for natural language processing, take text and give a response
+// API.AI is an ai system for natural language processing, take text and give a
+// response
 // API.AI (https://github.com/dialogflow/dialogflow-nodejs-client-v2)
 const apiai = require('apiai')(process.env.APIAI_TOKEN);
 
@@ -43,9 +44,10 @@ io.on('connection', socket => {
             sessionId: process.env.APIAI_SESSION_ID
         });
 
-        // if event catch is response than get the text of response of ai then emit event bot reply with aiText
+        // if event catch is response than get the text of response of ai then
+		// emit event bot reply with aiText
         request.on('response', res => {
-            console.log('**** Bot response:' + res.result.fulfillment.speech + ' ****');
+            console.log('**** Bot response: ' + res.result.fulfillment.speech + ' ****');
             socket.emit('bot response', res.result.fulfillment.speech);
         });
 

@@ -7,8 +7,10 @@ btn.onclick = function() {
   recognition.start();
 };
 
-// SpeechRecognition is the controller interface of the web speech api for voice recognition
-// SpeechRecognition (https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
+// SpeechRecognition is the controller interface of the web speech api for voice
+// recognition
+// SpeechRecognition
+// (https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 
@@ -23,7 +25,8 @@ recognition.addEventListener('result', e => {
   messengerObj.you(message);
   messengerObj.bot();
 
-  // socket.emit register a new handler (text) for the given event ('chatMessage')
+  // socket.emit register a new handler (text) for the given event
+	// ('chatMessage')
   socket.emit('chat message', message);
 });
 
@@ -43,7 +46,8 @@ function toggleBtnAnimation() {
   }
 }
 
-// Now use Socket.io for bidirectional communication between web clients and servers
+// Now use Socket.io for bidirectional communication between web clients and
+// servers
 // Socket.io (https://socket.io/)
 const socket = io();
 
@@ -56,8 +60,10 @@ socket.on('bot response', botMessage => {
 // this function create a audio with the voice synth of the text
 function synthVoice(text) {
   const synth = window.speechSynthesis;
-  // The SpeechSynthesisUtterance interface of the Web Speech API represents a speech request.
-  // It contains the content the speech service should read and information about how to read it.
+  // The SpeechSynthesisUtterance interface of the Web Speech API represents a
+	// speech request.
+  // It contains the content the speech service should read and information
+	// about how to read it.
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'it-IT';
   utterance.text = text;
@@ -66,7 +72,8 @@ function synthVoice(text) {
 
 // Handle updating of bot & you messages
 function messenger() {
-  // this is use to modify the field .output-you and .output-bot implemented in the index.html
+  // this is use to modify the field .output-you and .output-bot implemented
+	// in the index.html
   const you = document.querySelector('#you');
   const bot = document.querySelector('#bot');
 
