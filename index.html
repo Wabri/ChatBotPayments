@@ -37,7 +37,7 @@
 
 		<section class="messages">
 			<article class="you">
-				You: <span id="you" default-message="ascolto ..."> &nbsp; Il
+				Te: <span id="you" default-message="ascolto ..."> &nbsp; Il
 					tuo messaggio </span>
 			</article>
 			<article class="bot">
@@ -46,23 +46,22 @@
 			</article>
 		</section>
 
-		<ul id="messages"></ul>
-		<form action="">
-			<input id="m" autocomplete="off" />
-			<button>Send</button>
+		<form id="messageForm">
+			<input id="inputMessage" autocomplete="off" />
+			<button id="write">Send</button>
 		</form>
 
 		<script
 			src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js">
-			
 		</script>
 
 		<script src="script/script.js">
-			
 		</script>
 
-		<script src="/socket.io/socket.io.js"></script>
 		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+<!--	<script src="/socket.io/socket.io.js"></script> -->
+<!--
 		<script>
 			$(function() {
 				var socket = io();
@@ -73,6 +72,7 @@
 				});
 			});
 		</script>
+-->
 </body>
 
 </html>
