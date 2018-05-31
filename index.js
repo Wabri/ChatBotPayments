@@ -43,7 +43,7 @@ io.on('connection', socket => {
     console.log('**** Processing: ' + message + ' ****');
 
     // request the text of the APIAI_SESSION_ID
-    const request = apiai.textRequest(message, {
+    var request = apiai.textRequest(message, {
       sessionId: process.env.APIAI_SESSION_ID
     });
 

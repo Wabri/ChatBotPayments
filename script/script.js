@@ -12,14 +12,15 @@ btnT.onclick = function() {
 };
 
 btnW.onclick = function() {
+  $('form#messageForm').submit(function() {
+    return false;
+  });
   // var message = $('input#inputMessage').val();
   messengerObj.you($('input#inputMessage').val());
   messengerObj.bot();
-  $('form#messageForm').submit(function() {
-    socket.emit('chat message', $('input#inputMessage').val());
-    $('input#inputMessage').val('');
-    return false;
-  });
+  socket.emit('chat message', $('input#inputMessage').val());
+  synthVoice("Hai scritto: " + $('input#inputMessage').val());
+  $('input#inputMessage').val('');
 };
 
 // SpeechRecognition is the controller interface of the web speech api for voice recognition
