@@ -58,6 +58,36 @@ io.on('connection', socket => {
         console.log('Get result:' + response)
     */
 
+    // richiesta al backend rasa_nlu
+    let rasaRequest = 'http://localhost:5000/parse?q=';
+    rasaRequest += message;
+    http.get(rasaRequest, (
+      resp) => {
+      let data = '';
+
+      // A chunk of data has been recieved.
+      resp.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      // The whole response has been received. Print out the result.
+      resp.on('end', () => {
+        console.log(JSON.parse(data));
+      });
+
+    }).on("error", (err) => {
+      console.log("Error: " + err.message);
+    });
+
+    // if event catch is response than get the text of response of ai then
+    // emit event bot reply with aiText
+    request.on('response', res => {
+      console.log('**** Bot response: ' + res.result.fulfillment.speech +
+        ' ****');
+      socket.emit('bot response', res.result.fulfillment.speech);
+    });
+
+    // richiesta al backend spring
     http.get('http://localhost:8080/v1/api/dataById?id=12', (
       resp) => {
       let data = '';
