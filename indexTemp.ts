@@ -5,7 +5,10 @@ var http = require("http");
 var express = require("express");
 var app = express();
 
-require("dotenv").config();
+// import dotenv from 'dotenv';
+const dotenv = require("dotenv");
+dotenv.config();
+// const config = dotenv.config();
 
 class Settings {
   version: string;
