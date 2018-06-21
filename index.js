@@ -1,4 +1,4 @@
-#!node
+#!/usr/bin/env node
 "use strict";
 var http = require("http");
 // ----- caricamento delle configurazioni definite nel file .env ----- //
