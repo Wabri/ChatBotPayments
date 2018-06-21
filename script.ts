@@ -1,10 +1,10 @@
-#!
 var VoiceSpeechRecognition =
-  SpeechRecognition || window.webkitSpeechRecognition;
+  window.SpeechRecognition || window.webkitSpeechRecognition;
 var voiceRecognition = new VoiceSpeechRecognition();
+voiceRecognition.lang = "it-IT";
+voiceRecognition.interimResults = false;
 
-recognition.lang = "it-IT";
-recognition.interimResults = false;
+const socketIOClient = io();
 
 class VoiceManager {
   static synthVoice(message: string) {
@@ -16,16 +16,6 @@ class VoiceManager {
   }
 }
 
-class DataSendSocketMessage {
-  message: string;
-  id: number;
-
-  constructor(message: string, id: number) {
-    this.message = message;
-    this.id = id;
-  }
-}
-
 class MessageSectionManager {
   static relativeMessageUpdate(message: string, whostalk: string) {
     let talkerElement = document.querySelector("span#" + whostalk);
@@ -33,65 +23,34 @@ class MessageSectionManager {
   }
 }
 
-class ButtonReactor {
-  buttonID: string;
-  buttonElement: Element;
+const buttonTalk = document.querySelector("button#talk");
+buttonTalk.onclick = function() {
+  MessageSectionManager.relativeMessageUpdate("Sto ascoltando...", "bot");
+  voiceRecognition.start();
+  $("input#inputMessage").val("");
+};
 
-  constructor(buttonID: string) {
-    this.buttonElement = document.querySelector(buttonID);
-    this.buttonID = buttonID;
-  }
+const buttonWrite = document.querySelector("button#write");
+buttonWrite.onclick = function() {
+  $("form#messageForm").submit(() => {
+    return false;
+  });
+  var inputMessageElementString: string = $("input#inputMessage").val();
+  MessageSectionManager.relativeMessageUpdate(inputMessageElementString, "you");
+  VoiceManager.synthVoice(inputMessageElementString);
+  MessageSectionManager.relativeMessageUpdate("Sto pensando...", "bot");
+  socketIOClient.emit("userMessage", inputMessageElementString);
+  $("input#inputMessage").val("");
+};
 
-  onClick() {}
-}
-
-class ButtonWrite extends ButtonReactor {
-  constructor(buttonID: string) {
-    super(buttonID);
-  }
-
-  onClick() {
-    $("form#messageForm").submit(() => {
-      return false;
-    });
-    const inputMessageElement = document.querySelector("input#inputMessage");
-    var inputMessageElementString: string = inputMessageElement.innerHTML;
-    MessageSectionManager.relativeMessageUpdate(
-      inputMessageElementString,
-      "you"
-    );
-    VoiceManager.synthVoice(inputMessageElementString);
-    MessageSectionManager.relativeMessageUpdate("Sto pensando...", "bot");
-    socket.emit(
-      "userMessage",
-      new DataSendSocketMessage(inputMessageElementString, 100)
-    );
-    inputMessageElement.innerHTML = "";
-  }
-}
-
-class ButtonTalk extends ButtonReactor {
-  constructor(buttonID: string) {
-    super(buttonID);
-  }
-
-  onClick() {
-    MessageSectionManager.relativeMessageUpdate("Sto ascoltando...", "bot");
-    voiceRecognition.start();
-  }
-}
-
-var buttonTalk = new ButtonTalk("button#talk");
-var buttonWrite = new ButtonWrite("button#write");
-
-recognition.addEventListener("result", e => {
+voiceRecognition.addEventListener("result", e => {
   var textVoiceMessage: string = e.results[0][0].transcript;
   MessageSectionManager.relativeMessageUpdate(textVoiceMessage, "you");
   MessageSectionManager.relativeMessageUpdate("Sto Pensando...", "bot");
-  socket.emit("userMessage", new DataSendSocketMessage(textVoiceMessage, 100));
+  socketIOClient.emit("userMessage", textVoiceMessage);
 });
 
-socket.on("botResponse", (dataSocketMessage: DataSendSocketMessage) => {
-  VoiceManager.synthVoice(dataSocketMessage.message);
-  MessageSectionManager.relativeMessageUpdate(dataSocketMessage.message, "bot");
+socketIOClient.on("botResponse", (messageReceive: string) => {
+  VoiceManager.synthVoice(messageReceive);
+  MessageSectionManager.relativeMessageUpdate(messageReceive, "bot");
 });
