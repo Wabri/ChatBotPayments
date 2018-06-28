@@ -1,0 +1,38 @@
+slots:
+  - accountList:
+      type: unfeaturized
+  - currentTotalAccount:
+      type: unfeaturized
+  - accountNumber:
+      type: text
+
+entities:
+  - accountNumber
+
+intents:
+  - greetings
+  - bankAccountList
+  - cancellation
+  - confirm
+  - paymentRequestToAKnownAccount
+  - paymentRequestToIban
+  - totalValueOfAccount
+  - valuePayment
+  - thankYou
+
+templates:
+  give_greetings:
+    - "Salve!"
+    - "Buongiorno!"
+    - "Buonasera!"
+  who_i_am:
+    - "Prototipo di bot per pagamenti"
+  do_something:
+    - "Ok dammi qualche secondo"
+  end_conversation:
+    - "Spero di esser stato di aiuto! Buonagiornata"
+
+action:
+  - give_greetings
+  - bot.ActionAccountList
+  - bot.ActionTotalValueAccount
