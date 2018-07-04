@@ -1,0 +1,35 @@
+{
+  "rasa_nlu_data": {
+    "regex_features": [],
+    "entity_synonyms": [],
+    "common_examples": [{
+      "text": "Salve",
+      "intent": "inizio_conversazione",
+      "entities": []
+    }, {
+      "text": "Ciao",
+      "intent": "inizio_conversazione",
+      "entities": []
+    }, {
+      "text": "Buongiorno",
+      "intent": "inizio_conversazione",
+      "entities": []
+    }, {
+      "text": "Buonasera",
+      "intent": "inizio_conversazione",
+      "entities": []
+    }, {
+      "text": "Hola",
+      "intent": "inizio_conversazione",
+      "entities": []
+    }, {
+      "text": "hei",
+      "intent": "inizio_conversazione",
+      "entities": []
+    }, {
+      "text": "ei",
+      "intent": "inizio_conversazione",
+      "entities": []
+    }]
+  }
+}

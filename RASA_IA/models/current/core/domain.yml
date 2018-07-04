@@ -1,0 +1,22 @@
+action_factory: null
+action_names:
+- rispondi_fine_conversazione
+- rispondi_inizio_conversazione
+- action_saluta
+actions:
+- rispondi_fine_conversazione
+- rispondi_inizio_conversazione
+- actions.ActionSaluta
+config:
+  store_entities_as_slots: true
+entities: []
+intents:
+- fine_conversazione
+- inizio_conversazione
+slots: {}
+templates:
+  rispondi_fine_conversazione:
+  - text: Alla prossima
+  rispondi_inizio_conversazione:
+  - text: Ciao, sono il prototipo di un bot
+topics: []
