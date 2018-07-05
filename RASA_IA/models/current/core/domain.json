@@ -1,11 +1,11 @@
 {
   "states": [
-    "intent_fine_conversazione",
-    "intent_inizio_conversazione",
-    "prev_action_listen",
-    "prev_action_restart",
-    "prev_rispondi_fine_conversazione",
-    "prev_rispondi_inizio_conversazione",
+    "intent_fine_conversazione", 
+    "intent_inizio_conversazione", 
+    "prev_action_listen", 
+    "prev_action_restart", 
+    "prev_rispondi_fine_conversazione", 
+    "prev_rispondi_inizio_conversazione", 
     "prev_action_saluta"
   ]
 }

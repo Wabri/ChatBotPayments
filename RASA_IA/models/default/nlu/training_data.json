@@ -1,0 +1,56 @@
+{
+  "rasa_nlu_data": {
+    "common_examples": [
+      {
+        "text": "Addio", 
+        "intent": "fine_conversazione"
+      }, 
+      {
+        "text": "Ciao", 
+        "intent": "fine_conversazione"
+      }, 
+      {
+        "text": "Arrivederci", 
+        "intent": "fine_conversazione"
+      }, 
+      {
+        "text": "Bye Bye", 
+        "intent": "fine_conversazione"
+      }, 
+      {
+        "text": "Alla prossima", 
+        "intent": "fine_conversazione"
+      }, 
+      {
+        "text": "Salve", 
+        "intent": "inizio_conversazione"
+      }, 
+      {
+        "text": "Ciao", 
+        "intent": "inizio_conversazione"
+      }, 
+      {
+        "text": "Buongiorno", 
+        "intent": "inizio_conversazione"
+      }, 
+      {
+        "text": "Buonasera", 
+        "intent": "inizio_conversazione"
+      }, 
+      {
+        "text": "Hola", 
+        "intent": "inizio_conversazione"
+      }, 
+      {
+        "text": "hei", 
+        "intent": "inizio_conversazione"
+      }, 
+      {
+        "text": "ei", 
+        "intent": "inizio_conversazione"
+      }
+    ], 
+    "entity_synonyms": [], 
+    "regex_features": []
+  }
+}
