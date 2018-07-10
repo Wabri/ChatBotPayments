@@ -2,6 +2,7 @@
 "use strict";
 
 var http = require("http");
+var request = require('request');
 
 // ----- caricamento delle configurazioni definite nel file .env ----- //
 const dotenv = require("dotenv");
@@ -84,18 +85,19 @@ var socketIOServer = new socketManager(server);
 socketIOServer.on("connection", socket => {
   socket.on("userMessage", (messageReceive: string) => {
     console.log("*** Processing message: " + messageReceive + "****");
-    /*  
-      qui deve essere gestita la richiesta dell'utente andando a 
+    /*
+      qui deve essere gestita la richiesta dell'utente andando a
       chiamare il backend rasa che gestira la richiesta rispondendo
-      con un json in cui saranno definiti gli intenti e le entità 
+      con un json in cui saranno definiti gli intenti e le entità
       della richiesta
       */
 
     // esempio di richiesta al backend rasa_nlu
     var botResponse: string = "?????";
     let rasaRequest =
-      "http://" + settingsApp.rasaIP + ":" + settingsApp.rasaPort + "/parse?q=";
+      "http://" + settingsApp.rasaIP + ":" + settingsApp.rasaPort + "/parse";
     rasaRequest += messageReceive;
+    http.post(rasaRequest)
     http
       .get(rasaRequest, resp => {
         console.log("Rasa response");
@@ -112,6 +114,39 @@ socketIOServer.on("connection", socket => {
       .on("error", err => {
         console.log("Error: " + err.message);
       });
+      var options = {
+        hostname: settingsApp.rasaIP,
+        port: settingsApp.rasaPort,
+        path: '/conversations/default/parse',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      };
+      var req = http.request(options, function(res) {
+        console.log('Status: ' + res.statusCode);
+        console.log('Headers: ' + JSON.stringify(res.headers));
+        res.setEncoding('utf8');
+        res.on('data', function(body) {
+          console.log('Body: ' + body);
+        });
+      });
+      req.on('error', function(e) {
+        console.log('problem with request: ' + e.message);
+      });
+      // write data to request body
+      req.write('{"query":"Ciao"}');
+      req.end();
+
+      request.post(
+        'http://' + settingsApp.rasaIP + ':' + settingsApp.rasaPort +
+        '/conversations/default/parse', '{"query":"Ciao"}',
+        function(error, response, body) {
+          if (!error && response.statusCode == 200) {
+            console.log(body)
+          }
+        }
+      );
 
     // esempio di richiesta al backend spring
     var requestToSpring: string =
