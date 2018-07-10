@@ -2,12 +2,15 @@ intents:
   - fine_conversazione
   - inizio_conversazione
 
+
 templates:
   rispondi_inizio_conversazione:
   - text: "Ciao, sono il prototipo di un bot"
 
   rispondi_fine_conversazione:
   - text: "Alla prossima"
+
+action_factory: remote
 
 actions:
   - rispondi_fine_conversazione
