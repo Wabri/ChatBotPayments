@@ -37,3 +37,9 @@ $ python -m rasa_core.train -d domain.yml -s stories.md -o models/default/core -
 ```bash
 $ python -m rasa_core.server -d models/default/core -u models/default/nlu -o out.log -p 5005
 ```
+
+# POST REQUEST: eseguire il curl:
+```bash
+$ curl -XPOST http://192.168.170.119:5004/conversations/default/parse -d '{"query":"Ciao"}'
+```
+
