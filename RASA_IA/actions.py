@@ -5,9 +5,9 @@ from rasa_core.actions import Action
 from rasa_core.events import SlotSet
 from rasa_core.events import Restarted
 
-class ActionSaluta(Action):
+class ActionGreeting(Action):
     def name(self):
-        return "action_saluta"
+        return "ActionGreeting"
 
     def run(self,dispatcher, tracker, domain):
         dispatcher.utter_message("Ciao (action saluta)")

@@ -1,6 +1,12 @@
 ## banale botta e risposta
-  * inizio_conversazione
+  * startConversation
     - actions.ActionSaluta
-    - rispondi_inizio_conversazione
-  * fine_conversazione
-    - rispondi_fine_conversazione
+    - reply_startConversation
+  * endConversation
+    - reply_endConversation
+
+## richiesta del conto
+  * startConversation
+    - reply_startConversation
+  * bankAccountsList
+    - reply_endConversation
