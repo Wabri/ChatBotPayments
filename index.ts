@@ -2,7 +2,7 @@
 "use strict";
 
 var http = require("http");
-var request = require('request');
+var sa = require('superagent');
 
 // ----- caricamento delle configurazioni definite nel file .env ----- //
 const dotenv = require("dotenv");
@@ -94,59 +94,41 @@ socketIOServer.on("connection", socket => {
 
     // esempio di richiesta al backend rasa_nlu
     var botResponse: string = "?????";
-    let rasaRequest =
-      "http://" + settingsApp.rasaIP + ":" + settingsApp.rasaPort + "/parse";
     rasaRequest += messageReceive;
-    http.post(rasaRequest)
-    http
-      .get(rasaRequest, resp => {
-        console.log("Rasa response");
-        let data = "";
 
-        resp.on("data", chunk => {
-          data += chunk;
-        });
-
-        resp.on("end", () => {
-          console.log(JSON.parse(data));
-        });
+    /* esecuzione della post al server di rasa che eseguirà il parse del
+     messaggio dell'utente*/
+    sa.post('http://' + settingsApp.rasaIP + ':' + settingsApp.rasaPort +
+        '/conversations/default/parse')
+      .set('Content-Type', 'application/json')
+      .send({
+        "query": messageReceive
       })
-      .on("error", err => {
-        console.log("Error: " + err.message);
+      .end(function(err, res) {
+        var arr = res.text;
+        console.log(arr);
+        botResponse = JSON.parse(res.text);
       });
-      var options = {
-        hostname: settingsApp.rasaIP,
-        port: settingsApp.rasaPort,
-        path: '/conversations/default/parse',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      };
-      var req = http.request(options, function(res) {
-        console.log('Status: ' + res.statusCode);
-        console.log('Headers: ' + JSON.stringify(res.headers));
-        res.setEncoding('utf8');
-        res.on('data', function(body) {
-          console.log('Body: ' + body);
-        });
+    /* una volta che viene mandato la post per un parse di un messaggio
+    dell'utente rasa risponderà con una azione da fare */
+    // per eseguire l'azione eseguiamo una post di questo tipo
+    sa.post('http://' + settingsApp.rasaIP + ':' + settingsApp.rasaPort +
+        '/conversations/default/continue')
+      .set('Content-Type', 'application/json')
+      .send({
+        "executed_action": "actions.ActionSaluta"
+      })
+      .end(function(err, res) {
+        var arr = res.text;
+        console.log(arr);
+        botResponse = JSON.parse(res.text);
       });
-      req.on('error', function(e) {
-        console.log('problem with request: ' + e.message);
-      });
-      // write data to request body
-      req.write('{"query":"Ciao"}');
-      req.end();
+    /* ovviamente al posto del actions.ActionSaluta ci sarà l'azione successiva
+    alla precedente, che viene contenuta all'interno della risposta alla posto
+    precedente nel campo next_action */
+    /* rasa deve ricevere comandi fintanto che il campo next_action non
+    diventa action_listen */
 
-      request.post(
-        'http://' + settingsApp.rasaIP + ':' + settingsApp.rasaPort +
-        '/conversations/default/parse', '{"query":"Ciao"}',
-        function(error, response, body) {
-          if (!error && response.statusCode == 200) {
-            console.log(body)
-          }
-        }
-      );
 
     // esempio di richiesta al backend spring
     var requestToSpring: string =
