@@ -1,6 +1,6 @@
 ## banale botta e risposta
   * startConversation
-    - actions.ActionSaluta
+    - actions.ActionGreeting
     - reply_startConversation
   * endConversation
     - reply_endConversation

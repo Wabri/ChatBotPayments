@@ -17,4 +17,3 @@ actions:
   - reply_endConversation
   - reply_startConversation
   - actions.ActionGreeting
-  - actions.Action
