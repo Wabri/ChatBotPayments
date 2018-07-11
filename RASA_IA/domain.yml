@@ -6,13 +6,13 @@ intents:
 
 templates:
   reply_startConversation:
-  - text: "Ciao, sono il prototipo di un bot"
+  - "Ciao, sono il prototipo di un bot"
 
   reply_endConversation:
-  - text: "Alla prossima"
+  - "Alla prossima"
 
   reply_giveConti:
-  - text: "conto 1 totale 100, conto 2 totale 300"
+  - "conto 1 totale 100, conto 2 totale 300"
 
 action_factory: remote
 
