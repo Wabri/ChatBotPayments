@@ -9,4 +9,6 @@
   * startConversation
     - reply_startConversation
   * bankAccountsList
+    - reply_giveConti
+  * endConversation
     - reply_endConversation
