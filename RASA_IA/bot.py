@@ -28,5 +28,6 @@ class ActionSendBankAccountList(Action):
         return 'ActionSendBankAccountList'
 
     def run(self,dispatcher, tracker, domain):
-        dispatcher.utter_message("La tua lista dei conti è: " + tracker.get_slot("listAccount"))
+        slotListAccount=tracker.get_slot("listAccount")
+        dispatcher.utter_message(slotListAccount)
         return [];
