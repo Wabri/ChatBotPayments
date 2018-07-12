@@ -1,4 +1,5 @@
 # coding=utf-8
+import requests
 from rasa_core import utils
 from rasa_core.actions import Action
 from rasa_core.agent import Agent
@@ -8,13 +9,6 @@ from rasa_core.featurizers import (
     MaxHistoryTrackerFeaturizer,
     BinarySingleStateFeaturizer)
 
-class UserDataInformations(object):
-    def search(self, info):
-        r = requests.get('http://192.168.41.32:8080/ibs-mvc/rest/config/languages')
-        r.status_code
-        r.headers
-        return "conto 1 300 euro \n\rconto 2 400 euro"
-
 class ActionGetBankAccountList(Action):
     def name(self):
         return "ActionGetBankAccountList"
@@ -22,13 +16,14 @@ class ActionGetBankAccountList(Action):
     def run(self, dispatcher, tracker, domain):
         dispatcher.utter_message("Aspetta qualche secondo...")
         userDataInformations = UserDataInformations();
-        bankAccountsList = userDataInformations.search(tracker.get_slot("user"))
-        return [SlotSet("listAccount", bankAccountsList)]
+        r = requests.get('http://192.168.41.32:8080/ibs-mvc/rest/config/languages')
+        return [SlotSet("listAccount", r.json)]
 
 class ActionSendBankAccountList(Action):
     def name(self):
         return 'ActionSendBankAccountList'
 
     def run(self,dispatcher, tracker, domain):
-        dispatcher.utter_message("La tua lista dei conti è: " + tracker.get_slot("listAccount"))
+        slotListAccount=tracker.get_slot("listAccount")
+        dispatcher.utter_message(slotListAccount)
         return [];
