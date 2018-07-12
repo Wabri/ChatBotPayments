@@ -119,10 +119,9 @@ socketIOServer.on("connection", socket => {
             .end((err, res) => {
               var temp = eval(res.text);
               botResponse = temp[0].text;
-              // appena si ha il risultato della richeista dell'utente allora si manda la risposta all'utente
-              console.log("**** Bot response: " + botResponse + " ****");
-              socket.emit("botResponse", botResponse);
             });
+            console.log("**** Bot response: " + botResponse + " ****");
+            socket.emit("botResponse", botResponse);
           }
         } else {
           sa.post(rasaAddress + "/conversations/default/respond")
@@ -135,19 +134,19 @@ socketIOServer.on("connection", socket => {
               botResponse = temp[0].text;
               // appena si ha il risultato della richeista dell'utente allora si manda la risposta all'utente
               console.log("**** Bot response: " + botResponse + " ****");
-              socket.emit("botResponse", botResponse);
-            });
-            sa.post(rasaAddress + "/conversations/default/continue")
+              sa.post(rasaAddress + "/conversations/default/continue")
             .set("Content-Type", "application/json")
             .send({
               "executed_action": "ActionSendBankAccountList"
             })
             .end((err, res) => {
               var temp = eval(res.text);
-              botResponse = temp[0].text;
+              var blabla = JSON.parse(res.text);
+              botResponse = blabla.tracker["slots"]["listAccount"];
               // appena si ha il risultato della richeista dell'utente allora si manda la risposta all'utente
-              console.log("**** Bot response: " + botResponse + " ****");
+              console.log("**** blabla: " + blabla.tracker["slots"]["listAccount"] + " ****");
               socket.emit("botResponse", botResponse);
+            });
             });
         }
       });
