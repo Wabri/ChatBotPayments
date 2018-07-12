@@ -7,7 +7,7 @@ from rasa_core.events import Restarted
 
 class UserDataInformations(object):
     def serchAccount(self, info):
-        /* chiamata al backend*/
+        #chiamata al backend
         return info + "conto 1 300 euro \n\rconto 2 400 euro"
 
 class ActionGetBankAccountList(Action):
