@@ -13,7 +13,7 @@ class UserDataInformations(object):
         r = requests.get('http://192.168.41.32:8080/ibs-mvc/rest/config/languages')
         r.status_code
         r.headers
-        return "conto 1 300 euro \n\rconto 2 400 euro"
+        return r
 
 class ActionGetBankAccountList(Action):
     def name(self):
@@ -23,7 +23,7 @@ class ActionGetBankAccountList(Action):
         dispatcher.utter_message("Aspetta qualche secondo...")
         userDataInformations = UserDataInformations();
         bankAccountsList = userDataInformations.search(tracker.get_slot("user"))
-        return [SlotSet("listAccount", bankAccountsList)]
+        return [SlotSet("listAccount", "bankAccountsList")]
 
 class ActionSendBankAccountList(Action):
     def name(self):
