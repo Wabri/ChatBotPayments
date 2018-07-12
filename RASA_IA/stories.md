@@ -8,7 +8,7 @@
   * startConversation
     - reply_startConversation
   * bankAccountsList
-    - actions.ActionGetBankAccountList
-    - actions.ActionSendBanckAccountlist
+    - ActionGetBankAccountList
+    - ActionSendBankAccountList
   * endConversation
     - reply_endConversation

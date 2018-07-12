@@ -7,12 +7,11 @@ from rasa_core.events import SlotSet
 from rasa_core.featurizers import (
     MaxHistoryTrackerFeaturizer,
     BinarySingleStateFeaturizer)
-from rasa_core.interpreter import RasaNLUInterpreters
 
 class UserDataInformations(object):
     def serchAccount(self, info):
         #chiamata al backend
-        return info + "conto 1 300 euro \n\rconto 2 400 euro"
+        return "conto 1 300 euro \n\rconto 2 400 euro"
 
 class ActionGetBankAccountList(Action):
     def name(self):
@@ -24,9 +23,9 @@ class ActionGetBankAccountList(Action):
         bankAccountsList = userDataInformations.serchAccount(tracker.get_slot("user"))
         return [SlotSet("listAccount", bankAccountsList)]
 
-class ActionSendBankAccountlist(Action):
+class ActionSendBankAccountList(Action):
     def name(self):
-        return 'ActionSendBanckAccountlist'
+        return 'ActionSendBankAccountList'
 
     def run(self,dispatcher, tracker, domain):
         dispatcher.utter_message("La tua lista dei conti è: " + tracker.get_slot("listAccount"))
