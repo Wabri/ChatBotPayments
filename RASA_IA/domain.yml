@@ -19,5 +19,5 @@ templates:
 actions:
   - reply_endConversation
   - reply_startConversation
-  - actions.ActionGetBankAccountlist
-  - actions.ActionSendBankAccountlist
+  - bot.ActionGetBankAccountlist
+  - bot.ActionSendBankAccountlist
