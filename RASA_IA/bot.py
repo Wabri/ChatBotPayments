@@ -9,8 +9,10 @@ from rasa_core.featurizers import (
     BinarySingleStateFeaturizer)
 
 class UserDataInformations(object):
-    def serchAccount(self, info):
-        #chiamata al backend
+    def search(self, info):
+        r = requests.get('http://192.168.41.32:8080/ibs-mvc/rest/config/languages')
+        r.status_code
+        r.headers
         return "conto 1 300 euro \n\rconto 2 400 euro"
 
 class ActionGetBankAccountList(Action):
@@ -20,7 +22,7 @@ class ActionGetBankAccountList(Action):
     def run(self, dispatcher, tracker, domain):
         dispatcher.utter_message("Aspetta qualche secondo...")
         userDataInformations = UserDataInformations();
-        bankAccountsList = userDataInformations.serchAccount(tracker.get_slot("user"))
+        bankAccountsList = userDataInformations.search(tracker.get_slot("user"))
         return [SlotSet("listAccount", bankAccountsList)]
 
 class ActionSendBankAccountList(Action):
