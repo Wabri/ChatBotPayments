@@ -1,5 +1,7 @@
 slots:
-  user:
+  jsessionid:
+    type: text
+  xcsrftoken:
     type: text
   listAccount:
     type: unfeaturized
