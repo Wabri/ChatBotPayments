@@ -1,8 +1,13 @@
+slots:
+  user:
+    type: text
+  listAccount:
+    type: unfeaturized
+
 intents:
   - endConversation
   - startConversation
   - bankAccountsList
-  - bankAccountTotalValue
 
 templates:
   reply_startConversation:
@@ -11,11 +16,8 @@ templates:
   reply_endConversation:
   - "Alla prossima"
 
-  reply_giveConti:
-  - "conto 1 totale 100, conto 2 totale 300"
-
 actions:
   - reply_endConversation
   - reply_startConversation
-  - actions.ActionGreeting
-  - reply_giveConti
+  - actions.ActionGetBanckAccountlist
+  - actions.ActionSendBanckAccountlist
