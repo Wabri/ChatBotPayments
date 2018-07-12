@@ -14,8 +14,6 @@ templates:
   reply_giveConti:
   - "conto 1 totale 100, conto 2 totale 300"
 
-action_factory: remote
-
 actions:
   - reply_endConversation
   - reply_startConversation
