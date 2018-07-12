@@ -2,7 +2,7 @@
 "use strict";
 
 var http = require("http");
-var sa = require('superagent');
+var sa = require("superagent");
 
 // ----- caricamento delle configurazioni definite nel file .env ----- //
 const dotenv = require("dotenv");
@@ -94,41 +94,48 @@ socketIOServer.on("connection", socket => {
 
     // esempio di richiesta al backend rasa_nlu
     var botResponse: string = "?????";
-    rasaRequest += messageReceive;
+    const rasaAddress =
+      "http://" + settingsApp.rasaIP + ":" + settingsApp.rasaPort;
 
+    if (messageReceive != "conversation reset default") {
     /* esecuzione della post al server di rasa che eseguirà il parse del
      messaggio dell'utente*/
-    sa.post('http://' + settingsApp.rasaIP + ':' + settingsApp.rasaPort +
-        '/conversations/default/parse')
-      .set('Content-Type', 'application/json')
+    sa.post(rasaAddress + "/conversations/default/parse")
+      .set("Content-Type", "application/json")
       .send({
-        "query": messageReceive
+        query: messageReceive
       })
       .end(function(err, res) {
-        var arr = res.text;
-        console.log(arr);
-        botResponse = JSON.parse(res.text);
+        var arr = JSON.parse(res.text);
+        console.log("Sender: " + arr.tracker["sender_id"]);
+        console.log("next_action: " + arr.next_action);
+        if (arr.next_action != "action_listen") {
+          sa.post(rasaAddress + "/conversations/default/respond")
+            .set("Content-Type", "application/json")
+            .send({
+              query: messageReceive
+            })
+            .end((err, res) => {
+              var temp = eval(res.text);
+              botResponse = temp[0].text;
+              // appena si ha il risultato della richeista dell'utente allora si manda la risposta all'utente
+              console.log("**** Bot response: " + botResponse + " ****");
+              socket.emit("botResponse", botResponse);
+            });
+        }
       });
-    /* una volta che viene mandato la post per un parse di un messaggio
-    dell'utente rasa risponderà con una azione da fare */
-    // per eseguire l'azione eseguiamo una post di questo tipo
-    sa.post('http://' + settingsApp.rasaIP + ':' + settingsApp.rasaPort +
-        '/conversations/default/continue')
-      .set('Content-Type', 'application/json')
-      .send({
-        "executed_action": "actions.ActionSaluta"
-      })
-      .end(function(err, res) {
-        var arr = res.text;
-        console.log(arr);
-        botResponse = JSON.parse(res.text);
-      });
-    /* ovviamente al posto del actions.ActionSaluta ci sarà l'azione successiva
-    alla precedente, che viene contenuta all'interno della risposta alla posto
-    precedente nel campo next_action */
-    /* rasa deve ricevere comandi fintanto che il campo next_action non
-    diventa action_listen */
-
+    } else {
+      sa.post(rasaAddress + "/conversations/default/continue")
+            .set("Content-Type", "application/json")
+            .send({
+              "events": [{"event": "restart"}]
+            })
+            .end((err, res) => {
+              console.log("**** reset conversation bot ****");
+              botResponse = "Hai resettato il la conversazione per lo user default";
+              socket.emit("botResponse", botResponse);
+            });
+    }
 
     // esempio di richiesta al backend spring
     var requestToSpring: string =
@@ -154,10 +161,6 @@ socketIOServer.on("connection", socket => {
       .on("error", err => {
         console.log("Error: " + err.message);
       });
-
-    // appena si ha il risultato della richeista dell'utente allora si manda la risposta all'utente
-    console.log("**** Bot response: " + botResponse + " ****");
-    socket.emit("botResponse", botResponse);
   });
 });
 // ----- fine gestione comunicazione tramite socket ----- //
