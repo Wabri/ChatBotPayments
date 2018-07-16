@@ -15,15 +15,14 @@ class ActionGetBankAccountList(Action):
 
     def run(self, dispatcher, tracker, domain):
         dispatcher.utter_message("Aspetta qualche secondo...")
-        userDataInformations = UserDataInformations();
         r = requests.get('http://192.168.41.32:8080/ibs-mvc/rest/config/languages')
-        return [SlotSet("listAccount", r.json)]
+        bankAccountsList = "ciao"
+        return [SlotSet("listAccount", bankAccountsList)]
 
 class ActionSendBankAccountList(Action):
     def name(self):
         return 'ActionSendBankAccountList'
 
     def run(self,dispatcher, tracker, domain):
-        slotListAccount=tracker.get_slot("listAccount")
-        dispatcher.utter_message(slotListAccount)
+        dispatcher.utter_message(tracker.get_slot("listAccount"))
         return [];
