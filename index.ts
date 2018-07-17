@@ -98,69 +98,43 @@ socketIOServer.on("connection", socket => {
       "http://" + settingsApp.rasaIP + ":" + settingsApp.rasaPort;
 
     if (messageReceive != "conversation reset default") {
-    /* esecuzione della post al server di rasa che eseguirà il parse del
+      /* esecuzione della post al server di rasa che eseguirà il parse del
      messaggio dell'utente*/
-    sa.post(rasaAddress + "/conversations/default/parse")
-      .set("Content-Type", "application/json")
-      .send({
-        query: messageReceive
-      })
-      .end(function(err, res) {
-        var arr = JSON.parse(res.text);
-        console.log("Sender: " + arr.tracker["sender_id"]);
-        console.log("next_action: " + arr.next_action);
-        if (arr.next_action != "action_listen") {
-          if (arr.next_action!="ActionGetBankAccountList") {
-            sa.post(rasaAddress + "/conversations/default/respond")
-            .set("Content-Type", "application/json")
-            .send({
-              query: messageReceive
-            })
-            .end((err, res) => {
-              var temp = eval(res.text);
-              botResponse = temp[0].text;
-            });
-            console.log("**** Bot response: " + botResponse + " ****");
-            socket.emit("botResponse", botResponse);
-          }
-        } else {
+      sa.post(rasaAddress + "/conversations/default/parse")
+        .set("Content-Type", "application/json")
+        .send({
+          query: messageReceive
+        })
+        .end(function(err, res) {
+          var arr = JSON.parse(res.text);
+          console.log("Sender: " + arr.tracker["sender_id"]);
+          console.log("next_action: " + arr.next_action);
+          if (arr.next_action != "action_listen") {
           sa.post(rasaAddress + "/conversations/default/respond")
             .set("Content-Type", "application/json")
             .send({
               query: messageReceive
             })
-            .end((err, res) => {
-              var temp = eval(res.text);
-              botResponse = temp[0].text;
-              // appena si ha il risultato della richeista dell'utente allora si manda la risposta all'utente
-              console.log("**** Bot response: " + botResponse + " ****");
-              sa.post(rasaAddress + "/conversations/default/continue")
-            .set("Content-Type", "application/json")
-            .send({
-              "executed_action": "ActionSendBankAccountList"
-            })
-            .end((err, res) => {
-              var temp = eval(res.text);
-              var blabla = JSON.parse(res.text);
-              botResponse = blabla.tracker["slots"]["listAccount"];
-              // appena si ha il risultato della richeista dell'utente allora si manda la risposta all'utente
-              console.log("**** blabla: " + blabla.tracker["slots"]["listAccount"] + " ****");
-              socket.emit("botResponse", botResponse);
+            .end(function(err, res) {
+              var arrt = JSON.parse(res.text);
+              console.log("botResponse: " + arrt[0].text);
+              socket.emit("botResponse", arrt[0].text);
             });
-            });
-        }
-      });
+          } else {
+            socket.emit("botResponse", "Chiedimi qualcosa");
+          }
+        });
     } else {
       sa.post(rasaAddress + "/conversations/default/continue")
-            .set("Content-Type", "application/json")
-            .send({
-              "events": [{"event": "restart"}]
-            })
-            .end((err, res) => {
-              console.log("**** reset conversation bot ****");
-              botResponse = "Hai resettato il la conversazione per lo user default";
-              socket.emit("botResponse", botResponse);
-            });
+        .set("Content-Type", "application/json")
+        .send({
+          events: [{ event: "restart" }]
+        })
+        .end((err, res) => {
+          console.log("**** reset conversation bot ****");
+          botResponse = "Hai resettato il la conversazione per lo user default";
+          socket.emit("botResponse", botResponse);
+        });
     }
 
     // esempio di richiesta al backend spring
