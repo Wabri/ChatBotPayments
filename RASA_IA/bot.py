@@ -9,21 +9,30 @@ from rasa_core.featurizers import (
     MaxHistoryTrackerFeaturizer,
     BinarySingleStateFeaturizer)
 
+class ActionReplyStartConversation:
+    def name(self):
+        return "ActionReplyStartConversation"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message("Ciao, sono il prototipo di un bot")
+        return []
+
+class ActionReplyEndConversation:
+    def name(self):
+        return "ActionReplyEndConversation"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message("Alla prossima")
+        return []
+
 class ActionGetBankAccountList(Action):
     def name(self):
         return "ActionGetBankAccountList"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("Aspetta qualche secondo...")
-        userDataInformations = UserDataInformations();
-        r = requests.get('http://192.168.41.32:8080/ibs-mvc/rest/config/languages')
-        return [SlotSet("listAccount", r.json)]
-
-class ActionSendBankAccountList(Action):
-    def name(self):
-        return 'ActionSendBankAccountList'
-
-    def run(self,dispatcher, tracker, domain):
-        slotListAccount=tracker.get_slot("listAccount")
-        dispatcher.utter_message(slotListAccount)
-        return [];
+        URL = 'http://192.168.41.32:8080/ibs-mvc/rest/config/languages'
+        r = requests.get(url=URL)
+        data = r.json()
+        dispatcher.utter_message(data["defaultLanguage"])
+        return [SlotSet("listAccount", data)]
+        

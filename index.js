@@ -91,6 +91,7 @@ socketIOServer.on("connection", function (socket) {
                 socket.emit("botResponse", botResponse);
             });
         }
+      
         // esempio di richiesta al backend spring
         var requestToSpring = "http://" +
             settingsApp.springIP +

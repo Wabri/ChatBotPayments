@@ -11,15 +11,7 @@ intents:
   - startConversation
   - bankAccountsList
 
-templates:
-  reply_startConversation:
-  - "Ciao, sono il prototipo di un bot"
-
-  reply_endConversation:
-  - "Alla prossima"
-
 actions:
-  - reply_endConversation
-  - reply_startConversation
+  - bot.ActionReplyEndConversation
+  - bot.ActionReplyStartConversation
   - bot.ActionGetBankAccountList
-  - bot.ActionSendBankAccountList

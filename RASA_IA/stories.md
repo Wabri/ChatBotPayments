@@ -1,14 +1,13 @@
 ## banale botta e risposta
   * startConversation
-    - reply_startConversation
+    - ActionReplyStartConversation
   * endConversation
-    - reply_endConversation
+    - ActionReplyEndConversation
 
 ## richiesta del conto
   * startConversation
-    - reply_startConversation
+    - ActionReplyStartConversation
   * bankAccountsList
     - ActionGetBankAccountList
-    - ActionSendBankAccountList
   * endConversation
-    - reply_endConversation
+    - ActionReplyEndConversation
