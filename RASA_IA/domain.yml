@@ -3,15 +3,19 @@ slots:
     type: text
   xcsrftoken:
     type: text
-  listAccount:
+  accountList:
     type: text
+  selectedAccount:
+    type: float
 
 intents:
   - endConversation
   - startConversation
   - bankAccountsList
+  - bankAccountTotalValue
 
 actions:
   - bot.ActionReplyEndConversation
   - bot.ActionReplyStartConversation
   - bot.ActionGetBankAccountList
+  - bot.ActionGetTotalValueOfBankAccount
