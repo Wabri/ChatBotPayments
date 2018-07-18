@@ -1,0 +1,17 @@
+slots:
+  jsessionid:
+    type: text
+  xcsrftoken:
+    type: text
+  listAccount:
+    type: text
+
+intents:
+  - endConversation
+  - startConversation
+  - bankAccountsList
+
+actions:
+  - bot.ActionReplyEndConversation
+  - bot.ActionReplyStartConversation
+  - bot.ActionGetBankAccountList

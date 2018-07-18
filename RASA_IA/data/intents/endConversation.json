@@ -1,0 +1,33 @@
+{
+  "rasa_nlu_data": {
+    "regex_features": [],
+    "entity_synonyms": [],
+    "common_examples": [
+      {
+        "text": "Addio",
+        "intent": "fine_conversazione",
+        "entities": []
+      },
+      {
+        "text": "Ciao",
+        "intent": "fine_conversazione",
+        "entities": []
+      },
+      {
+        "text": "Arrivederci",
+        "intent": "fine_conversazione",
+        "entities": []
+      },
+      {
+        "text": "Bye Bye",
+        "intent": "fine_conversazione",
+        "entities": []
+      },
+      {
+        "text": "Alla prossima",
+        "intent": "fine_conversazione",
+        "entities": []
+      }
+    ]
+  }
+}

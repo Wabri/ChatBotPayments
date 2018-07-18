@@ -1,0 +1,106 @@
+{
+  "rasa_nlu_data": {
+    "regex_features": [],
+    "entity_synonyms": [],
+    "common_examples": [{
+      "text": "voglio sapere il valore del conto numero 1",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 41,
+        "end": 42,
+        "value": "1",
+        "entity": "accountNumber"
+      }]
+    }, {
+      "text": "voglio sapere il valore del conto numero 2",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 41,
+        "end": 42,
+        "value": "2",
+        "entity": "accountNumber"
+      }]
+    }, {
+      "text": "voglio sapere il valore del conto numero 3",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 41,
+        "end": 42,
+        "value": "3",
+        "entity": "accountNumber"
+      }]
+    }, {
+      "text": "voglio sapere il valore del conto numero 4",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 41,
+        "end": 42,
+        "value": "4",
+        "entity": "accountNumber"
+      }]
+    }, {
+      "text": "voglio sapere il valore del conto numero 5",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 41,
+        "end": 42,
+        "value": "5",
+        "entity": "accountNumber"
+      }]
+    }, {
+      "text": "Valore del primo conto",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 11,
+        "end": 16,
+        "value": "primo",
+        "entity": "accountNumber"
+      }]
+    }, {
+      "text": "Valore del secondo conto",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 11,
+        "end": 18,
+        "value": "secondo",
+        "entity": "accountNumber"
+      }]
+    }, {
+      "text": "Valore del terzo conto",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 11,
+        "end": 16,
+        "value": "terzo",
+        "entity": "accountNumber"
+      }]
+    }, {
+      "text": "dammi il valore totale del conto numero 12",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 40,
+        "end": 42,
+        "value": "12",
+        "entity": "accountNumber"
+      }]
+    }, {
+      "text": "dammi il valore totale del conto numero 2",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 40,
+        "end": 41,
+        "value": "2",
+        "entity": "accountNumber"
+      }]
+    }, {
+      "text": "dammi il valore totale del conto numero 1",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 40,
+        "end": 41,
+        "value": "1",
+        "entity": "accountNumber"
+      }]
+    }]
+  }
+}

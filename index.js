@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 "use strict";
 var http = require("http");
+var sa = require("superagent");
 // ----- caricamento delle configurazioni definite nel file .env ----- //
 var dotenv = require("dotenv");
 dotenv.config();
@@ -48,22 +49,49 @@ socketIOServer.on("connection", function (socket) {
           */
         // esempio di richiesta al backend rasa_nlu
         var botResponse = "?????";
-        var rasaRequest = "http://" + settingsApp.rasaIP + ":" + settingsApp.rasaPort + "/parse?q=";
-        rasaRequest += messageReceive;
-        http
-            .get(rasaRequest, function (resp) {
-            console.log("Rasa response");
-            var data = "";
-            resp.on("data", function (chunk) {
-                data += chunk;
+        var rasaAddress = "http://" + settingsApp.rasaIP + ":" + settingsApp.rasaPort;
+        if (messageReceive != "conversation reset default") {
+            /* esecuzione della post al server di rasa che eseguirà il parse del
+           messaggio dell'utente*/
+            sa.post(rasaAddress + "/conversations/default/parse")
+                .set("Content-Type", "application/json")
+                .send({
+                query: messageReceive
+            })
+                .end(function (err, res) {
+                var arr = JSON.parse(res.text);
+                console.log("Sender: " + arr.tracker["sender_id"]);
+                console.log("next_action: " + arr.next_action);
+                if (arr.next_action != "action_listen") {
+                    sa.post(rasaAddress + "/conversations/default/respond")
+                        .set("Content-Type", "application/json")
+                        .send({
+                        query: messageReceive
+                    })
+                        .end(function (err, res) {
+                        var arrt = JSON.parse(res.text);
+                        console.log("botResponse: " + arrt[0].text);
+                        socket.emit("botResponse", arrt[0].text);
+                    });
+                }
+                else {
+                    socket.emit("botResponse", "Chiedimi qualcosa");
+                }
             });
-            resp.on("end", function () {
-                console.log(JSON.parse(data));
+        }
+        else {
+            sa.post(rasaAddress + "/conversations/default/continue")
+                .set("Content-Type", "application/json")
+                .send({
+                events: [{ event: "restart" }]
+            })
+                .end(function (err, res) {
+                console.log("**** reset conversation bot ****");
+                botResponse = "Hai resettato il la conversazione per lo user default";
+                socket.emit("botResponse", botResponse);
             });
-        })
-            .on("error", function (err) {
-            console.log("Error: " + err.message);
-        });
+        }
+      
         // esempio di richiesta al backend spring
         var requestToSpring = "http://" +
             settingsApp.springIP +
@@ -84,8 +112,5 @@ socketIOServer.on("connection", function (socket) {
             .on("error", function (err) {
             console.log("Error: " + err.message);
         });
-        // appena si ha il risultato della richeista dell'utente allora si manda la risposta all'utente
-        console.log("**** Bot response: " + botResponse + " ****");
-        socket.emit("botResponse", botResponse);
     });
 });
