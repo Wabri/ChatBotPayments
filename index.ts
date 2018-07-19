@@ -49,6 +49,89 @@ const settingsApp: Settings = new Settings(
 );
 // ----- fine implementazione oggetto in cui si trovano informazioni App ----- //
 
+// ----- Gestione comunicazione con rasa core ---- //
+class comunicationRasaManager {
+  static questionAndAnswer(
+    socket: any,
+    message: string,
+    URLquestion: string,
+    URLanswer: string
+  ): string {
+    try {
+      sa.post(URLquestion)
+        .set("Content-Type", "application/json")
+        .send({
+          query: message
+        })
+        .end(function(err, res) {
+          try {
+            var arr = JSON.parse(res.text);
+            console.log("Sender: " + arr.tracker["sender_id"]);
+            console.log("next_action: " + arr.next_action);
+            if (arr.next_action != "action_listen") {
+              sa.post(URLanswer)
+                .set("Content-Type", "application/json")
+                .send({
+                  query: message
+                })
+                .end(function(err, res) {
+                  var arrt = JSON.parse(res.text);
+                  console.log("botResponse: " + arrt[0].text);
+                  socket.emit("botResponse", arrt[0].text);
+                  return;
+                });
+            } else {
+              socket.emit("botResponse", "Chiedimi qualcosa");
+              return;
+            }
+          } catch (err) {
+            console.log("errore: " + err);
+            socket.emit(
+              "botResponse",
+              "In questo momento il servizio non è attivo, riprovare più tardi!"
+            );
+          }
+        });
+    } catch (err) {
+      console.log(
+        "**** C'è stato un errore durante la chiamata verso rasa ****"
+      );
+      console.log("errore: " + err);
+      socket.emit(
+        "botResponse",
+        "In questo momento il servizio non è attivo, riprovare più tardi!"
+      );
+      return;
+    }
+  }
+
+  static conversationReset(socket: any, URLreset: string) {
+    try {
+      sa.post(URLreset)
+        .set("Content-Type", "application/json")
+        .send({
+          events: [{ event: "restart" }]
+        })
+        .end((err, res) => {
+          console.log("**** reset conversation ****");
+          socket.emit("botResponse", "La conversazione è stata cancellata");
+        });
+    } catch (err) {
+      console.log(
+        "**** C'è stato un errore durante la chiamata verso rasa ****"
+      );
+      console.log("errore: " + err);
+      socket.emit(
+        "botResponse",
+        "In questo momento il servizio non è attivo, riprovare più tardi!"
+      );
+      return;
+    }
+  }
+}
+
+// ----- ----- //
+
 // ----- creazione server ----- //
 var express = require("express");
 var app = express();
@@ -93,48 +176,24 @@ socketIOServer.on("connection", socket => {
       */
 
     // esempio di richiesta al backend rasa_nlu
-    var botResponse: string = "?????";
     const rasaAddress =
       "http://" + settingsApp.rasaIP + ":" + settingsApp.rasaPort;
+    const userID: string = socket.id;
 
     if (messageReceive != "conversation reset default") {
       /* esecuzione della post al server di rasa che eseguirà il parse del
      messaggio dell'utente*/
-      sa.post(rasaAddress + "/conversations/default/parse")
-        .set("Content-Type", "application/json")
-        .send({
-          query: messageReceive
-        })
-        .end(function(err, res) {
-          var arr = JSON.parse(res.text);
-          console.log("Sender: " + arr.tracker["sender_id"]);
-          console.log("next_action: " + arr.next_action);
-          if (arr.next_action != "action_listen") {
-          sa.post(rasaAddress + "/conversations/default/respond")
-            .set("Content-Type", "application/json")
-            .send({
-              query: messageReceive
-            })
-            .end(function(err, res) {
-              var arrt = JSON.parse(res.text);
-              console.log("botResponse: " + arrt[0].text);
-              socket.emit("botResponse", arrt[0].text);
-            });
-          } else {
-            socket.emit("botResponse", "Chiedimi qualcosa");
-          }
-        });
+      comunicationRasaManager.questionAndAnswer(
+        socket,
+        messageReceive,
+        rasaAddress + "/conversations/" + userID + "/parse",
+        rasaAddress + "/conversations/" + userID + "/respond"
+      );
     } else {
-      sa.post(rasaAddress + "/conversations/default/continue")
-        .set("Content-Type", "application/json")
-        .send({
-          events: [{ event: "restart" }]
-        })
-        .end((err, res) => {
-          console.log("**** reset conversation bot ****");
-          botResponse = "Hai resettato il la conversazione per lo user default";
-          socket.emit("botResponse", botResponse);
-        });
+      comunicationRasaManager.conversationReset(
+        socket,
+        rasaAddress + "/conversations/" + userID + "/continue"
+      );
     }
 
     // esempio di richiesta al backend spring
