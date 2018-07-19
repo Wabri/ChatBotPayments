@@ -5,6 +5,10 @@ slots:
     type: text
   accountList:
     type: text
+  valuePayment:
+    type: float
+  currencyPayment:
+    type: text
   selectedAccount:
     type: float
 
@@ -13,6 +17,8 @@ intents:
   - startConversation
   - bankAccountsList
   - bankAccountTotalValue
+  - thankYou
+  - paymentRequest
 
 actions:
   - bot.ActionReplyEndConversation
