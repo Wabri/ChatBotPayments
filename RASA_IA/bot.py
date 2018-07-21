@@ -61,3 +61,43 @@ class ActionGetTotalValueOfBankAccount(Action):
         message = 'Il valore del conto ' + str(selectedAccount) + ' è di ' + '300 euro'
         dispatcher.utter_message(str(message.decode("ascii", "ignore")))
         return []
+
+class ActionAccountInfoRequest(Action):
+    def name(self):
+        return "ActionAccountInfoRequest"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message("ActionAccountInfoRequest non ancora implementato")
+        return []
+
+class ActionAccountSelection(Action):
+    def name(self):
+        return "ActionAccountSelection"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message("ActionAccountSelection non ancora implementato")
+        return []
+
+class ActionAccountReciver(Action):
+    def name(self):
+        return "ActionAccountReciver"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message("ActionAccountReciver non ancora implementato")
+        return []
+
+class ActionSummaryConfirmationRequest(Action):
+    def name(self):
+        return "ActionSummaryConfirmationRequest"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message("ActionSummaryConfirmationRequest non ancora implementato")
+        return []
+
+class ActionSummaryPayment(Action):
+    def name(self):
+        return "ActionSummaryPayment"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message("ActionSummaryPayment non ancora implementato")
+        return []
