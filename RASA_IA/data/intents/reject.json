@@ -1,0 +1,17 @@
+{
+  "rasa_nlu_data": {
+    "regex_features": [],
+    "entity_synonyms": [],
+    "common_examples": [{
+        "text": "Non effettuare il pagamento",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "Rifiuto il pagamento",
+        "intent": "confirm",
+        "entities": []
+      }
+    ]
+  }
+}

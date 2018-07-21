@@ -65,7 +65,7 @@
     - ActionAccountSelection
   * totalValueOfPayment{"valuePayment":"300", "currencyPayment":"franchi svizzeri"}
     - ActionAccountReciver
-  * thisIsIban{"CH1498866415148361283"}
+  * paymentRequestToIban{"ibanReceiver":"CH1498866415148361283"}
     - ActionSummaryConfirmationRequest
   * confirm
     - ActionSummaryPayment
@@ -81,7 +81,7 @@
     - ActionAccountSelection
   * totalValueOfPayment{"valuePayment":"10", "currencyPayment":"euro"}
     - ActionAccountReciver
-  * thisIsIban{"IT40U0300203280425587676546"}
+  * paymentRequestToIban{"ibanReceiver":"IT40U0300203280425587676546"}
     - ActionSummaryConfirmationRequest
   * reject
     - ActionSummaryPayment
@@ -97,7 +97,7 @@
     - ActionAccountSelection
   * totalValueOfPayment{"valuePayment":"200", "currencyPayment":"euro"}
     - ActionAccountReciver
-  * paymentRequestToIban{"IT48G0300203280236662722766"}
+  * paymentRequestToIban{"ibanReceiver":"IT48G0300203280236662722766"}
     - ActionSummaryConfirmationRequest
   * confirm
     - ActionSummaryPayment
@@ -113,7 +113,7 @@
     - ActionAccountSelection
   * totalValueOfPayment{"valuePayment":"1000", "currencyPayment":"franchi svizzeri"}
     - ActionAccountReciver
-  * paymentRequestToIban{"CH5738657659731827735"}
+  * paymentRequestToIban{"ibanReceiver":"CH5738657659731827735"}
     - ActionSummaryConfirmationRequest
   * reject
     - ActionSummaryPayment

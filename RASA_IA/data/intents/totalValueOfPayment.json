@@ -1,0 +1,53 @@
+{
+  "rasa_nlu_data": {
+    "regex_features": [],
+    "entity_synonyms": [],
+    "common_examples": [
+      {
+        "text": "400 euro",
+        "intent": "paymentRequest",
+        "entities": [{
+          "start": 0,
+          "end": 2,
+          "value": "400",
+          "entity": "valuePayment"
+        },{
+          "start": 4,
+          "end": 7,
+          "value": "euro",
+          "entity": "currencyPayment"
+        }]
+      },
+      {
+        "text": "200 franchi svizzeri",
+        "intent": "paymentRequest",
+        "entities": [{
+          "start": 0,
+          "end": 2,
+          "value": "200",
+          "entity": "valuePayment"
+        },{
+          "start": 4,
+          "end": 19,
+          "value": "franchi svizzeri",
+          "entity": "currencyPayment"
+        }]
+      },
+      {
+        "text": "1000 franchi",
+        "intent": "paymentRequest",
+        "entities": [{
+          "start": 0,
+          "end": 3,
+          "value": "1000",
+          "entity": "valuePayment"
+        },{
+          "start": 5,
+          "end": 11,
+          "value": "franchi",
+          "entity": "currencyPayment"
+        }]
+      }
+    ]
+  }
+}

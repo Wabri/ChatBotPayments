@@ -9,6 +9,8 @@ slots:
     type: float
   currencyPayment:
     type: text
+  ibanReceiver:
+    type: text
   selectedAccount:
     type: float
 
@@ -19,9 +21,18 @@ intents:
   - bankAccountTotalValue
   - thankYou
   - paymentRequest
+  - totalValueOfPayment
+  - paymentRequestToIban
+  - confirm
+  - reject
 
 actions:
   - bot.ActionReplyEndConversation
   - bot.ActionReplyStartConversation
   - bot.ActionGetBankAccountList
   - bot.ActionGetTotalValueOfBankAccount
+  - bot.ActionAccountInfoRequest
+  - bot.ActionAccountSelection
+  - bot.ActionAccountReciver
+  - bot.ActionSummaryConfirmationRequest
+  - bot.ActionSummaryPayment

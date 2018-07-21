@@ -6,4 +6,4 @@ python -m rasa_nlu.train --config nluModelConfig.yml --data data/ --project curr
 
 python -m rasa_core.train -d domain.yml -s stories.md -o models/current/core --epochs 100
 
-python -m rasa_core.server -d models/current/core -u models/current/nlu -o out.log -p 5004 --verbose
+python -m rasa_core.server -d models/current/core -u models/current/nlu -o out.log -p 5004 --verbose --debug
