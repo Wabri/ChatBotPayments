@@ -37,6 +37,16 @@
         "text": "Voglio pagare qualcuno",
         "intent": "paymentRequest",
         "entities": []
+      },
+      {
+        "text": "Potrei pagare qualcuno?",
+        "intent": "paymentRequest",
+        "entities": []
+      },
+      {
+        "text": "Voglio pagare qualcuno",
+        "intent": "paymentRequest",
+        "entities": []
       }
     ]
   }

@@ -4,71 +4,71 @@
     "entity_synonyms": [],
     "common_examples": [
       {
-        "text": "IT40U0300203280425587676546",
+        "text": "iban IT40U0300203280425587676546",
         "intent": "paymentRequestToIban",
         "entities": [{
-          "start": 0,
-          "end": 26,
+          "start": 5,
+          "end": 31,
           "value": "IT40U0300203280425587676546",
           "entity": "ibanReceiver"
         }]
       },
       {
-        "text": "CH1137813672616289195",
+        "text": "iban CH1137813672616289195",
         "intent": "paymentRequestToIban",
         "entities": [{
-          "start": 0,
-          "end": 20,
+          "start": 5,
+          "end": 25,
           "value": "CH1137813672616289195",
           "entity": "ibanReceiver"
         }]
       },
       {
-        "text": "CH3174469154934449972",
+        "text": "iban CH3174469154934449972",
         "intent": "paymentRequestToIban",
         "entities": [{
-          "start": 0,
-          "end": 20,
+          "start": 5,
+          "end": 25,
           "value": "CH3174469154934449972",
           "entity": "ibanReceiver"
         }]
       },
       {
-        "text": "IT53M0300203280222533445573",
+        "text": "iban IT53M0300203280222533445573",
         "intent": "paymentRequestToIban",
         "entities": [{
-          "start": 0,
-          "end": 26,
+          "start": 5,
+          "end": 31,
           "value": "IT53M0300203280222533445573",
           "entity": "ibanReceiver"
         }]
       },
       {
-        "text": "IT29P0300203280817867332292",
+        "text": "iban IT29P0300203280817867332292",
         "intent": "paymentRequestToIban",
         "entities": [{
-          "start": 0,
-          "end": 26,
+          "start": 5,
+          "end": 31,
           "value": "IT29P0300203280817867332292",
           "entity": "ibanReceiver"
         }]
       },
       {
-        "text": "FR7930066163777594159259234",
+        "text": "iban FR7930066163777594159259234",
         "intent": "paymentRequestToIban",
         "entities": [{
-          "start": 0,
-          "end": 26,
+          "start": 5,
+          "end": 31,
           "value": "FR7930066163777594159259234",
           "entity": "ibanReceiver"
         }]
       },
       {
-        "text": "FR1830066158452744649312118",
+        "text": "iban FR1830066158452744649312118",
         "intent": "paymentRequestToIban",
         "entities": [{
-          "start": 0,
-          "end": 26,
+          "start": 5,
+          "end": 31,
           "value": "FR1830066158452744649312118",
           "entity": "ibanReceiver"
         }]

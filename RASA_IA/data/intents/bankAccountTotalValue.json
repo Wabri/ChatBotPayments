@@ -101,6 +101,33 @@
         "value": "1",
         "entity": "selectedAccount"
       }]
+    }, {
+      "text": "puoi dirmi il valore totale del conto numero 1",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 45,
+        "end": 46,
+        "value": "1",
+        "entity": "selectedAccount"
+      }]
+    }, {
+      "text": "Vorrei capire quanti soldi ho nel conto numero 9",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 47,
+        "end": 48,
+        "value": "9",
+        "entity": "selectedAccount"
+      }]
+    },{
+      "text": "voglio sapere quanti soldi ho nel conto 4",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 40,
+        "end": 41,
+        "value": "4",
+        "entity": "selectedAccount"
+      }]
     }]
   }
 }

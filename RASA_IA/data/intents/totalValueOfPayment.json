@@ -47,6 +47,34 @@
           "value": "franchi",
           "entity": "currencyPayment"
         }]
+      },{
+        "text": "per un totale di 10 euro",
+        "intent": "paymentRequest",
+        "entities": [{
+          "start": 17,
+          "end": 19,
+          "value": "10",
+          "entity": "valuePayment"
+        },{
+          "start": 20,
+          "end": 24,
+          "value": "euro",
+          "entity": "currencyPayment"
+        }]
+      },{
+        "text": "per un totale di 100 franchi svizzeri",
+        "intent": "paymentRequest",
+        "entities": [{
+          "start": 17,
+          "end": 20,
+          "value": "100",
+          "entity": "valuePayment"
+        },{
+          "start": 21,
+          "end": 37,
+          "value": "franchi svizzeri",
+          "entity": "currencyPayment"
+        }]
       }
     ]
   }

@@ -45,6 +45,7 @@ class ActionGetTotalValueOfBankAccount(Action):
     def run(self, dispatcher, tracker, domain):
         # chiamata get che deve prendere la lista dei conti dell'utente
         accountList = tracker.get_slot("accountList")
+        selectedAccount = tracker.get_slot("selectedAccount")
         if (accountList is None):
             URL = 'http://192.168.41.32:8080/ibs-mvc/rest/config/languages'
             r = requests.get(url=URL)
@@ -52,7 +53,7 @@ class ActionGetTotalValueOfBankAccount(Action):
             accountList = str(data["languages"])
             SlotSet("accountList", accountList)
         # nel caso in cui nella chiamata alla lista degli account c'è anche il valore dei conti basta estrapolare il dato da quella chiamata
-        selectedAccount = 0
+        selectedAccount = tracker.get_slot("selectedAccount")
         # questa sotto non è ovviamente la chiamata da fare, ma non sapendo URL e payload ho fatto così
         # URL = 'http://192.168.41.32:8080/ibs-mvc/rest/config/languages'
         # payload = {'account':selectedAccount}
