@@ -9,22 +9,7 @@
         "entities": []
       },
       {
-        "text": "Ciao",
-        "intent": "endConversation",
-        "entities": []
-      },
-      {
         "text": "Arrivederci",
-        "intent": "endConversation",
-        "entities": []
-      },
-      {
-        "text": "Bye Bye",
-        "intent": "endConversation",
-        "entities": []
-      },
-      {
-        "text": "Alla prossima",
         "intent": "endConversation",
         "entities": []
       }

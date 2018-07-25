@@ -14,7 +14,15 @@ class ActionReplyStartConversation:
         return "ActionReplyStartConversation"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("Ciao, sono il prototipo di un bot")
+        dispatcher.utter_message("Salve \r\n Sono BVBot! Come posso aiutare?")
+        return []
+
+class ActionReplyThankYou:
+    def name(self):
+        return "ActionReplyThankYou"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message("E' un piacere aiutarti \r\n Se hai bisogno di altro io sono qui")
         return []
 
 class ActionReplyEndConversation:
@@ -22,7 +30,8 @@ class ActionReplyEndConversation:
         return "ActionReplyEndConversation"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("Alla prossima")
+        dispatcher.utter_message("E' stato un piacere aiutarti")
+        tracker._reset()
         return []
 
 class ActionGetBankAccountList(Action):
@@ -59,7 +68,7 @@ class ActionGetTotalValueOfBankAccount(Action):
         # payload = {'account':selectedAccount}
         # r = requests.post(url=URL, data=payload)
         # data = r.json()
-        message = 'Il valore del conto ' + str(selectedAccount) + ' è di ' + '300 euro'
+        message = 'Il valore del conto ' + str(selectedAccount) + " è " + ' di ' + '300 euro'
         dispatcher.utter_message(str(message.decode("ascii", "ignore")))
         return []
 

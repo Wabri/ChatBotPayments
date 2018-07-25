@@ -72,6 +72,36 @@
           "value": "FR1830066158452744649312118",
           "entity": "ibanReceiver"
         }]
+      },
+      {
+        "text": "il numero di iban è FR2130066872689796897994492",
+        "intent": "paymentRequestToIban",
+        "entities": [{
+          "start": 20,
+          "end": 47,
+          "value": "FR2130066872689796897994492",
+          "entity": "ibanReceiver"
+        }]
+      },
+      {
+        "text": "il numero di iban è IT63I0300203280217229421861",
+        "intent": "paymentRequestToIban",
+        "entities": [{
+          "start": 20,
+          "end": 47,
+          "value": "IT63I0300203280217229421861",
+          "entity": "ibanReceiver"
+        }]
+      },
+      {
+        "text": "il numero di iban è CH1576144594967342123",
+        "intent": "paymentRequestToIban",
+        "entities": [{
+          "start": 20,
+          "end": 41,
+          "value": "CH1576144594967342123",
+          "entity": "ibanReceiver"
+        }]
       }
     ]
   }

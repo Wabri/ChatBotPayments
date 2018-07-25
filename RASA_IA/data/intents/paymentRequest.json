@@ -29,7 +29,7 @@
         "entities": []
       },
       {
-        "text": "Vorrei pagare",
+        "text": "Vorrei pagare qualcuno",
         "intent": "paymentRequest",
         "entities": []
       },
