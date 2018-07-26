@@ -8,12 +8,12 @@
         "intent": "paymentRequest",
         "entities": [{
           "start": 0,
-          "end": 2,
+          "end": 3,
           "value": "400",
           "entity": "valuePayment"
         },{
           "start": 4,
-          "end": 7,
+          "end": 8,
           "value": "euro",
           "entity": "currencyPayment"
         }]
@@ -23,12 +23,12 @@
         "intent": "paymentRequest",
         "entities": [{
           "start": 0,
-          "end": 2,
+          "end": 3,
           "value": "200",
           "entity": "valuePayment"
         },{
           "start": 4,
-          "end": 19,
+          "end": 20,
           "value": "franchi svizzeri",
           "entity": "currencyPayment"
         }]
@@ -38,12 +38,12 @@
         "intent": "paymentRequest",
         "entities": [{
           "start": 0,
-          "end": 3,
+          "end": 4,
           "value": "1000",
           "entity": "valuePayment"
         },{
           "start": 5,
-          "end": 11,
+          "end": 12,
           "value": "franchi",
           "entity": "currencyPayment"
         }]

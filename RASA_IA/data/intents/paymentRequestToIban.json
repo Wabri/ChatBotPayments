@@ -8,7 +8,7 @@
         "intent": "paymentRequestToIban",
         "entities": [{
           "start": 5,
-          "end": 31,
+          "end": 32,
           "value": "IT40U0300203280425587676546",
           "entity": "ibanReceiver"
         }]
@@ -18,7 +18,7 @@
         "intent": "paymentRequestToIban",
         "entities": [{
           "start": 5,
-          "end": 25,
+          "end": 26,
           "value": "CH1137813672616289195",
           "entity": "ibanReceiver"
         }]
@@ -28,7 +28,7 @@
         "intent": "paymentRequestToIban",
         "entities": [{
           "start": 5,
-          "end": 25,
+          "end": 26,
           "value": "CH3174469154934449972",
           "entity": "ibanReceiver"
         }]
@@ -38,7 +38,7 @@
         "intent": "paymentRequestToIban",
         "entities": [{
           "start": 5,
-          "end": 31,
+          "end": 32,
           "value": "IT53M0300203280222533445573",
           "entity": "ibanReceiver"
         }]
@@ -48,7 +48,7 @@
         "intent": "paymentRequestToIban",
         "entities": [{
           "start": 5,
-          "end": 31,
+          "end": 32,
           "value": "IT29P0300203280817867332292",
           "entity": "ibanReceiver"
         }]
@@ -58,7 +58,7 @@
         "intent": "paymentRequestToIban",
         "entities": [{
           "start": 5,
-          "end": 31,
+          "end": 32,
           "value": "FR7930066163777594159259234",
           "entity": "ibanReceiver"
         }]
@@ -68,7 +68,7 @@
         "intent": "paymentRequestToIban",
         "entities": [{
           "start": 5,
-          "end": 31,
+          "end": 32,
           "value": "FR1830066158452744649312118",
           "entity": "ibanReceiver"
         }]

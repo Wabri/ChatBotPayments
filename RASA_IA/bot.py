@@ -14,7 +14,7 @@ class ActionReplyStartConversation:
         return "ActionReplyStartConversation"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("Salve \r\n Sono BVBot! Come posso aiutare?")
+        dispatcher.utter_message("Salve! Sono BVBot! Come posso aiutare?")
         return []
 
 class ActionReplyThankYou:
@@ -22,7 +22,7 @@ class ActionReplyThankYou:
         return "ActionReplyThankYou"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("E' un piacere aiutarti \r\n Se hai bisogno di altro io sono qui")
+        dispatcher.utter_message("E' un piacere aiutarti! Se hai bisogno di altro io sono qui")
         return []
 
 class ActionReplyEndConversation:
@@ -30,8 +30,8 @@ class ActionReplyEndConversation:
         return "ActionReplyEndConversation"
 
     def run(self, dispatcher, tracker, domain):
+        from rasa_core.actions.action import ActionListen
         dispatcher.utter_message("E' stato un piacere aiutarti")
-        tracker._reset()
         return []
 
 class ActionGetBankAccountList(Action):
