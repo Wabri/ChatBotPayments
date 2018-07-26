@@ -37,7 +37,6 @@ buttonWrite.onclick = function () {
     });
     var inputMessageElementString = $("input#inputMessage").val();
     MessageSectionManager.relativeMessageUpdate(inputMessageElementString, "you");
-    VoiceManager.synthVoice(inputMessageElementString);
     MessageSectionManager.relativeMessageUpdate("Sto pensando...", "bot");
     socketIOClient.emit("userMessage", inputMessageElementString);
     $("input#inputMessage").val("");

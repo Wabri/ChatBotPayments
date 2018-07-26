@@ -54,11 +54,11 @@ class comunicationRasaManager {
   static questionAndAnswer(
     socket: any,
     message: string,
-    URLquestion: string,
-    URLanswer: string
-  ): string {
+    rasaAddress: string,
+    userID: string
+  ) {
     try {
-      sa.post(URLquestion)
+      sa.post(rasaAddress + "/conversations/" + userID + "/parse")
         .set("Content-Type", "application/json")
         .send({
           query: message
@@ -69,7 +69,7 @@ class comunicationRasaManager {
             console.log("Sender: " + arr.tracker["sender_id"]);
             console.log("next_action: " + arr.next_action);
             if (arr.next_action != "action_listen") {
-              sa.post(URLanswer)
+              sa.post(rasaAddress + "/conversations/" + userID + "/respond")
                 .set("Content-Type", "application/json")
                 .send({
                   query: message
@@ -81,7 +81,7 @@ class comunicationRasaManager {
                   return;
                 });
             } else {
-              socket.emit("botResponse", "Chiedimi qualcosa");
+              socket.emit("botResponse", "Puoi cercare di essere più chiaro?");
               return;
             }
           } catch (err) {
@@ -90,6 +90,7 @@ class comunicationRasaManager {
               "botResponse",
               "In questo momento il servizio non è attivo, riprovare più tardi!"
             );
+            return;
           }
         });
     } catch (err) {
@@ -105,9 +106,9 @@ class comunicationRasaManager {
     }
   }
 
-  static conversationReset(socket: any, URLreset: string) {
+  static conversationReset(socket: any, rasaAddress: string, userID: string) {
     try {
-      sa.post(URLreset)
+      sa.post(rasaAddress + "/conversations/" + userID + "/continue")
         .set("Content-Type", "application/json")
         .send({
           events: [{ event: "restart" }]
@@ -186,14 +187,11 @@ socketIOServer.on("connection", socket => {
       comunicationRasaManager.questionAndAnswer(
         socket,
         messageReceive,
-        rasaAddress + "/conversations/" + userID + "/parse",
-        rasaAddress + "/conversations/" + userID + "/respond"
+        rasaAddress,
+        userID
       );
     } else {
-      comunicationRasaManager.conversationReset(
-        socket,
-        rasaAddress + "/conversations/" + userID + "/continue"
-      );
+      comunicationRasaManager.conversationReset(socket, rasaAddress, userID);
     }
 
     // esempio di richiesta al backend spring

@@ -25,9 +25,9 @@ var settingsApp = new Settings(process.env.VERSION_APP, process.env.SESSION_ID, 
 var comunicationRasaManager = /** @class */ (function () {
     function comunicationRasaManager() {
     }
-    comunicationRasaManager.questionAndAnswer = function (socket, message, URLquestion, URLanswer) {
+    comunicationRasaManager.questionAndAnswer = function (socket, message, rasaAddress, userID) {
         try {
-            sa.post(URLquestion)
+            sa.post(rasaAddress + "/conversations/" + userID + "/parse")
                 .set("Content-Type", "application/json")
                 .send({
                 query: message
@@ -38,7 +38,7 @@ var comunicationRasaManager = /** @class */ (function () {
                     console.log("Sender: " + arr.tracker["sender_id"]);
                     console.log("next_action: " + arr.next_action);
                     if (arr.next_action != "action_listen") {
-                        sa.post(URLanswer)
+                        sa.post(rasaAddress + "/conversations/" + userID + "/respond")
                             .set("Content-Type", "application/json")
                             .send({
                             query: message
@@ -51,13 +51,14 @@ var comunicationRasaManager = /** @class */ (function () {
                         });
                     }
                     else {
-                        socket.emit("botResponse", "Chiedimi qualcosa");
+                        socket.emit("botResponse", "Puoi cercare di essere più chiaro?");
                         return;
                     }
                 }
                 catch (err) {
                     console.log("errore: " + err);
                     socket.emit("botResponse", "In questo momento il servizio non è attivo, riprovare più tardi!");
+                    return;
                 }
             });
         }
@@ -68,9 +69,9 @@ var comunicationRasaManager = /** @class */ (function () {
             return;
         }
     };
-    comunicationRasaManager.conversationReset = function (socket, URLreset) {
+    comunicationRasaManager.conversationReset = function (socket, rasaAddress, userID) {
         try {
-            sa.post(URLreset)
+            sa.post(rasaAddress + "/conversations/" + userID + "/continue")
                 .set("Content-Type", "application/json")
                 .send({
                 events: [{ event: "restart" }]
@@ -122,10 +123,10 @@ socketIOServer.on("connection", function (socket) {
         if (messageReceive != "conversation reset default") {
             /* esecuzione della post al server di rasa che eseguirà il parse del
            messaggio dell'utente*/
-            comunicationRasaManager.questionAndAnswer(socket, messageReceive, rasaAddress + "/conversations/" + userID + "/parse", rasaAddress + "/conversations/" + userID + "/respond");
+            comunicationRasaManager.questionAndAnswer(socket, messageReceive, rasaAddress, userID);
         }
         else {
-            comunicationRasaManager.conversationReset(socket, rasaAddress + "/conversations/" + userID + "/continue");
+            comunicationRasaManager.conversationReset(socket, rasaAddress, userID);
         }
         // esempio di richiesta al backend spring
         var requestToSpring = "http://" +
