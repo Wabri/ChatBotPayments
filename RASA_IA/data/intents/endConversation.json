@@ -12,6 +12,11 @@
         "text": "Arrivederci",
         "intent": "endConversation",
         "entities": []
+      },
+      {
+        "text": "Ti saluto",
+        "intent": "endConversation",
+        "entities": []
       }
     ]
   }

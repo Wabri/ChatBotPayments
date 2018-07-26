@@ -37,3 +37,4 @@ actions:
   - bot.ActionAccountReciver
   - bot.ActionSummaryConfirmationRequest
   - bot.ActionSummaryPayment
+  - bot.ActionPaymentRejected

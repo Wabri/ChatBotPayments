@@ -111,3 +111,11 @@ class ActionSummaryPayment(Action):
     def run(self, dispatcher, tracker, domain):
         dispatcher.utter_message("ActionSummaryPayment non ancora implementato")
         return []
+
+class ActionPaymentRejected(Action):
+    def name(self):
+        return "ActionPaymentRejected"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message("ActionPaymentRejected non ancora implementato")
+        return []
