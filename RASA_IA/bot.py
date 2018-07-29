@@ -17,21 +17,13 @@ class ActionReplyStartConversation:
         dispatcher.utter_message("Salve! Sono BVBot! Come posso aiutare?")
         return []
 
-class ActionReplyThankYou:
-    def name(self):
-        return "ActionReplyThankYou"
-
-    def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("E' un piacere aiutarti! Se hai bisogno di altro io sono qui")
-        return []
-
 class ActionReplyEndConversation:
     def name(self):
         return "ActionReplyEndConversation"
 
     def run(self, dispatcher, tracker, domain):
         from rasa_core.actions.action import ActionListen
-        dispatcher.utter_message("E' stato un piacere aiutarti")
+        dispatcher.utter_message("E' un piacere aiutarti! Se hai bisogno di altro io sono qui")
         return []
 
 class ActionGetBankAccountList(Action):
@@ -40,10 +32,14 @@ class ActionGetBankAccountList(Action):
 
     def run(self, dispatcher, tracker, domain):
         # chiamata get che deve prendere la lista dei conti dell'utente
-        URL = 'http://192.168.41.32:8080/ibs-mvc/rest/config/languages'
-        r = requests.get(url=URL)
-        data = r.json()
-        accountList = str(''.join(data["languages"]))
+        # URL = 'http://192.168.41.32:8080/ibs-mvc/rest/config/languages'
+        # r = requests.get(url=URL)
+        # data = r.json()
+        # accountList = str(''.join(data["languages"]))
+        # dispatcher.utter_message(accountList)
+
+        # nessuna chiamata, per i test offline
+        accountList = '{"account":[{"conto 1":300},{"conto 2":50}]}'
         dispatcher.utter_message(accountList)
         return [SlotSet("accountList", accountList)]
 
@@ -56,10 +52,11 @@ class ActionGetTotalValueOfBankAccount(Action):
         accountList = tracker.get_slot("accountList")
         selectedAccount = tracker.get_slot("selectedAccount")
         if (accountList is None):
-            URL = 'http://192.168.41.32:8080/ibs-mvc/rest/config/languages'
-            r = requests.get(url=URL)
-            data = r.json()
-            accountList = str(data["languages"])
+            #URL = 'http://192.168.41.32:8080/ibs-mvc/rest/config/languages'
+            #r = requests.get(url=URL)
+            #data = r.json()
+            #accountList = str(data["languages"])
+            accountList = '{"account":[{"conto 1":300},{"conto 2":50}]}'
             SlotSet("accountList", accountList)
         # nel caso in cui nella chiamata alla lista degli account c'è anche il valore dei conti basta estrapolare il dato da quella chiamata
         selectedAccount = tracker.get_slot("selectedAccount")
@@ -77,7 +74,7 @@ class ActionAccountInfoRequest(Action):
         return "ActionAccountInfoRequest"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("ActionAccountInfoRequest non ancora implementato")
+        dispatcher.utter_message("Da quale conto vuoi effettuare il pagamento?")
         return []
 
 class ActionAccountSelection(Action):
@@ -85,7 +82,7 @@ class ActionAccountSelection(Action):
         return "ActionAccountSelection"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("ActionAccountSelection non ancora implementato")
+        dispatcher.utter_message("Ora dovresti indicarmi il totale del pagamento e la valuta!")
         return []
 
 class ActionAccountReciver(Action):
@@ -93,7 +90,7 @@ class ActionAccountReciver(Action):
         return "ActionAccountReciver"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("ActionAccountReciver non ancora implementato")
+        dispatcher.utter_message("Ora dovresti darmi l'iban del conto di destinazione!")
         return []
 
 class ActionSummaryConfirmationRequest(Action):
@@ -101,7 +98,10 @@ class ActionSummaryConfirmationRequest(Action):
         return "ActionSummaryConfirmationRequest"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("ActionSummaryConfirmationRequest non ancora implementato")
+        message = 'Ricapitolando vuoi eseguire un pagamento di ' + tracker.get_slot("valuePayment") + ' ' + tracker.get_slot("currencyPayment")
+        message =+ 'verso iban ' + tracker.get_slot("ibanReceiver") + ' usando il conto ' + tracker.get_slot("selectedAccount") + '!'
+        message += ' Confermi?'
+        dispatcher.utter_message(message)
         return []
 
 class ActionSummaryPayment(Action):
@@ -109,7 +109,10 @@ class ActionSummaryPayment(Action):
         return "ActionSummaryPayment"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("ActionSummaryPayment non ancora implementato")
+        message = 'Ok il pagamento di ' + tracker.get_slot("valuePayment") + ' ' + tracker.get_slot("currencyPayment")
+        message += 'verso iban ' + tracker.get_slot("ibanReceiver") + ' usando il conto ' + tracker.get_slot("selectedAccount")
+        message += ' è stato effettuato!'
+        dispatcher.utter_message(message)
         return []
 
 class ActionPaymentRejected(Action):
@@ -117,5 +120,7 @@ class ActionPaymentRejected(Action):
         return "ActionPaymentRejected"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("ActionPaymentRejected non ancora implementato")
+        message = 'Hai annullato il pagamento! Verranno eliminati i dati memorizzati!'
+        dispatcher.utter_message(message)
+        tracker._reset_slots()
         return []

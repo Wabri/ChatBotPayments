@@ -11,6 +11,26 @@
         "text": "Rifiuto il pagamento",
         "intent": "confirm",
         "entities": []
+      },
+      {
+        "text": "Elimina il pagamento",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "Non fare il pagamento",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "No",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "Rifiuto",
+        "intent": "confirm",
+        "entities": []
       }
     ]
   }

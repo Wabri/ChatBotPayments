@@ -84,6 +84,36 @@
         }]
       },
       {
+        "text": "il numero di iban è FR2630066658887254751443523",
+        "intent": "paymentRequestToIban",
+        "entities": [{
+          "start": 20,
+          "end": 47,
+          "value": "FR2630066658887254751443523",
+          "entity": "ibanReceiver"
+        }]
+      },
+      {
+        "text": "il numero di iban è FR0930066481522469647961697",
+        "intent": "paymentRequestToIban",
+        "entities": [{
+          "start": 20,
+          "end": 47,
+          "value": "FR0930066481522469647961697",
+          "entity": "ibanReceiver"
+        }]
+      },
+      {
+        "text": "il numero di iban è FR2230066911496531771579639",
+        "intent": "paymentRequestToIban",
+        "entities": [{
+          "start": 20,
+          "end": 47,
+          "value": "FR2230066911496531771579639",
+          "entity": "ibanReceiver"
+        }]
+      },
+      {
         "text": "il numero di iban è IT63I0300203280217229421861",
         "intent": "paymentRequestToIban",
         "entities": [{
@@ -94,12 +124,72 @@
         }]
       },
       {
+        "text": "il numero di iban è IT96Q0300203280923727228611",
+        "intent": "paymentRequestToIban",
+        "entities": [{
+          "start": 20,
+          "end": 47,
+          "value": "IT96Q0300203280923727228611",
+          "entity": "ibanReceiver"
+        }]
+      },
+      {
+        "text": "il numero di iban è IT54C0300203280537837943121",
+        "intent": "paymentRequestToIban",
+        "entities": [{
+          "start": 20,
+          "end": 47,
+          "value": "IT54C0300203280537837943121",
+          "entity": "ibanReceiver"
+        }]
+      },
+      {
+        "text": "il numero di iban è IT47G0300203280811585924436",
+        "intent": "paymentRequestToIban",
+        "entities": [{
+          "start": 20,
+          "end": 47,
+          "value": "IT47G0300203280811585924436",
+          "entity": "ibanReceiver"
+        }]
+      },
+      {
         "text": "il numero di iban è CH1576144594967342123",
         "intent": "paymentRequestToIban",
         "entities": [{
           "start": 20,
           "end": 41,
           "value": "CH1576144594967342123",
+          "entity": "ibanReceiver"
+        }]
+      },
+      {
+        "text": "il numero di iban è CH5715647886897459237",
+        "intent": "paymentRequestToIban",
+        "entities": [{
+          "start": 20,
+          "end": 41,
+          "value": "CH5715647886897459237",
+          "entity": "ibanReceiver"
+        }]
+      },
+      {
+        "text": "il numero di iban è CH4176956833616559262",
+        "intent": "paymentRequestToIban",
+        "entities": [{
+          "start": 20,
+          "end": 41,
+          "value": "CH4176956833616559262",
+          "entity": "ibanReceiver"
+        }]
+      },
+      {
+        "text": "il numero di iban è CH6621335353619845741",
+        "intent": "paymentRequestToIban",
+        "entities": [{
+          "start": 20,
+          "end": 41,
+          "value": "CH6621335353619845741",
           "entity": "ibanReceiver"
         }]
       }

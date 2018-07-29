@@ -1,82 +1,38 @@
-## conversazione : base 1
+# minimale : base
 * startConversation
   - ActionReplyStartConversation
-* thankYou
-  - ActionReplyThankYou
+> check_start_conversation
 
-## conversazione : base 2
-* startConversation
-  - ActionReplyStartConversation
-* endConversation
+## conversazione : base
+> check_start_conversation
+* thankYou OR endConversation
   - ActionReplyEndConversation
 
 ## minimale : richiesta conti
-  * bankAccountsList
-  - ActionGetBankAccountList
-
-## conversazione : richiesta conti 1
-* startConversation
-  - ActionReplyStartConversation
+> check_start_conversation
 * bankAccountsList
   - ActionGetBankAccountList
-* endConversation
+* endConversation OR thankYou
   - ActionReplyEndConversation
-
-## conversazione : richiesta conti 2
-* startConversation
-  - ActionReplyStartConversation
-* bankAccountsList
-  - ActionGetBankAccountList
-* thankYou
-  - ActionReplyThankYou
 
 ## minimale : richiesta valore conto
-  * bankAccountTotalValue{"selectedAccount": "11"}
+> check_start_conversation
+* bankAccountTotalValue{"selectedAccount": "11"}
   - ActionGetTotalValueOfBankAccount
-
-## conversazione : richiesta valore conto 1
-* startConversation
-  - ActionReplyStartConversation
-* bankAccountTotalValue{"selectedAccount":"0"}
-  - ActionGetTotalValueOfBankAccount
-* endConversation
+* endConversation OR thankYou
   - ActionReplyEndConversation
 
-## conversazione : richiesta valore conto 2
-* startConversation
-  - ActionReplyStartConversation
-* bankAccountTotalValue{"selectedAccount":"32"}
-  - ActionGetTotalValueOfBankAccount
-* thankYou
-  - ActionReplyThankYou
-
 ## minimale : richiesta lista conti e richiesta valore conto
+> check_start_conversation
 * bankAccountsList
   - ActionGetBankAccountList
 * bankAccountTotalValue{"selectedAccount":"33"}
   - ActionGetTotalValueOfBankAccount
-
-## conversazione : richiesta lista conti e richiesta valore conto 1
-* startConversation
-  - ActionReplyStartConversation
-* bankAccountsList
-  - ActionGetBankAccountList
-* bankAccountTotalValue{"selectedAccount":"5"}
-  - ActionGetTotalValueOfBankAccount
-* endConversation
+* endConversation OR thankYou
   - ActionReplyEndConversation
 
-## conversazione : richiesta lista conti e richiesta valore conto 2
-* startConversation
-  - ActionReplyStartConversation
-* bankAccountsList
-  - ActionGetBankAccountList
-* bankAccountTotalValue{"selectedAccount":"15"}
-  - ActionGetTotalValueOfBankAccount
-* thankYou
-  - ActionReplyThankYou
-
 ## minimale : pagamento confermato
+> check_start_conversation
 * paymentRequest
   - ActionAccountInfoRequest
 * bankAccountTotalValue{"selectedAccount":"43"}
@@ -87,40 +43,11 @@
   - ActionSummaryConfirmationRequest
 * confirm
   - ActionSummaryPayment
-
-## conversazione : richiesta di pagamento confermato 1
-* startConversation
-  - ActionReplyStartConversation
-* paymentRequest
-  - ActionAccountInfoRequest
-* bankAccountTotalValue{"selectedAccount":"1"}
-  - ActionAccountSelection
-* totalValueOfPayment{"valuePayment":"15","currencyPayment":"franchi svizzeri"}
-  - ActionAccountReciver
-* paymentRequestToIban{"ibanReceiver":"CH5738657659731827735"}
-  - ActionSummaryConfirmationRequest
-* confirm
-  - ActionSummaryPayment
-* endConversation
+* endConversation OR thankYou
   - ActionReplyEndConversation
 
-## conversazione : richiesta di pagamento confermato 2
-* startConversation
-  - ActionReplyStartConversation
-* paymentRequest
-  - ActionAccountInfoRequest
-* bankAccountTotalValue{"selectedAccount":"3"}
-  - ActionAccountSelection
-* totalValueOfPayment{"valuePayment":"1000","currencyPayment":"franchi"}
-  - ActionAccountReciver
-* paymentRequestToIban{"ibanReceiver":"FR1130066968176977944812348"}
-  - ActionSummaryConfirmationRequest
-* confirm
-  - ActionSummaryPayment
-* thankYou
-  - ActionReplyThankYou
-
 ## minimale : pagamento rifiutato
+> check_start_conversation
 * paymentRequest
   - ActionAccountInfoRequest
 * bankAccountTotalValue{"selectedAccount":"88"}
@@ -131,35 +58,5 @@
   - ActionSummaryConfirmationRequest
 * reject
   - ActionPaymentRejected
-
-## conversazione : richiesta di pagamento rifiutato 1
-* startConversation
-  - ActionReplyStartConversation
-* paymentRequest
-  - ActionAccountInfoRequest
-* bankAccountTotalValue{"selectedAccount":"99"}
-  - ActionAccountSelection
-* totalValueOfPayment{"valuePayment":"33","currencyPayment":"euro"}
-  - ActionAccountReciver
-* paymentRequestToIban{"ibanReceiver":"FR4430066747193565343922864"}
-  - ActionSummaryConfirmationRequest
-* confirm
-  - ActionSummaryPayment
-* endConversation
+* endConversation OR thankYou
   - ActionReplyEndConversation
-
-## conversazione : richiesta di pagamento confermato 2
-* startConversation
-  - ActionReplyStartConversation
-* paymentRequest
-  - ActionAccountInfoRequest
-* bankAccountTotalValue{"selectedAccount":"31"}
-  - ActionAccountSelection
-* totalValueOfPayment{"valuePayment":"300","currencyPayment":"franchi"}
-  - ActionAccountReciver
-* paymentRequestToIban{"ibanReceiver":"CH1949497933486292448"}
-  - ActionSummaryConfirmationRequest
-* confirm
-  - ActionSummaryPayment
-* thankYou
-  - ActionReplyThankYou

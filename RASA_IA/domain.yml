@@ -28,7 +28,6 @@ intents:
 
 actions:
   - bot.ActionReplyEndConversation
-  - bot.ActionReplyThankYou
   - bot.ActionReplyStartConversation
   - bot.ActionGetBankAccountList
   - bot.ActionGetTotalValueOfBankAccount

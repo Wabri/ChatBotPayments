@@ -3,7 +3,7 @@
     "regex_features": [],
     "entity_synonyms": [],
     "common_examples": [{
-      "text": "Salve",
+      "text": "Salve Bot",
       "intent": "startConversation",
       "entities": []
     }, {

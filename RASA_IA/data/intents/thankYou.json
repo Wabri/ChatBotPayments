@@ -2,25 +2,32 @@
   "rasa_nlu_data": {
     "regex_features": [],
     "entity_synonyms": [],
-    "common_examples": [{
-      "text": "Grazie",
-      "intent": "thankYou",
-      "entities": []
-    },
-    {
-      "text": "Ti ringrazio",
-      "intent": "thankYou",
-      "entities": []
-    },
-    {
-      "text": "Mille grazie",
-      "intent": "thankYou",
-      "entities": []
-    },
-    {
-      "text": "Grazie mille",
-      "intent": "thankYou",
-      "entities": []
-    }]
+    "common_examples": [
+      {
+        "text": "Grazie",
+        "intent": "thankYou",
+        "entities": []
+      },
+      {
+        "text": "Ti ringrazio",
+        "intent": "thankYou",
+        "entities": []
+      },
+      {
+        "text": "Mille grazie",
+        "intent": "thankYou",
+        "entities": []
+      },
+      {
+        "text": "Grazie mille",
+        "intent": "thankYou",
+        "entities": []
+      },
+      {
+        "text": "Thank you",
+        "intent": "thankYou",
+        "entities": []
+      }
+    ]
   }
 }

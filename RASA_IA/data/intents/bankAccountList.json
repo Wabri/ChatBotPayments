@@ -2,26 +2,42 @@
   "rasa_nlu_data": {
     "regex_features": [],
     "entity_synonyms": [],
-    "common_examples": [{
-      "text": "Puoi darmi la lista dei miei conti?",
-      "intent": "bankAccountsList",
-      "entities": []
-    }, {
-      "text": "Lista dei conti",
-      "intent": "bankAccountsList",
-      "entities": []
-    }, {
-      "text": "dammi la lista dei conti",
-      "intent": "bankAccountsList",
-      "entities": []
-    }, {
-      "text": "lista conti",
-      "intent": "bankAccountsList",
-      "entities": []
-    }, {
-      "text": "voglio sapere quali sono i miei conti",
-      "intent": "bankAccountsList",
-      "entities": []
-    }]
+    "common_examples": [
+      {
+        "text": "Puoi darmi la lista dei miei conti?",
+        "intent": "bankAccountsList",
+        "entities": []
+      },
+      {
+        "text": "Lista dei conti",
+        "intent": "bankAccountsList",
+        "entities": []
+      },
+      {
+        "text": "dammi la lista dei conti",
+        "intent": "bankAccountsList",
+        "entities": []
+      },
+      {
+        "text": "lista conti",
+        "intent": "bankAccountsList",
+        "entities": []
+      },
+      {
+        "text": "voglio sapere quali sono i miei conti",
+        "intent": "bankAccountsList",
+        "entities": []
+      },
+      {
+        "text": "vorrei sapere la lista dei conti",
+        "intent": "bankAccountsList",
+        "entities": []
+      },
+      {
+        "text": "Dammi la lista dei conti",
+        "intent": "bankAccountsList",
+        "entities": []
+      }
+    ]
   }
 }

@@ -11,6 +11,16 @@
         "text": "confermo il pagamento",
         "intent": "confirm",
         "entities": []
+      },
+      {
+        "text": "approvo il pagamento",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "approvo",
+        "intent": "confirm",
+        "entities": []
       }
     ]
   }
