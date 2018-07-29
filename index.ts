@@ -194,6 +194,7 @@ socketIOServer.on("connection", socket => {
       comunicationRasaManager.conversationReset(socket, rasaAddress, userID);
     }
 
+/*
     // esempio di richiesta al backend spring
     var requestToSpring: string =
       "http://" +
@@ -218,6 +219,7 @@ socketIOServer.on("connection", socket => {
       .on("error", err => {
         console.log("Error: " + err.message);
       });
+*/
   });
 });
 // ----- fine gestione comunicazione tramite socket ----- //
