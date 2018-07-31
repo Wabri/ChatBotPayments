@@ -34,6 +34,5 @@ actions:
   - bot.ActionAccountInfoRequest
   - bot.ActionAccountSelection
   - bot.ActionAccountReciver
-  - bot.ActionSummaryConfirmationRequest
   - bot.ActionSummaryPayment
   - bot.ActionPaymentRejected

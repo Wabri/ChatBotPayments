@@ -21,6 +21,11 @@
         "text": "approvo",
         "intent": "confirm",
         "entities": []
+      },
+      {
+          "text": "si",
+          "intent": "confirm",
+          "entities": []
       }
     ]
   }

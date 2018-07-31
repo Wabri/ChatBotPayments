@@ -9,7 +9,7 @@ from rasa_core.featurizers import (
     MaxHistoryTrackerFeaturizer,
     BinarySingleStateFeaturizer)
 
-class ActionReplyStartConversation:
+class ActionReplyStartConversation(Action):
     def name(self):
         return "ActionReplyStartConversation"
 
@@ -17,7 +17,7 @@ class ActionReplyStartConversation:
         dispatcher.utter_message("Salve! Sono BVBot! Come posso aiutare?")
         return []
 
-class ActionReplyEndConversation:
+class ActionReplyEndConversation(Action):
     def name(self):
         return "ActionReplyEndConversation"
 
@@ -102,21 +102,6 @@ class ActionAccountReciver(Action):
             SlotSet("currencyPayment", value=None, timestamp=None)
         else:
             dispatcher.utter_message("Ora dovresti darmi l'iban del conto di destinazione!")
-        return []
-
-class ActionSummaryConfirmationRequest(Action):
-    def name(self):
-        return "ActionSummaryConfirmationRequest"
-
-    def run(self, dispatcher, tracker, domain):
-        if tracker.get_slot("ibanReceiver") is None:
-            dispatcher.utter_message("Potresti ripetere il conto su cui versare?")
-            SlotSet("ibanReceiver", value=None, timestamp=None)
-        else:
-            message = 'Vuoi eseguire il pagamento di ' + tracker.get_slot("valuePayment") + ' ' + tracker.get_slot("currencyPayment")
-            message += ' verso ' + tracker.get_slot("ibanReceiver") + ' tramite il conto ' + tracker.get_slot("selectedAccount") + '!'
-            message += ' Confermi?'
-            dispatcher.utter_message(str(message.decode("ascii", "ignore")))
         return []
 
 class ActionSummaryPayment(Action):

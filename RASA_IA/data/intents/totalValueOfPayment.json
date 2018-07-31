@@ -33,7 +33,7 @@
           },
           {
             "start": 6,
-            "end": 9,
+            "end": 10,
             "value": "euro",
             "entity": "currencyPayment"
           }
