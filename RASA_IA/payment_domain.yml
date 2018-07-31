@@ -1,0 +1,31 @@
+slots:
+  jsessionid:
+    type: text
+  xcsrftoken:
+    type: text
+  accountList:
+    type: text
+  valuePayment:
+    type: float
+  currencyPayment:
+    type: text
+  ibanReceiver:
+    type: text
+  selectedAccount:
+    type: float
+
+intents:
+  - startConversation
+  - paymentRequest
+  - bankAccountsList
+  - bankAccountTotalValue
+  - totalValueOfPayment
+  - paymentRequestToIban
+  - endConversation
+  - thankYou
+
+actions:
+  - actionBot.ActionGreetings
+  - actionBot.ActionPaymentTracker
+  - actionBot.ActionGoodbye
+  - actionBot.ActionRequestListAccount
