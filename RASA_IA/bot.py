@@ -22,7 +22,6 @@ class ActionReplyEndConversation:
         return "ActionReplyEndConversation"
 
     def run(self, dispatcher, tracker, domain):
-        from rasa_core.actions.action import ActionListen
         dispatcher.utter_message("E' un piacere aiutarti! Se hai bisogno di altro io sono qui")
         return []
 
@@ -48,7 +47,6 @@ class ActionGetTotalValueOfBankAccount(Action):
         return "ActionGetTotalValueOfBankAccount"
 
     def run(self, dispatcher, tracker, domain):
-        # chiamata get che deve prendere la lista dei conti dell'utente
         accountList = tracker.get_slot("accountList")
         selectedAccount = tracker.get_slot("selectedAccount")
         if (accountList is None):
@@ -82,7 +80,11 @@ class ActionAccountSelection(Action):
         return "ActionAccountSelection"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("Ora dovresti indicarmi il totale del pagamento e la valuta!")
+        if tracker.get_slot("selectedAccount") is None:
+            dispatcher.utter_message("Potresti ripetere il conto da cui prelevare?")
+            SlotSet("selectedAccount", value=None, timestamp=None)
+        else:
+            dispatcher.utter_message("Ora dovresti indicarmi il totale del pagamento e la valuta!")
         return []
 
 class ActionAccountReciver(Action):
@@ -90,7 +92,16 @@ class ActionAccountReciver(Action):
         return "ActionAccountReciver"
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("Ora dovresti darmi l'iban del conto di destinazione!")
+        if tracker.get_slot("valuePayment") is None:
+            dispatcher.utter_message("Mi manca il valore del pagamento, potresti ripetere?")
+            SlotSet("valuePayment", value=None, timestamp=None)
+            SlotSet("currencyPayment", value=None, timestamp=None)
+        elif (tracker.get_slot("currencyPayment") is None):
+            dispatcher.utter_message("Potresti ripetere il valore del pagamento con annessa valuta?")
+            SlotSet("valuePayment", value=None, timestamp=None)
+            SlotSet("currencyPayment", value=None, timestamp=None)
+        else:
+            dispatcher.utter_message("Ora dovresti darmi l'iban del conto di destinazione!")
         return []
 
 class ActionSummaryConfirmationRequest(Action):
@@ -98,10 +109,14 @@ class ActionSummaryConfirmationRequest(Action):
         return "ActionSummaryConfirmationRequest"
 
     def run(self, dispatcher, tracker, domain):
-        message = 'Ricapitolando vuoi eseguire un pagamento di ' + tracker.get_slot("valuePayment") + ' ' + tracker.get_slot("currencyPayment")
-        message =+ 'verso iban ' + tracker.get_slot("ibanReceiver") + ' usando il conto ' + tracker.get_slot("selectedAccount") + '!'
-        message += ' Confermi?'
-        dispatcher.utter_message(message)
+        if tracker.get_slot("ibanReceiver") is None:
+            dispatcher.utter_message("Potresti ripetere il conto su cui versare?")
+            SlotSet("ibanReceiver", value=None, timestamp=None)
+        else:
+            message = 'Vuoi eseguire il pagamento di ' + tracker.get_slot("valuePayment") + ' ' + tracker.get_slot("currencyPayment")
+            message += ' verso ' + tracker.get_slot("ibanReceiver") + ' tramite il conto ' + tracker.get_slot("selectedAccount") + '!'
+            message += ' Confermi?'
+            dispatcher.utter_message(str(message.decode("ascii", "ignore")))
         return []
 
 class ActionSummaryPayment(Action):
@@ -109,10 +124,14 @@ class ActionSummaryPayment(Action):
         return "ActionSummaryPayment"
 
     def run(self, dispatcher, tracker, domain):
-        message = 'Ok il pagamento di ' + tracker.get_slot("valuePayment") + ' ' + tracker.get_slot("currencyPayment")
-        message += 'verso iban ' + tracker.get_slot("ibanReceiver") + ' usando il conto ' + tracker.get_slot("selectedAccount")
-        message += ' è stato effettuato!'
-        dispatcher.utter_message(message)
+        if ((tracker.get_slot("ibanReceiver") is None) and (tracker.get_slot("valuePayment") is None) and (tracker.get_slot("currencyPayment") is None) and (tracker.get_slot("selectedAccount") is None)):
+            dispatcher.utter_message("Mi dispiace ma c'è qualcosa che manca dobbiamo ricominciare da capo!")
+            Restarted(timestamp=None)
+        else:
+            message = 'Ok il pagamento di ' + tracker.get_slot("valuePayment") + ' ' + tracker.get_slot("currencyPayment")
+            message += 'verso iban ' + tracker.get_slot("ibanReceiver") + ' usando il conto ' + tracker.get_slot("selectedAccount")
+            message += ' è stato effettuato!'
+            dispatcher.utter_message(str(message.decode("ascii", "ignore")))
         return []
 
 class ActionPaymentRejected(Action):
@@ -121,6 +140,6 @@ class ActionPaymentRejected(Action):
 
     def run(self, dispatcher, tracker, domain):
         message = 'Hai annullato il pagamento! Verranno eliminati i dati memorizzati!'
-        dispatcher.utter_message(message)
-        tracker._reset_slots()
+        dispatcher.utter_message(str(message.decode("ascii", "ignore")))
+        Restarted(timestamp=None)
         return []
