@@ -29,3 +29,4 @@ actions:
   - actionBot.ActionPaymentTracker
   - actionBot.ActionGoodbye
   - actionBot.ActionRequestListAccount
+  - actionBot.ActionRequestTotalAccountValue

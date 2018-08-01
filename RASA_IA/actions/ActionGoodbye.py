@@ -10,12 +10,9 @@ from rasa_core.featurizers import (
     BinarySingleStateFeaturizer)
 import json
 
-from actions.ActionGreetings import ActionGreetings
+class ActionGoodbye(Action):
+    def name(self):
+        return "ActionGoodbye"
 
-from actions.ActionPaymentTracker import ActionPaymentTracker
-
-from actions.ActionRequestListAccount import ActionRequestListAccount
-
-from actions.ActionRequestTotalAccountValue import ActionRequestTotalAccountValue
-
-from actions.ActionGoodbye import ActionGoodbye
+    def run(self,dispatcher,tracker,domain):
+        dispatcher.utter_message("Ciao, se hai altro da chiedere io sono qui!")
