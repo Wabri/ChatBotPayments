@@ -129,30 +129,30 @@ socketIOServer.on("connection", function (socket) {
             comunicationRasaManager.conversationReset(socket, rasaAddress, userID);
         }
         /*
-            // esempio di richiesta al backend spring
-            var requestToSpring: string =
-              "http://" +
-              settingsApp.springIP +
-              ":" +
-              settingsApp.springPort +
-              "/v1/api/dataById?id=12";
-        
-            http
-              .get(requestToSpring, resp => {
-                console.log("Spring response");
-                let data = "";
-        
-                resp.on("data", chunk => {
-                  data += chunk;
-                });
-        
-                resp.on("end", () => {
-                  console.log(JSON.parse(data));
-                });
-              })
-              .on("error", err => {
-                console.log("Error: " + err.message);
-              });
-        */
+        // esempio di richiesta al backend spring
+        var requestToSpring: string =
+          "http://" +
+          settingsApp.springIP +
+          ":" +
+          settingsApp.springPort +
+          "/v1/api/dataById?id=12";
+    
+        http
+          .get(requestToSpring, resp => {
+            console.log("Spring response");
+            let data = "";
+    
+            resp.on("data", chunk => {
+              data += chunk;
+            });
+    
+            resp.on("end", () => {
+              console.log(JSON.parse(data));
+            });
+          })
+          .on("error", err => {
+            console.log("Error: " + err.message);
+          });
+    */
     });
 });
