@@ -19,7 +19,7 @@ var MessageSectionManager = /** @class */ (function () {
     function MessageSectionManager() {
     }
     MessageSectionManager.relativeMessageUpdate = function (message, whostalk) {
-        var talkerElement = document.querySelector("span#" + whostalk);
+        var talkerElement = document.getElementById(whostalk);
         talkerElement.innerHTML = "&nbsp" + message;
     };
     return MessageSectionManager;

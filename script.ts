@@ -18,7 +18,7 @@ class VoiceManager {
 
 class MessageSectionManager {
   static relativeMessageUpdate(message: string, whostalk: string) {
-    let talkerElement = document.querySelector("span#" + whostalk);
+    let talkerElement = document.getElementById(whostalk);
     talkerElement.innerHTML = "&nbsp" + message;
   }
 }
