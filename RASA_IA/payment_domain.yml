@@ -25,8 +25,8 @@ intents:
   - thankYou
 
 actions:
-  - actionBot.ActionGreetings
-  - actionBot.ActionPaymentTracker
-  - actionBot.ActionGoodbye
-  - actionBot.ActionRequestListAccount
-  - actionBot.ActionRequestTotalAccountValue
+  - action.ActionGreetings
+  - action.ActionPaymentTracker
+  - action.ActionGoodbye
+  - action.ActionRequestListAccount
+  - action.ActionRequestTotalAccountValue

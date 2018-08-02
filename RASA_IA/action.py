@@ -42,19 +42,19 @@ class ActionRequestListAccount(Action):
         return "ActionRequestListAccount"
 
     def run(self,dispatcher,tracker,domain):
-        print tracker.get_slot("accountList") is None
-        if tracker.get_slot("accountList") is None:
-            accountList = json.loads('[{"accounts":[{"name":"1","value":300,"currency":"euro"},{"name":"2","value":50,"currency":"franchi"}]}]')
-            SlotSet("accountList", accountList)
-            print tracker.get_slot("accountList") is None
-        jsonListAccounts = tracker.get_slot("accountList")
-        print tracker.get_slot("accountList")
-        accountList = jsonListAccounts[0]["accounts"]
-        message = "La lista dei conti è: "
-        for account in accountList:
-            message += "conto " + str(account["name"]) + " valore " + str(account["value"]) + " " + str(account["currency"]) + ", "
-        dispatcher.utter_message(str(message.decode('utf_8',"ignore")))
-        return[]
+        data = tracker.get_slot('accountList')
+        if data is None:
+            URL = 'http://192.168.13.15:8080/ibs-mvc/rest/domain/customers'
+            cookie = {'JSESSIONID':'865882E6D994EBD14B5C80CAA4C4A1DA','XSRF-TOKEN':'f2f7a56c7d8471078a1a8f8d5bcee6649560ecc878150597e0ca370f03ea31db'}
+            r = requests.get(url=URL, cookies=cookie)
+            data = r.json()
+        message = "La lista dei conti è: <br/>"
+        index = 0;
+        for account in data:
+            message += "" + str(index).encode('utf8') + "." + account["description"].encode('utf8') + "<br/>"
+            index = index +1
+        dispatcher.utter_message(message.decode("utf_8", "ignore"))
+        return[SlotSet('accountList', value=data, timestamp=None)]
 
 class ActionRequestTotalAccountValue(Action):
     def name(self):
