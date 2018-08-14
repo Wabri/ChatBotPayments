@@ -10,6 +10,20 @@ from rasa_core.featurizers import (
     BinarySingleStateFeaturizer)
 import json
 
+class ServerInfo:
+
+    def __init__(self):
+        self.serverIP = "192.168.13.15"
+        self.serverPort = "8080"
+
+    def get_IP(self):
+        return self.serverIP
+
+    def get_Port(self):
+        return self.serverPort
+
+serverInfo = ServerInfo();
+
 class ActionGreetings(Action):
     def name(self):
         return "ActionGreetings"
@@ -44,14 +58,14 @@ class ActionRequestListAccount(Action):
     def run(self,dispatcher,tracker,domain):
         data = tracker.get_slot('accountList')
         if data is None:
-            URL = 'http://192.168.13.15:8080/ibs-mvc/rest/domain/customers'
-            cookie = {'JSESSIONID':'865882E6D994EBD14B5C80CAA4C4A1DA','XSRF-TOKEN':'f2f7a56c7d8471078a1a8f8d5bcee6649560ecc878150597e0ca370f03ea31db'}
+            URL = 'http://'+serverInfo.get_IP()+':'+serverInfo.get_Port()+'/ibs-mvc/rest/domain/customers'
+            cookie = {str(tracker.get_slot("jsessionid")),str(tracker.get_slot("xcsrftoken"))}
             r = requests.get(url=URL, cookies=cookie)
             data = r.json()
-        message = "La lista dei conti è: <br/>"
+        message = "La lista dei conti è: "
         index = 0;
         for account in data:
-            message += "" + str(index).encode('utf8') + "." + account["description"].encode('utf8') + "<br/>"
+            message += "" + str(index).encode('utf8') + "." + account["description"].encode('utf8')
             index = index +1
         dispatcher.utter_message(message.decode("utf_8", "ignore"))
         return[SlotSet('accountList', value=data, timestamp=None)]
@@ -63,8 +77,11 @@ class ActionRequestTotalAccountValue(Action):
     def run(self,dispatcher,tracker,domain):
         if tracker.get_slot("selectedAccount") is not None:
             if tracker.get_slot("accountList") is None:
-                accountList = '[{"accounts":[{"name":"1","value":300,"currency":"euro"},{"name":"2","value":50,"currency":"franchi"}]}]'
-                SlotSet("accountList", accountList)
+                URL = 'http://'+serverInfo.get_IP()+':'+serverInfo.get_Port()+'/ibs-mvc/rest/domain/customers'
+                cookie = {str(tracker.get_slot("jsessionid")),str(tracker.get_slot("xcsrftoken"))}
+                r = requests.get(url=URL, cookies=cookie)
+                data = r.json()
+                SlotSet("accountList", data)
             accountList = str(tracker.get_slot("accountList"))
             jsonListAccounts = json.loads(accountList)
             accountSelected = jsonListAccounts[0]["accounts"][tracker.get_slot("selectedAccount")-1]
