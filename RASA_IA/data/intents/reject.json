@@ -21,16 +21,6 @@
         "text": "Non fare il pagamento",
         "intent": "confirm",
         "entities": []
-      },
-      {
-        "text": "No",
-        "intent": "confirm",
-        "entities": []
-      },
-      {
-        "text": "Rifiuto",
-        "intent": "confirm",
-        "entities": []
       }
     ]
   }

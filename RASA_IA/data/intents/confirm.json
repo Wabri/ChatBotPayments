@@ -16,16 +16,6 @@
         "text": "approvo il pagamento",
         "intent": "confirm",
         "entities": []
-      },
-      {
-        "text": "approvo",
-        "intent": "confirm",
-        "entities": []
-      },
-      {
-          "text": "si",
-          "intent": "confirm",
-          "entities": []
       }
     ]
   }

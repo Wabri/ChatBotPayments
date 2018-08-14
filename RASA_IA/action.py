@@ -10,7 +10,8 @@ from rasa_core.featurizers import (
     BinarySingleStateFeaturizer)
 import json
 
-class ServerInfo:
+
+class ServerInfo():
 
     def __init__(self):
         self.serverIP = "192.168.13.15"
@@ -22,9 +23,12 @@ class ServerInfo:
     def get_Port(self):
         return self.serverPort
 
-serverInfo = ServerInfo();
+
+serverInfo = ServerInfo()
+
 
 class ActionGreetings(Action):
+
     def name(self):
         return "ActionGreetings"
 
@@ -32,7 +36,9 @@ class ActionGreetings(Action):
         dispatcher.utter_message("Salve, sono BVBot! Come posso aiutare?")
         return []
 
+
 class ActionPaymentTracker(Action):
+
     def name(self):
         return "ActionPaymentTracker"
 
@@ -47,38 +53,87 @@ class ActionPaymentTracker(Action):
             message = "Tutti i dati sono stati completati! Il pagamento verrà effettuato a partire dal conto "
             message += str(tracker.get_slot("selectedAccount")) + " per un totale di "
             message += str(tracker.get_slot("valuePayment")) + " " + str(tracker.get_slot("currencyPayment")) + " verso il conto "
-            message += str(tracker.get_slot("ibanReceiver")) + " !"
+            message += str(tracker.get_slot("ibanReceiver")) + "! Pronuncia 'confermo il pagamento' per continuare altrimenti 'rifiuto il pagamento' per annullare!"
             dispatcher.utter_message(str(message.decode("utf_8", "ignore")))
         return[]
 
+
+class ActionPaymentConfermation(Action):
+
+    def name(self):
+        return "ActionPaymentConfermation"
+
+    def run(self,dispatcher,tracker,domain):
+        if (tracker.get_slot("selectedAccount") is None):
+            message = "Prima di confermare il pagamento per favore seleziona il conto!"
+        elif (tracker.get_slot("valuePayment") is None ) and (tracker.get_slot("currencyPayment") is None):
+            message = "Prima di confermare il pagamento per favore indica il valore del pagamento e in che valuta!"
+        elif (tracker.get_slot("ibanReceiver") is None):
+            message = "Prima di confermare il pagamento per favore inserisci il conto di destinazione!"
+        else:
+            URL = 'http://' + serverInfo.get_IP() + ':' + serverInfo.get_Port() + '/ibs-mvc/rest/payments/internaltransfer/creditcustomersaccounts'
+            jsessionid = str(tracker.get_slot("jsessionid"))
+            xcsrftoken = str(tracker.get_slot("xcsrftoken"))
+            cookie = {'JSESSIONID': jsessionid, 'XSRF-TOKEN': xcsrftoken}
+            r = requests.post(url=URL, cookies=cookie)
+            if (r.status_code == 200):
+                message = "Pagamento preso in carico correttamente!"
+            else:
+                message = "Pagamento non riuscito, riprovare!"
+        dispatcher.utter_message(str(message.decode("utf_8", "ignore")))
+        return[]
+
+
+class ActionPaymentReject(Action):
+
+    def name(self):
+        return "ActionPaymentReject"
+
+    def run(self,dispatcher,tracker,domain):
+        SlotSet('selectedAccount', value=None, timestamp=None)
+        SlotSet('valuePayment', value=None, timestamp=None)
+        SlotSet('currencyPayment', value=None, timestamp=None)
+        SlotSet('ibanReceiver', value=None, timestamp=None)
+        message = "Pagamento annullato!"
+        dispatcher.utter_message(str(message.decode("utf_8", "ignore")))
+        return[]
+
+
 class ActionRequestListAccount(Action):
+
     def name(self):
         return "ActionRequestListAccount"
 
     def run(self,dispatcher,tracker,domain):
         data = tracker.get_slot('accountList')
         if data is None:
-            URL = 'http://'+serverInfo.get_IP()+':'+serverInfo.get_Port()+'/ibs-mvc/rest/domain/customers'
-            cookie = {str(tracker.get_slot("jsessionid")),str(tracker.get_slot("xcsrftoken"))}
+            URL = 'http://' + serverInfo.get_IP() + ':' + serverInfo.get_Port() + '/ibs-mvc/rest/domain/customers'
+            jsessionid = str(tracker.get_slot("jsessionid"))
+            xcsrftoken = str(tracker.get_slot("xcsrftoken"))
+            cookie = {'JSESSIONID': jsessionid, 'XSRF-TOKEN': xcsrftoken}
             r = requests.get(url=URL, cookies=cookie)
             data = r.json()
         message = "La lista dei conti è: "
-        index = 0;
+        index = 0
         for account in data:
-            message += "" + str(index).encode('utf8') + "." + account["description"].encode('utf8')
-            index = index +1
+            message += "" + str(index).encode('utf8') + "." + account["description"].encode('utf8') + " "
+            index = index + 1
         dispatcher.utter_message(message.decode("utf_8", "ignore"))
         return[SlotSet('accountList', value=data, timestamp=None)]
 
+
 class ActionRequestTotalAccountValue(Action):
+
     def name(self):
         return "ActionRequestTotalAccountValue"
 
     def run(self,dispatcher,tracker,domain):
         if tracker.get_slot("selectedAccount") is not None:
             if tracker.get_slot("accountList") is None:
-                URL = 'http://'+serverInfo.get_IP()+':'+serverInfo.get_Port()+'/ibs-mvc/rest/domain/customers'
-                cookie = {str(tracker.get_slot("jsessionid")),str(tracker.get_slot("xcsrftoken"))}
+                URL = 'http://' + serverInfo.get_IP() + ':' + serverInfo.get_Port() + '/ibs-mvc/rest/domain/customers'
+                jsessionid = str(tracker.get_slot("jsessionid"))
+                xcsrftoken = str(tracker.get_slot("xcsrftoken"))
+                cookie = {'JSESSIONID': jsessionid, 'XSRF-TOKEN': xcsrftoken}
                 r = requests.get(url=URL, cookies=cookie)
                 data = r.json()
                 SlotSet("accountList", data)
@@ -91,7 +146,9 @@ class ActionRequestTotalAccountValue(Action):
         dispatcher.utter_message(str(message))
         return []
 
+
 class ActionGoodbye(Action):
+
     def name(self):
         return "ActionGoodbye"
 
