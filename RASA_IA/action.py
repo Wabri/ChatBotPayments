@@ -17,12 +17,16 @@ class ServerInfo():
         self.serverIP = "192.168.13.15"
         self.serverPort = "8080"
 
-    def get_IP(self):
+    def getIP(self):
         return self.serverIP
 
-    def get_Port(self):
+    def getPort(self):
         return self.serverPort
 
+    def getStringJsonPayment(self):
+        # attualmente sto considerando solo il pagamento a partire da un unico utente #
+        dataDumps = json.dumps({"debitAccountId":"0213184001000CHF","type":"SWISS","restWarnings":[],"execution":{"restCode":"UNIQUE","executionDate":1534370400000,"adviceType":"SN_SN","tagId":None},"status":None,"creationDate":None,"modificationDate":None,"dtaId":None,"permanentId":None,"transactionSigningTimestamp":None,"dta":False,"billId":None,"paynetNumber":None,"contributors":[{"index":1,"date":1534258326552,"name":"GPUL","contribution":60}],"restSlips":[{"restType":"SWISS","type":"SWISS","beneficiaryAddress":{"lines":["swiss"]},"reason":{"lines":[]},"accountId":"CH06 4319 9252 7512 5895 8","bank":{"id":"8049747","sic":"09000","bic":"POFICHBEXXX","esrCode":None,"postAccountCode":None,"address":"SWISS POST-POSTFINANCE BERNE","description":"SWISS POST-POSTFINANCE","ban":None,"category":"BANK","sepa":True},"amount":{"value":100,"currency":{"isoCode":"CHF","ccyId":"CHF","priority":2,"fractionDigits":2,"euroParity":None,"roundingRule":0.05}},"warnings":[],"infos":[],"restWarnings":[]}]})
+        return dataDumps
 
 serverInfo = ServerInfo()
 
@@ -71,11 +75,18 @@ class ActionPaymentConfermation(Action):
         elif (tracker.get_slot("ibanReceiver") is None):
             message = "Prima di confermare il pagamento per favore inserisci il conto di destinazione!"
         else:
-            URL = 'http://' + serverInfo.get_IP() + ':' + serverInfo.get_Port() + '/ibs-mvc/rest/payments/internaltransfer/creditcustomersaccounts'
+            dataDumps = serverInfo.getStringJsonPayment()
+            data = json.loads(dataDumps)
+            data["restSlips"][0]["amount"]["value"] = int(tracker.get_slot("valuePayment"))
+            data["restSlips"][0]["accountId"] = str(tracker.get_slot("ibanReceiver"))
+            data["restSlips"][0]["amount"]["currency"]["isoCode"] = str(tracker.get_slot("currencyPayment"))
+            data["restSlips"][0]["amount"]["currency"]["ccyId"] = str(tracker.get_slot("currencyPayment"))
+            URL = 'http://' + serverInfo.getIP() + ':' + serverInfo.getPort() + '/ibs-mvc/rest/domain/customers'
             jsessionid = str(tracker.get_slot("jsessionid"))
             xcsrftoken = str(tracker.get_slot("xcsrftoken"))
             cookie = {'JSESSIONID': jsessionid, 'XSRF-TOKEN': xcsrftoken}
-            r = requests.post(url=URL, cookies=cookie)
+            r = requests.get(url=URL,  data=json.loads(dataPayment) , cookies=cookie)
+            data = r.json()
             if (r.status_code == 200):
                 message = "Pagamento preso in carico correttamente!"
             else:
@@ -107,7 +118,7 @@ class ActionRequestListAccount(Action):
     def run(self,dispatcher,tracker,domain):
         data = tracker.get_slot('accountList')
         if data is None:
-            URL = 'http://' + serverInfo.get_IP() + ':' + serverInfo.get_Port() + '/ibs-mvc/rest/domain/customers'
+            URL = 'http://' + serverInfo.getIP() + ':' + serverInfo.getPort() + '/ibs-mvc/rest/domain/customers'
             jsessionid = str(tracker.get_slot("jsessionid"))
             xcsrftoken = str(tracker.get_slot("xcsrftoken"))
             cookie = {'JSESSIONID': jsessionid, 'XSRF-TOKEN': xcsrftoken}
@@ -130,7 +141,7 @@ class ActionRequestTotalAccountValue(Action):
     def run(self,dispatcher,tracker,domain):
         if tracker.get_slot("selectedAccount") is not None:
             if tracker.get_slot("accountList") is None:
-                URL = 'http://' + serverInfo.get_IP() + ':' + serverInfo.get_Port() + '/ibs-mvc/rest/domain/customers'
+                URL = 'http://' + serverInfo.getIP() + ':' + serverInfo.getPort() + '/ibs-mvc/rest/domain/customers'
                 jsessionid = str(tracker.get_slot("jsessionid"))
                 xcsrftoken = str(tracker.get_slot("xcsrftoken"))
                 cookie = {'JSESSIONID': jsessionid, 'XSRF-TOKEN': xcsrftoken}
