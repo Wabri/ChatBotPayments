@@ -29,4 +29,5 @@ actions:
   - action.ActionPaymentTracker
   - action.ActionGoodbye
   - action.ActionRequestListAccount
-  - action.ActionRequestTotalAccountValue
+  - action.ActionPaymentConfermation
+  - action.ActionPaymentReject

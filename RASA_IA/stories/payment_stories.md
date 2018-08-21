@@ -11,23 +11,9 @@
 # richiesta conti
 * bankAccountsList
   - ActionRequestListAccount
-
-# richiesta conti e totale di un account
-* bankAccountsList
-  - ActionRequestListAccount
-* bankAccountTotalValue{"selectedAccount": "11"}
-  - ActionRequestTotalAccountValue
-
-# richiesta conti e totale di un account
-* bankAccountsList
-  - ActionRequestListAccount
-* bankAccountTotalValue
-  - ActionRequestTotalAccountValue
-
+  
 # pagamento confermato
 * paymentRequest
-  - ActionPaymentTracker
-* bankAccountTotalValue{"selectedAccount":"43"}
   - ActionPaymentTracker
 * totalValueOfPayment{"valuePayment":"400","currencyPayment":"euro"}
   - ActionPaymentTracker
@@ -38,8 +24,6 @@
 
 # pagamento rifiutato
 * paymentRequest
-  - ActionPaymentTracker
-* bankAccountTotalValue{"selectedAccount":"43"}
   - ActionPaymentTracker
 * totalValueOfPayment{"valuePayment":"400","currencyPayment":"euro"}
   - ActionPaymentTracker
