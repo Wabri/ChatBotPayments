@@ -8,12 +8,22 @@
         "entities": []
       },
       {
-        "text": "confermo il pagamento",
+        "text": "confermo la transazione",
         "intent": "confirm",
         "entities": []
       },
       {
-        "text": "approvo il pagamento",
+        "text": "approvo la transazione",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "approvo",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "procedi",
         "intent": "confirm",
         "entities": []
       }

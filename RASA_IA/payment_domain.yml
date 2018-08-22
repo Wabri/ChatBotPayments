@@ -17,12 +17,12 @@ slots:
 intents:
   - startConversation
   - paymentRequest
-  - bankAccountsList
-  - bankAccountTotalValue
   - totalValueOfPayment
   - paymentRequestToIban
   - endConversation
   - thankYou
+  - reject
+  - confirm
 
 actions:
   - action.ActionGreetings

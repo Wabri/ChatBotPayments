@@ -17,6 +17,11 @@
         "text": "Ti saluto",
         "intent": "endConversation",
         "entities": []
+      },
+      {
+        "text": "è stato un piacere",
+        "intent": "endConversation",
+        "entities": []
       }
     ]
   }

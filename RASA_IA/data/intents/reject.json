@@ -3,22 +3,42 @@
     "regex_features": [],
     "entity_synonyms": [],
     "common_examples": [{
-        "text": "Non effettuare il pagamento",
+        "text": "Non effettuare la transazione",
         "intent": "confirm",
         "entities": []
       },
       {
-        "text": "Rifiuto il pagamento",
+        "text": "Rifiuto la transazione",
         "intent": "confirm",
         "entities": []
       },
       {
-        "text": "Elimina il pagamento",
+        "text": "Elimina la transazione",
         "intent": "confirm",
         "entities": []
       },
       {
-        "text": "Non fare il pagamento",
+        "text": "Non fare la transazione",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "Non effettuare",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "Rifiuto",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "Elimina",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "Non fare",
         "intent": "confirm",
         "entities": []
       }

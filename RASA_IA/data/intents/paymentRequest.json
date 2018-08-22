@@ -24,7 +24,7 @@
         "entities": []
       },
       {
-        "text": "Vorrei fare una transazione",
+        "text": "Vorrei fare una bonifico",
         "intent": "paymentRequest",
         "entities": []
       },
