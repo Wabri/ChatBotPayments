@@ -10,6 +10,8 @@ core:
 $ pip install rasa_core
 ```
 
+Per poter effettuare le chiamate serve il login dell'utente, modificare quindi le istanze relative a xcsrftoken e jsessionid che si trovano nel action.py
+
 # NLU: Per creare un nuovo modello è necessario eseguire il comando:
 ```bash
 $ python -m rasa_nlu.train --config nluModelConfig.yml --data data/ --fixed_model_name nlu

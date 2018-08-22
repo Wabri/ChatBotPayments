@@ -1,0 +1,58 @@
+{
+  "rasa_nlu_data": {
+    "regex_features": [],
+    "entity_synonyms": [],
+    "common_examples": [
+      {
+        "text": "Vorrei pagare",
+        "intent": "paymentRequest",
+        "entities": []
+      },
+      {
+        "text": "Vorrei effettuare un pagamento",
+        "intent": "paymentRequest",
+        "entities": []
+      },
+      {
+        "text": "Paga",
+        "intent": "paymentRequest",
+        "entities": []
+      },
+      {
+        "text": "Pagare",
+        "intent": "paymentRequest",
+        "entities": []
+      },
+      {
+        "text": "Vorrei fare una bonifico",
+        "intent": "paymentRequest",
+        "entities": []
+      },
+      {
+        "text": "Vorrei pagare qualcuno",
+        "intent": "paymentRequest",
+        "entities": []
+      },
+      {
+        "text": "Voglio pagare qualcuno",
+        "intent": "paymentRequest",
+        "entities": []
+      },
+      {
+        "text": "Potrei pagare qualcuno?",
+        "intent": "paymentRequest",
+        "entities": []
+      },
+      {
+        "text": "Voglio pagare qualcuno",
+        "intent": "paymentRequest",
+        "entities": []
+      },
+      {
+        "text": "Vorrei fare un pagamento",
+        "intent": "paymentRequest",
+        "entities": []
+      }
+    ]
+  }
+}

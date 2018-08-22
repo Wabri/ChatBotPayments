@@ -1,0 +1,32 @@
+{
+  "rasa_nlu_data": {
+    "regex_features": [],
+    "entity_synonyms": [],
+    "common_examples": [{
+        "text": "confermo",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "confermo la transazione",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "approvo la transazione",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "approvo",
+        "intent": "confirm",
+        "entities": []
+      },
+      {
+        "text": "procedi",
+        "intent": "confirm",
+        "entities": []
+      }
+    ]
+  }
+}

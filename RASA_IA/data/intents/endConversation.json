@@ -5,27 +5,22 @@
     "common_examples": [
       {
         "text": "Addio",
-        "intent": "fine_conversazione",
-        "entities": []
-      },
-      {
-        "text": "Ciao",
-        "intent": "fine_conversazione",
+        "intent": "endConversation",
         "entities": []
       },
       {
         "text": "Arrivederci",
-        "intent": "fine_conversazione",
+        "intent": "endConversation",
         "entities": []
       },
       {
-        "text": "Bye Bye",
-        "intent": "fine_conversazione",
+        "text": "Ti saluto",
+        "intent": "endConversation",
         "entities": []
       },
       {
-        "text": "Alla prossima",
-        "intent": "fine_conversazione",
+        "text": "è stato un piacere",
+        "intent": "endConversation",
         "entities": []
       }
     ]

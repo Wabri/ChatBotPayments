@@ -1,0 +1,368 @@
+{
+  "rasa_nlu_data": {
+    "regex_features": [],
+    "entity_synonyms": [],
+    "common_examples": [
+      {
+        "text": "400 euro",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 0,
+            "end": 3,
+            "value": "400",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 4,
+            "end": 8,
+            "value": "euro",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "12304 euro",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 0,
+            "end": 5,
+            "value": "12304",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 6,
+            "end": 10,
+            "value": "euro",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "865 euro",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 0,
+            "end": 3,
+            "value": "865",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 4,
+            "end": 8,
+            "value": "euro",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "200 franchi svizzeri",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 0,
+            "end": 3,
+            "value": "200",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 4,
+            "end": 20,
+            "value": "franchi svizzeri",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "7000 franchi svizzeri",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 0,
+            "end": 4,
+            "value": "7000",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 5,
+            "end": 21,
+            "value": "franchi svizzeri",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "14 franchi svizzeri",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 0,
+            "end": 2,
+            "value": "14",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 3,
+            "end": 19,
+            "value": "franchi svizzeri",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "561 franchi svizzeri",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 0,
+            "end": 3,
+            "value": "561",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 4,
+            "end": 20,
+            "value": "franchi svizzeri",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "971 franchi svizzeri",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 0,
+            "end": 3,
+            "value": "971",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 4,
+            "end": 20,
+            "value": "franchi svizzeri",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "1000 franchi",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 0,
+            "end": 4,
+            "value": "1000",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 5,
+            "end": 12,
+            "value": "franchi",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "1325 franchi",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 0,
+            "end": 4,
+            "value": "1325",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 5,
+            "end": 12,
+            "value": "franchi",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "46 franchi",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 0,
+            "end": 2,
+            "value": "46",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 3,
+            "end": 10,
+            "value": "franchi",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "133 franchi",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 0,
+            "end": 3,
+            "value": "133",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 4,
+            "end": 11,
+            "value": "franchi",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "per un totale di 10 euro",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 17,
+            "end": 19,
+            "value": "10",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 20,
+            "end": 24,
+            "value": "euro",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "per un totale di 281 euro",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 17,
+            "end": 20,
+            "value": "281",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 21,
+            "end": 25,
+            "value": "euro",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "per un totale di 4 euro",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 17,
+            "end": 18,
+            "value": "4",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 19,
+            "end": 23,
+            "value": "euro",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "per un totale di 345 euro",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 17,
+            "end": 20,
+            "value": "345",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 21,
+            "end": 25,
+            "value": "euro",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "per un totale di 4648 franchi svizzeri",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 17,
+            "end": 21,
+            "value": "4648",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 22,
+            "end": 38,
+            "value": "franchi svizzeri",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "per un totale di 312 franchi svizzeri",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 17,
+            "end": 20,
+            "value": "312",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 21,
+            "end": 37,
+            "value": "franchi svizzeri",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "per un totale di 31 franchi svizzeri",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 17,
+            "end": 19,
+            "value": "312",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 20,
+            "end": 36,
+            "value": "franchi svizzeri",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
+      {
+        "text": "per un totale di 9734 franchi svizzeri",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 17,
+            "end": 21,
+            "value": "9734",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 22,
+            "end": 38,
+            "value": "franchi svizzeri",
+            "entity": "currencyPayment"
+          }
+        ]
+      }
+    ]
+  }
+}
