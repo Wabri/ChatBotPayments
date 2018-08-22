@@ -1,8 +1,35 @@
 {
   "rasa_nlu_data": {
     "regex_features": [],
-    "entity_synonyms": [],
+    "entity_synonyms": [
+      {
+        "value": "euro",
+        "synonyms": ["€", "euro"]
+      },
+      {
+        "value": "CHF",
+        "synonyms": ["chf", "franchi svizzeri"]
+      }
+    ],
     "common_examples": [
+      {
+        "text": "€400",
+        "intent": "paymentRequest",
+        "entities": [
+          {
+            "start": 1,
+            "end": 4,
+            "value": "400",
+            "entity": "valuePayment"
+          },
+          {
+            "start": 0,
+            "end": 1,
+            "value": "€",
+            "entity": "currencyPayment"
+          }
+        ]
+      },
       {
         "text": "400 euro",
         "intent": "paymentRequest",
