@@ -18,7 +18,7 @@ class VoiceManager {
 
 class MessageSectionManager {
   static relativeMessageUpdate(message: string, whostalk: string) {
-    let talkerElement = document.querySelector("span#" + whostalk);
+    let talkerElement = document.getElementById(whostalk);
     talkerElement.innerHTML = "&nbsp" + message;
   }
 }
@@ -37,7 +37,6 @@ buttonWrite.onclick = function() {
   });
   var inputMessageElementString: string = $("input#inputMessage").val();
   MessageSectionManager.relativeMessageUpdate(inputMessageElementString, "you");
-  VoiceManager.synthVoice(inputMessageElementString);
   MessageSectionManager.relativeMessageUpdate("Sto pensando...", "bot");
   socketIOClient.emit("userMessage", inputMessageElementString);
   $("input#inputMessage").val("");

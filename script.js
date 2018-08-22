@@ -19,7 +19,7 @@ var MessageSectionManager = /** @class */ (function () {
     function MessageSectionManager() {
     }
     MessageSectionManager.relativeMessageUpdate = function (message, whostalk) {
-        var talkerElement = document.querySelector("span#" + whostalk);
+        var talkerElement = document.getElementById(whostalk);
         talkerElement.innerHTML = "&nbsp" + message;
     };
     return MessageSectionManager;
@@ -37,7 +37,6 @@ buttonWrite.onclick = function () {
     });
     var inputMessageElementString = $("input#inputMessage").val();
     MessageSectionManager.relativeMessageUpdate(inputMessageElementString, "you");
-    VoiceManager.synthVoice(inputMessageElementString);
     MessageSectionManager.relativeMessageUpdate("Sto pensando...", "bot");
     socketIOClient.emit("userMessage", inputMessageElementString);
     $("input#inputMessage").val("");

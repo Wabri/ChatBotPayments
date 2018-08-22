@@ -21,6 +21,76 @@ var Settings = /** @class */ (function () {
 }());
 var settingsApp = new Settings(process.env.VERSION_APP, process.env.SESSION_ID, process.env.SERVER_PORT_EXPRESS, process.env.SERVER_IP_RASA, process.env.SERVER_PORT_RASA, process.env.SERVER_IP_SPRING, process.env.SERVER_PORT_SPRING);
 // ----- fine implementazione oggetto in cui si trovano informazioni App ----- //
+// ----- Gestione comunicazione con rasa core ---- //
+var comunicationRasaManager = /** @class */ (function () {
+    function comunicationRasaManager() {
+    }
+    comunicationRasaManager.questionAndAnswer = function (socket, message, rasaAddress, userID) {
+        try {
+            sa.post(rasaAddress + "/conversations/" + userID + "/parse")
+                .set("Content-Type", "application/json")
+                .send({
+                query: message
+            })
+                .end(function (err, res) {
+                try {
+                    var arr = JSON.parse(res.text);
+                    console.log("Sender: " + arr.tracker["sender_id"]);
+                    console.log("next_action: " + arr.next_action);
+                    if (arr.next_action != "action_listen") {
+                        sa.post(rasaAddress + "/conversations/" + userID + "/respond")
+                            .set("Content-Type", "application/json")
+                            .send({
+                            query: message
+                        })
+                            .end(function (err, res) {
+                            var arrt = JSON.parse(res.text);
+                            console.log("botResponse: " + arrt[0].text);
+                            socket.emit("botResponse", arrt[0].text);
+                            return;
+                        });
+                    }
+                    else {
+                        socket.emit("botResponse", "Puoi cercare di essere più chiaro?");
+                        return;
+                    }
+                }
+                catch (err) {
+                    console.log("errore: " + err);
+                    socket.emit("botResponse", "In questo momento il servizio non è attivo, riprovare più tardi!");
+                    return;
+                }
+            });
+        }
+        catch (err) {
+            console.log("**** C'è stato un errore durante la chiamata verso rasa ****");
+            console.log("errore: " + err);
+            socket.emit("botResponse", "In questo momento il servizio non è attivo, riprovare più tardi!");
+            return;
+        }
+    };
+    comunicationRasaManager.conversationReset = function (socket, rasaAddress, userID) {
+        try {
+            sa.post(rasaAddress + "/conversations/" + userID + "/continue")
+                .set("Content-Type", "application/json")
+                .send({
+                events: [{ event: "restart" }]
+            })
+                .end(function (err, res) {
+                console.log("**** reset conversation ****");
+                socket.emit("botResponse", "La conversazione è stata cancellata");
+            });
+        }
+        catch (err) {
+            console.log("**** C'è stato un errore durante la chiamata verso rasa ****");
+            console.log("errore: " + err);
+            socket.emit("botResponse", "In questo momento il servizio non è attivo, riprovare più tardi!");
+            return;
+        }
+    };
+    return comunicationRasaManager;
+}());
+// ----- ----- //
 // ----- creazione server ----- //
 var express = require("express");
 var app = express();
@@ -48,69 +118,41 @@ socketIOServer.on("connection", function (socket) {
           della richiesta
           */
         // esempio di richiesta al backend rasa_nlu
-        var botResponse = "?????";
         var rasaAddress = "http://" + settingsApp.rasaIP + ":" + settingsApp.rasaPort;
+        var userID = socket.id;
         if (messageReceive != "conversation reset default") {
             /* esecuzione della post al server di rasa che eseguirà il parse del
            messaggio dell'utente*/
-            sa.post(rasaAddress + "/conversations/default/parse")
-                .set("Content-Type", "application/json")
-                .send({
-                query: messageReceive
-            })
-                .end(function (err, res) {
-                var arr = JSON.parse(res.text);
-                console.log("Sender: " + arr.tracker["sender_id"]);
-                console.log("next_action: " + arr.next_action);
-                if (arr.next_action != "action_listen") {
-                    sa.post(rasaAddress + "/conversations/default/respond")
-                        .set("Content-Type", "application/json")
-                        .send({
-                        query: messageReceive
-                    })
-                        .end(function (err, res) {
-                        var arrt = JSON.parse(res.text);
-                        console.log("botResponse: " + arrt[0].text);
-                        socket.emit("botResponse", arrt[0].text);
-                    });
-                }
-                else {
-                    socket.emit("botResponse", "Chiedimi qualcosa");
-                }
-            });
+            comunicationRasaManager.questionAndAnswer(socket, messageReceive, rasaAddress, userID);
         }
         else {
-            sa.post(rasaAddress + "/conversations/default/continue")
-                .set("Content-Type", "application/json")
-                .send({
-                events: [{ event: "restart" }]
-            })
-                .end(function (err, res) {
-                console.log("**** reset conversation bot ****");
-                botResponse = "Hai resettato il la conversazione per lo user default";
-                socket.emit("botResponse", botResponse);
-            });
+            comunicationRasaManager.conversationReset(socket, rasaAddress, userID);
         }
-      
+        /*
         // esempio di richiesta al backend spring
-        var requestToSpring = "http://" +
-            settingsApp.springIP +
-            ":" +
-            settingsApp.springPort +
-            "/v1/api/dataById?id=12";
+        var requestToSpring: string =
+          "http://" +
+          settingsApp.springIP +
+          ":" +
+          settingsApp.springPort +
+          "/v1/api/dataById?id=12";
+    
         http
-            .get(requestToSpring, function (resp) {
+          .get(requestToSpring, resp => {
             console.log("Spring response");
-            var data = "";
-            resp.on("data", function (chunk) {
-                data += chunk;
+            let data = "";
+    
+            resp.on("data", chunk => {
+              data += chunk;
             });
-            resp.on("end", function () {
-                console.log(JSON.parse(data));
+    
+            resp.on("end", () => {
+              console.log(JSON.parse(data));
             });
-        })
-            .on("error", function (err) {
+          })
+          .on("error", err => {
             console.log("Error: " + err.message);
-        });
+          });
+    */
     });
 });
