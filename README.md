@@ -10,6 +10,15 @@ Lingua: Italiano
 
 --------------------
 
+## index
+
+* [Introduction](#0-introduction)
+* [Frontend](#1-frontend)
+    - [index.ts](#11-indexts)
+    - [index.html](#12-indexhtml)
+    - [script.ts](#13-scriptts)
+* [Backend](#2-backend)
+
 ## 0. Introduction
 
 Questo è il mio progetto di tesi e tirocinio per il corso di laurea in informatica presso l'Università degli studi di Firenze.
@@ -50,4 +59,38 @@ libreria open source ancora in fase di sviluppo. La modifica dei campi di index.
 Infine la gestione della chat è fatta usando socket messi a disposizione dalla libreria socket.io.
 
 ## 2. Backend
+Inizialmente questa parte veniva fatta da [dialogflow](https://dialogflow.com/) strumento di casa google che permette di
+creare con un'interfaccia molto semplice il tuo bot personalizzato. Per una questione di riservatezza dei dati sensibili
+è stato richiesto di cambiare strumento per costruire l'intelligenza artificiale. Dopo varie ricerche ho deciso di 
+usare [Rasa](https://rasa.com/), open source che ha le stesse funzioni di dialogflow ma con una fase di configurazione e
+programmazione delle azioni leggermente più complessa. Rasa propone 2 funzionalità: Natural Language Understanding e Core.
 
+##### 2.1 NLU
+Un'intelligenza artificiale di questo prende in input un testo e restituisce in output diverse informazioni: l'intento 
+della frase (i cosidetti intents) e le parole chiave che è possibile estrapolare (chiamate entities). 
+L'intelligenza ha però bisogno di data set per allenarsi, dobbiamo quindi creare alcuni esempi di risoluzione.
+La definizione di questi dati viene fatta tramite dei file json:
+```
+{
+  "rasa_nlu_data": {
+    "regex_features": [],
+    "entity_synonyms": [],
+    "common_examples": []
+  }
+}
+```
+Sono molto semplici da comprendere: **regex_features** sono le espressioni regolari, **entity_synonyms** sono i sinonimi
+che è possibile incontrare, **common_examples** che sono gli esempi che è necessario fornire per allenare l'intelligenza.
+Gli esempi che ho scritto io si trovano nella cartella [RASA_AI/data/intents](RASA_IA/data/intents). Potevo estrarre
+i dati generati con dialogflow, ma ho preferito riscriverli per non dipendere da uno strumento esterno in modo da rendere
+più facile da mantenere. Prima di allenare l'intelligenza è necessario creare il file di configurazione in cui indichiamo
+la lingua e lo strumento usato per fare training, ho quindi creato il file nluModelConfig che si trova 
+[RASA_IA/nluModelConfig.yml](RASA_IA/nluModelConfig.yml) che ha questo contenuto:
+```
+language: "it"
+
+pipeline: "spacy_sklearn"
+```
+A questo punto è possibile eseguire il training.
+
+##### 2.2 Core
