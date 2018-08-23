@@ -18,6 +18,8 @@ Lingua: Italiano
     - [index.html](#12-indexhtml)
     - [script.ts](#13-scriptts)
 * [Backend](#2-backend)
+    - [NLU](#21-nlu)
+    - [CORE](#22-core)
 
 ## 0. Introduction
 
@@ -51,7 +53,7 @@ Ho usato 2 librerie esterne: [socket.io](https://socket.io/) per poter sfruttare
 che è la libreria che effettivamente rende la pagina dinamica permettendo di modificare il codice html a runtime.
 Infine c'è il riferimento allo script.js.
 
-##### 1.3 script.ts
+#### 1.3 script.ts
 
 Questo script è programmato per eseguire 4 azioni: gestione chat, modifica dei campi di index.html, voice recognition e synth voice. 
 Per il riconoscimento vocale e per la sintetizzazione della voce ho usato [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
@@ -65,9 +67,10 @@ creare con un'interfaccia molto semplice il tuo bot personalizzato. Per una ques
 usare [Rasa](https://rasa.com/), open source che ha le stesse funzioni di dialogflow ma con una fase di configurazione e
 programmazione delle azioni leggermente più complessa. Rasa propone 2 funzionalità: Natural Language Understanding e Core.
 
-##### 2.1 NLU
-Un'intelligenza artificiale di questo prende in input un testo e restituisce in output diverse informazioni: l'intento 
-della frase (i cosidetti intents) e le parole chiave che è possibile estrapolare (chiamate entities). 
+#### 2.1 NLU
+Un'intelligenza artificiale di questo tipo (NLU è l'abbreviazione di natural language understanding) prende in input un 
+testo e restituisce in output diverse informazioni: l'intento della frase (i cosidetti intents) e le parole chiave 
+che è possibile estrapolare (chiamate entities). 
 L'intelligenza ha però bisogno di data set per allenarsi, dobbiamo quindi creare alcuni esempi di risoluzione.
 La definizione di questi dati viene fatta tramite dei file json:
 ```
@@ -93,4 +96,41 @@ pipeline: "spacy_sklearn"
 ```
 A questo punto è possibile eseguire il training.
 
-##### 2.2 Core
+#### 2.2 Core
+Questa è la parte fondamentale del progetto, il **CORE** è quello che effettivamente fa tutto il lavoro: esegue nlu, 
+elabora una risposta e tiene traccia della conversazione. Per maggiori informazioni è possibile leggere il tutorial 
+che ho scritto [Rasa_Core](https://github.com/Wabri/LearningRasa#rasacore) oppure direttamente nei docs ufficiali
+[Rasa_Core](http://www.rasa.com/docs/core/quickstart/). Per poter eseguire il server Rasa con tutte le funzionalità che
+vogliamo è necessario allenarlo. Il CORE è suddiviso in 3 parti: ***domain***, ***stories*** e ***actions***. 
+Il **DOMAIN** è il dominio di interesse dell'intelligenza artificiale, questo viene configurato con un file scritto in 
+Yaml in cui viengono definiti: **intents** e **entities** da tracciare e riconoscere, **slots** sono contenitori di 
+informazioni che vengono (o possono) essere usati durante una conversazioni per salvare dati, **actions** sono le
+azioni che il bot può eseguire per rispondere a una certa frase in input, **templates** sono azioni di default che 
+possono essere usate. Il domain di questo progetto è [payment_domain.yml](RASA_IA/payment_domain.yml), è possibile 
+notare che le voci entities e templates non sono definite perchè non necessarie. Le **ACTIONS** sono definite in uno 
+script in python chiamato [action.py](RASA_IA/action.py) dove sono implementate le risposte del bot, questo script è 
+dove viene effettivamente completato il pagamento. Precisamente è definito dalla riga 73 alla 116 in cui si trova la 
+classe *ActionPaymentConfermation* che è una delle azioni del bot. Ultima parte ma non meno importante sono le cosìdette 
+**STORIES** in cui vengono ricreate alcune conversazioni tipo dalla più semplice a quella più complessa, queste poi 
+verranno usate dal training del modello che verrà poi usato dal server per rispondere. Un esempio molto semplice è:
+```
+Utente: "Ciao bot"
+Bot: "Salve"
+Utente: "Arrivederci"
+Bot: "Alla prossima"
+```
+Per far comprendere questo esempio all'intelligenza artificiale è necessario ricreare questa conversazione in un file di
+configurazione markdown di questo tipo:
+```
+# storia 1
+* inizio_conversazione
+    - risposta_inizio_conversazione
+* fine_conversazione
+    - risposta_fine_conversazione
+```
+La prima riga rappresenta una descrizione della storia (non ha un riscontro effettivo sul training è solo utile a 
+livello utente per differenziare le varie storie che vengono scritte), le righe successive sono divise in 2 simboli: 
+con * indica l'intento della frase proveniente dell'utente, mentre con - è l'azione che il bot deve eseguire come risposta. 
+Le stories che ho generato per questo bot è possibile vederle in questo file 
+[payment_stories.md](RASA_IA/stories/payment_stories.md). A questo punto viene fatto il training dando in input questi 3
+file.  
