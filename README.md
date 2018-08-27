@@ -170,7 +170,7 @@ python2.7 -m rasa_core.server -d models/current/core -u models/current/nlu -o ou
 ## 4. Esecuzione e Funzionamento
 Esecuzione del server rasa a sinistra e di node a destra:
 
-![rasanode](resources/startRASANODE.webm)
+![rasanode](resources/startRASANODE.gif)
 
 Semplice test del funzionamento:
 
