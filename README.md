@@ -20,6 +20,9 @@ Lingua: Italiano
 * [Backend](#2-backend)
     - [NLU](#21-nlu)
     - [CORE](#22-core)
+* [Requisiti](#3-requisiti)
+* [Esecuzione e Funzionamento](#4-esecuzione-e-funzionamento)
+* [Avvertenze](#5-avvertenze)
 
 ## 0. Introduction
 
@@ -62,17 +65,17 @@ Infine la gestione della chat è fatta usando socket messi a disposizione dalla 
 
 ## 2. Backend
 Inizialmente questa parte veniva fatta da [dialogflow](https://dialogflow.com/) strumento di casa google che permette di
-creare con un'interfaccia molto semplice il tuo bot personalizzato. Per una questione di riservatezza dei dati sensibili
+creare con un'interfaccia molto semplice un bot personalizzato. Per una questione di riservatezza dei dati sensibili
 è stato richiesto di cambiare strumento per costruire l'intelligenza artificiale. Dopo varie ricerche ho deciso di 
 usare [Rasa](https://rasa.com/), open source che ha le stesse funzioni di dialogflow ma con una fase di configurazione e
-programmazione delle azioni leggermente più complessa. Rasa propone 2 funzionalità: Natural Language Understanding e Core.
+programmazione delle azioni più complessa. Rasa propone 2 funzionalità: Natural Language Understanding e Core.
 
 #### 2.1 NLU
 Un'intelligenza artificiale di questo tipo (NLU è l'abbreviazione di natural language understanding) prende in input un 
 testo e restituisce in output diverse informazioni: l'intento della frase (i cosidetti intents) e le parole chiave 
 che è possibile estrapolare (chiamate entities). 
-L'intelligenza ha però bisogno di data set per allenarsi, dobbiamo quindi creare alcuni esempi di risoluzione.
-La definizione di questi dati viene fatta tramite dei file json:
+L'intelligenza ha però bisogno di dati su cui allenarsi, dobbiamo quindi creare alcuni esempi.
+La creazione di questi dati viene fatta tramite dei file json:
 ```
 {
   "rasa_nlu_data": {
@@ -130,7 +133,56 @@ configurazione markdown di questo tipo:
 ```
 La prima riga rappresenta una descrizione della storia (non ha un riscontro effettivo sul training è solo utile a 
 livello utente per differenziare le varie storie che vengono scritte), le righe successive sono divise in 2 simboli: 
-con * indica l'intento della frase proveniente dell'utente, mentre con - è l'azione che il bot deve eseguire come risposta. 
-Le stories che ho generato per questo bot è possibile vederle in questo file 
-[payment_stories.md](RASA_IA/stories/payment_stories.md). A questo punto viene fatto il training dando in input questi 3
-file.  
+con simbolo * viene indicato l'intento della frase proveniente dell'utente, mentre con il simbolo - viene definita 
+l'azione che il bot deve eseguire come risposta. Le stories che ho generato per questo bot è possibile vederle in questo 
+file [payment_stories.md](RASA_IA/stories/payment_stories.md). A questo punto viene fatto il training dando in input 
+questi 3 file.
+
+## 3. Requisiti
+Prima di tutto è necessario installare i pacchetti Javascript usando il package manager per Node.js: 
+```
+npm install
+```
+Poi modificare il contenuto del file di configurazione ***.env-test*** con le informazioni richieste e salvarlo come 
+***.env***. E' necessario anche compilare da TypeScript a JavaScript per poter eseguire infine 
+```
+node index.js
+```
+Per Rasa è necessario installare diversi pacchetti: rasa_core, rasa_nlu e spacy che a loro volta avranno altre 
+dipendenze. Per installarle basterà eseguire 
+```
+sudo -H python2.7 -m pip install rasa_core rasa_nlu[spacy]
+``` 
+(non certifico il funzionamento del bot per versioni python superiori alla 2.7). Spacy ha bisogno di alcuni file di 
+configurazione in base alla lingua del bot, nel nostro caso italiano. Scarichiamo quindi il dizionario per la lingua italiana:
+```
+python -m spacy download it
+```
+Una volta risolte queste dipendenze è necessario eseguire i 2 training del NLU e del CORE e infine eseguire il server:
+```
+python2.7 -m rasa_nlu.train --config nluModelConfig.yml --data data/ --project current --fixed_model_name nlu --path models/
+
+python2.7 -m rasa_core.train --domain payment_domain.yml --stories stories/ -o models/current/core --epochs 400
+
+python2.7 -m rasa_core.server -d models/current/core -u models/current/nlu -o out.log -p 5004 --verbose --debug
+```
+
+## 4. Esecuzione e Funzionamento
+Esecuzione del server rasa a sinistra e di node a destra:
+
+![rasanode](resources/startRASANODE.mp4)
+
+Semplice test del funzionamento:
+
+![chat](resources/testChat.mp4)
+
+## 5. Avvertenze
+1. L'architettura in cui verrà usato questo strumento possiede dei fattori di sicurezza token e jsession (è infatti 
+possibile notare che nel domain ho degli slots corrispondenti a questi nomi). Queste 2 variabili servono per eseguire le
+chiamate REST autenticate al server spring. Questi 2 valori vengono passati per ogni singola conversazione tramite 
+chiamate post di questo tipo:
+```
+curl -XPOST http://192.168.170.120:5004/conversations/default/tracker/events -d '[{"event": "slot", "name": "jsessionid", "value": "..."}]'
+curl -XPOST http://192.168.170.120:5004/conversations/default/tracker/events -d '[{"event": "slot", "name": "xcsrftoken", "value": "..."}]'
+```
+2. Come già detto non ho allegato la parte backend in spring per motivi commerciali e di sicurezza.

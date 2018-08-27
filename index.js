@@ -8,18 +8,16 @@ dotenv.config();
 // ----- fine caricamento delle configurazioni definite nel file .env ----- //
 // ----- implementazione oggetto in cui si trovano informazioni App ----- //
 var Settings = /** @class */ (function () {
-    function Settings(version, sessionID, expressPort, rasaIP, rasaPort, springIP, springPort) {
+    function Settings(version, sessionID, expressPort, rasaIP, rasaPort) {
         this.version = version;
         this.sessionID = sessionID;
         this.expressPort = expressPort;
         this.rasaIP = rasaIP;
         this.rasaPort = rasaPort;
-        this.springIP = springIP;
-        this.springPort = springPort;
     }
     return Settings;
 }());
-var settingsApp = new Settings(process.env.VERSION_APP, process.env.SESSION_ID, process.env.SERVER_PORT_EXPRESS, process.env.SERVER_IP_RASA, process.env.SERVER_PORT_RASA, process.env.SERVER_IP_SPRING, process.env.SERVER_PORT_SPRING);
+var settingsApp = new Settings(process.env.VERSION_APP, process.env.SESSION_ID, process.env.SERVER_PORT_EXPRESS, process.env.SERVER_IP_RASA, process.env.SERVER_PORT_RASA);
 // ----- fine implementazione oggetto in cui si trovano informazioni App ----- //
 // ----- Gestione comunicazione con rasa core ---- //
 var comunicationRasaManager = /** @class */ (function () {
@@ -102,7 +100,6 @@ app.get("/", function (req, res) {
 var server = app.listen(settingsApp.expressPort, function () {
     console.log("Express server listening on port %d in %s mode", server.address().port, app.settings.env);
     console.log("Rasa backend on %s:%d", settingsApp.rasaIP, settingsApp.rasaPort);
-    console.log("Spring backend on %s:%d", settingsApp.springIP, settingsApp.springPort);
 });
 // ----- fine creazione server ----- //
 // ----- gestione comunicazione tramite socket ----- //
@@ -128,31 +125,5 @@ socketIOServer.on("connection", function (socket) {
         else {
             comunicationRasaManager.conversationReset(socket, rasaAddress, userID);
         }
-        /*
-        // esempio di richiesta al backend spring
-        var requestToSpring: string =
-          "http://" +
-          settingsApp.springIP +
-          ":" +
-          settingsApp.springPort +
-          "/v1/api/dataById?id=12";
-    
-        http
-          .get(requestToSpring, resp => {
-            console.log("Spring response");
-            let data = "";
-    
-            resp.on("data", chunk => {
-              data += chunk;
-            });
-    
-            resp.on("end", () => {
-              console.log(JSON.parse(data));
-            });
-          })
-          .on("error", err => {
-            console.log("Error: " + err.message);
-          });
-    */
     });
 });

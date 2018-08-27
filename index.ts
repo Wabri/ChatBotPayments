@@ -16,25 +16,19 @@ class Settings {
   expressPort: number;
   rasaIP: string;
   rasaPort: number;
-  springIP: string;
-  springPort: number;
 
   constructor(
     version: string,
     sessionID: string,
     expressPort: number,
     rasaIP: string,
-    rasaPort: number,
-    springIP: string,
-    springPort: number
+    rasaPort: number
   ) {
     this.version = version;
     this.sessionID = sessionID;
     this.expressPort = expressPort;
     this.rasaIP = rasaIP;
     this.rasaPort = rasaPort;
-    this.springIP = springIP;
-    this.springPort = springPort;
   }
 }
 
@@ -43,9 +37,7 @@ const settingsApp: Settings = new Settings(
   process.env.SESSION_ID,
   process.env.SERVER_PORT_EXPRESS,
   process.env.SERVER_IP_RASA,
-  process.env.SERVER_PORT_RASA,
-  process.env.SERVER_IP_SPRING,
-  process.env.SERVER_PORT_SPRING
+  process.env.SERVER_PORT_RASA
 );
 // ----- fine implementazione oggetto in cui si trovano informazioni App ----- //
 
@@ -154,11 +146,6 @@ const server = app.listen(settingsApp.expressPort, () => {
     settingsApp.rasaIP,
     settingsApp.rasaPort
   );
-  console.log(
-    "Spring backend on %s:%d",
-    settingsApp.springIP,
-    settingsApp.springPort
-  );
 });
 // ----- fine creazione server ----- //
 
@@ -193,33 +180,6 @@ socketIOServer.on("connection", socket => {
     } else {
       comunicationRasaManager.conversationReset(socket, rasaAddress, userID);
     }
-
-    /*
-    // esempio di richiesta al backend spring
-    var requestToSpring: string =
-      "http://" +
-      settingsApp.springIP +
-      ":" +
-      settingsApp.springPort +
-      "/v1/api/dataById?id=12";
-
-    http
-      .get(requestToSpring, resp => {
-        console.log("Spring response");
-        let data = "";
-
-        resp.on("data", chunk => {
-          data += chunk;
-        });
-
-        resp.on("end", () => {
-          console.log(JSON.parse(data));
-        });
-      })
-      .on("error", err => {
-        console.log("Error: " + err.message);
-      });
-*/
   });
 });
 // ----- fine gestione comunicazione tramite socket ----- //
