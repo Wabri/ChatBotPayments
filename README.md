@@ -178,6 +178,8 @@ Semplice test del funzionamento:
 
 ![testchat](resources/testChat.gif)
 
+Il video completo è possibile vederlo ![qui](https://raw.githubusercontent.com/Wabri/ChatBotPayments/master/resources/testChat.webm).
+
 ## 5. Avvertenze
 1. L'architettura in cui verrà usato questo strumento possiede dei fattori di sicurezza token e jsession (è infatti
 possibile notare che nel domain ho degli slots corrispondenti a questi nomi). Queste 2 variabili servono per eseguire le
