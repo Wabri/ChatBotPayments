@@ -26,11 +26,12 @@ Lingua: Italiano
 
 ## 0. Introduction
 
-Questo è il mio progetto di tesi e tirocinio per il corso di laurea in informatica presso l'Università degli studi di Firenze.
-Il progetto si basa sulla creazione di un servizio di chat bot che permetta i pagamenti vocali.
+Questo è il mio progetto di tesi e tirocinio per il corso di laurea in informatica presso l'Università degli studi di 
+Firenze. Il progetto si basa sulla creazione di un servizio di chat bot che permetta i pagamenti vocali.
 Lo sviluppo di questo applicativo è diviso in 2 parti: frontend e backend.
 Il frontend l'ho scritto in typescript e una volta compilato in javascript l'ho eseguito tramite node.
-il backend è un insieme di linguaggi: per la parte di configurazione ho usato yaml e markdown, per la parte effettiva python.
+il backend è un insieme di linguaggi: per la parte di configurazione ho usato yaml e markdown, per la parte effettiva 
+python.
 
 
 ## 1. Frontend
@@ -51,10 +52,10 @@ con reindirizzamento alla pagina html principale (index.html), gestisce la comun
 #### 1.2 index.html
 
 Rappresenta la parte grafica del frontend, è quello che effettivamente si vede da browser.
-In pratica bottoni e zone di testo, non che i riferimenti agli script che librerie che sono usate per rendere la pagina dinamica.
-Ho usato 2 librerie esterne: [socket.io](https://socket.io/) per poter sfruttare i socket e [jquery](https://api.jquery.com/)
-che è la libreria che effettivamente rende la pagina dinamica permettendo di modificare il codice html a runtime.
-Infine c'è il riferimento allo script.js.
+In pratica bottoni e zone di testo, non che i riferimenti agli script che librerie che sono usate per rendere la pagina
+dinamica. Ho usato 2 librerie esterne: [socket.io](https://socket.io/) per poter sfruttare i socket e 
+[jquery](https://api.jquery.com/) che è la libreria che effettivamente rende la pagina dinamica permettendo di 
+modificare il codice html a runtime. Infine c'è il riferimento allo script.js.
 
 #### 1.3 script.ts
 
@@ -88,9 +89,9 @@ La creazione di questi dati viene fatta tramite dei file json:
 Sono molto semplici da comprendere: **regex_features** sono le espressioni regolari, **entity_synonyms** sono i sinonimi
 che è possibile incontrare, **common_examples** che sono gli esempi che è necessario fornire per allenare l'intelligenza.
 Gli esempi che ho scritto io si trovano nella cartella [RASA_AI/data/intents](RASA_IA/data/intents). Potevo estrarre
-i dati generati con dialogflow, ma ho preferito riscriverli per non dipendere da uno strumento esterno in modo da rendere
-più facile da mantenere. Prima di allenare l'intelligenza è necessario creare il file di configurazione in cui indichiamo
-la lingua e lo strumento usato per fare training, ho quindi creato il file nluModelConfig che si trova
+i dati generati con dialogflow, ma ho preferito riscriverli per non dipendere da uno strumento esterno in modo da 
+rendere più facile da mantenere. Prima di allenare l'intelligenza è necessario creare il file di configurazione in cui 
+indichiamo la lingua e lo strumento usato per fare training, ho quindi creato il file nluModelConfig che si trova
 [RASA_IA/nluModelConfig.yml](RASA_IA/nluModelConfig.yml) che ha questo contenuto:
 ```
 language: "it"
@@ -154,7 +155,8 @@ dipendenze. Per installarle basterà eseguire
 sudo -H python2.7 -m pip install rasa_core rasa_nlu[spacy]
 ```
 (non certifico il funzionamento del bot per versioni python superiori alla 2.7). Spacy ha bisogno di alcuni file di
-configurazione in base alla lingua del bot, nel nostro caso italiano. Scarichiamo quindi il dizionario per la lingua italiana:
+configurazione in base alla lingua del bot, nel nostro caso italiano. Scarichiamo quindi il dizionario per la lingua 
+italiana:
 ```
 python -m spacy download it
 ```
