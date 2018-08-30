@@ -13,17 +13,17 @@ Lingua: Italiano
 ## index
 
 0. [Introduction](#0-introduction)
-* [Frontend](#1-frontend)
+1. [Frontend](#1-frontend)
     - [index.ts](#11-indexts)
     - [index.html](#12-indexhtml)
     - [script.ts](#13-scriptts)
-* [Backend](#2-backend)
+2. [Backend](#2-backend)
     - [NLU](#21-nlu)
     - [CORE](#22-core)
-* [Requisiti](#3-requisiti)
-* [Funzionamento](#4-logica-di-funzionamento)
-* [Esecuzione](#5-esecuzione)
-* [Avvertenze](#6-avvertenze)
+3. [Requisiti](#3-requisiti)
+4. [Funzionamento](#4-logica-di-funzionamento)
+5. [Esecuzione](#5-esecuzione)
+6. [Avvertenze](#6-avvertenze)
 
 ## 0. Introduction
 
