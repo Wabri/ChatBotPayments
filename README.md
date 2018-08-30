@@ -12,7 +12,7 @@ Lingua: Italiano
 
 ## index
 
-* [Introduction](#0-introduction)
+0. [Introduction](#0-introduction)
 * [Frontend](#1-frontend)
     - [index.ts](#11-indexts)
     - [index.html](#12-indexhtml)
@@ -21,8 +21,9 @@ Lingua: Italiano
     - [NLU](#21-nlu)
     - [CORE](#22-core)
 * [Requisiti](#3-requisiti)
-* [Esecuzione e Funzionamento](#4-esecuzione-e-funzionamento)
-* [Avvertenze](#5-avvertenze)
+* [Funzionamento](#4-logica-di-funzionamento)
+* [Esecuzione](#5-esecuzione)
+* [Avvertenze](#6-avvertenze)
 
 ## 0. Introduction
 
@@ -169,7 +170,17 @@ python2.7 -m rasa_core.train --domain payment_domain.yml --stories stories/ -o m
 python2.7 -m rasa_core.server -d models/current/core -u models/current/nlu -o out.log -p 5004 --verbose --debug
 ```
 
-## 4. Esecuzione e Funzionamento
+## 4. Logica di funzionamento
+
+La chat funziona grazie al sistema di socket (generati grazie a [socket.io](https://socket.io/)) che trasmettono i
+messaggi tra il controller della pagina, index.js, e lo script che gestisce la pagina, script.js. Il socket dell'utente
+emetterà un evento quando viene usato il microfono o quando viene immesso un testo nella casella apposita. Il socket
+emesso verrà catturato dal controller che in base alla richiesta invierà una chiamata post a rasa. Una volta
+eseguito il parse restituirà il messaggio di risposta che tramite l'emissione un socket verrà trasmesso all'utente.
+A questo punto lo script modificherà i campi del bot e dell'utente con la conversazione appena effettuata.
+Nel paragrafo successivo è possibile vederne il funzionamento effettivo.
+
+## 5. Esecuzione
 Esecuzione del server rasa a sinistra e di node a destra:
 
 ![startrasanode](resources/startRASANODE.gif)
@@ -180,7 +191,7 @@ Semplice test del funzionamento:
 
 Il video completo è possibile vederlo ![qui](https://raw.githubusercontent.com/Wabri/ChatBotPayments/master/resources/testChat.webm).
 
-## 5. Avvertenze
+## 6. Avvertenze
 1. L'architettura in cui verrà usato questo strumento possiede dei fattori di sicurezza token e jsession (è infatti
 possibile notare che nel domain ho degli slots corrispondenti a questi nomi). Queste 2 variabili servono per eseguire le
 chiamate REST autenticate al server spring. Questi 2 valori vengono passati per ogni singola conversazione tramite
