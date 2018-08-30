@@ -172,10 +172,10 @@ python2.7 -m rasa_core.server -d models/current/core -u models/current/nlu -o ou
 
 La chat funziona grazie al sistema di socket (generati grazie a [socket.io](https://socket.io/)) che trasmettono i 
 messaggi tra il controller della pagina, index.js, e lo script che gestisce la pagina, script.js. Il socket dell'utente
-emetterà un evento quando viene usato il microfono o quando viene immesso un testo nella casella apposita. il socket 
-emesso verrà catturato dal controller che in base alla richiesta invierà una chiamata rest in post a rasa che una volta 
-eseguito il parse restituirà il messaggio di risposta che verrà inviato all'utente tramite l'emissione di un nuovo 
-socket. A questo punto lo script modificherà i campi del bot e dell'utente con la conversazione appena effettuata.
+emetterà un evento quando viene usato il microfono o quando viene immesso un testo nella casella apposita. Il socket 
+emesso verrà catturato dal controller che in base alla richiesta invierà una chiamata post a rasa. Una volta 
+eseguito il parse restituirà il messaggio di risposta che tramite l'emissione un socket verrà trasmesso all'utente. 
+A questo punto lo script modificherà i campi del bot e dell'utente con la conversazione appena effettuata.
 
 ## 5. Esecuzione
 Esecuzione del server rasa a sinistra e di node a destra:
