@@ -175,7 +175,8 @@ messaggi tra il controller della pagina, index.js, e lo script che gestisce la p
 emetterà un evento quando viene usato il microfono o quando viene immesso un testo nella casella apposita. Il socket 
 emesso verrà catturato dal controller che in base alla richiesta invierà una chiamata post a rasa. Una volta 
 eseguito il parse restituirà il messaggio di risposta che tramite l'emissione un socket verrà trasmesso all'utente. 
-A questo punto lo script modificherà i campi del bot e dell'utente con la conversazione appena effettuata.
+A questo punto lo script modificherà i campi del bot e dell'utente con la conversazione appena effettuata. 
+Nel paragrafo successivo è possibile vederne il funzionamento effettivo.
 
 ## 5. Esecuzione
 Esecuzione del server rasa a sinistra e di node a destra:
