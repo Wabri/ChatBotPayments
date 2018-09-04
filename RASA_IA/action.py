@@ -2,13 +2,12 @@
 import requests
 import json
 import time
-import datetime
 from rasa_core.actions import Action
 from rasa_core.events import SlotSet
 from rasa_core.events import Restarted
 
 
-class ServerInfo():
+class ServerInfo:
 
     def __init__(self):
         self.serverIP = "192.168.13.15"
@@ -22,7 +21,26 @@ class ServerInfo():
 
     def getStringJsonValidatePayment(self):
         # attualmente sto considerando solo il pagamento a partire da un unico utente #
-        dataDumps = json.dumps({"id":None,"debitAccountId":"0213184001000CHF","type":"SWISS","restWarnings":[],"execution":{"restCode":"UNIQUE","adviceType":"SN_SN","tagId":None,"description":None,"valueCompensated":None,"executionDate":None,"messageFromBank":None,"priority":"NORMAL"},"status":None,"creationDate":None,"modificationDate":None,"dtaId":None,"permanentId":None,"transactionSigningTimestamp":None,"dta":False,"billId":None,"paynetNumber":None,"contributors":[{"index":1,"date":None,"name":"GPUL","contribution":60}],"restSlips":[{"restType":"SWISS","type":"SWISS","beneficiaryAddress":{"lines":["prova test bot"]},"reason":{"lines":[]},"accountId":None,"bank":{"id":"8049747","sic":"09000","bic":"POFICHBEXXX","esrCode":None,"postAccountCode":None,"address":"SWISS POST-POSTFINANCE  BERNE","description":"SWISS POST-POSTFINANCE","ban":None,"category":"BANK","sepa":True},"id":None,"amount":{"value":None,"currency":{"isoCode":None,"ccyId":None,"priority":2,"fractionDigits":2,"euroParity":None,"roundingRule":0.05}},"warnings":[],"infos":[],"restWarnings":[]}]})
+        dataDumps = json.dumps({"id": None, "debitAccountId": "0213184001000CHF", "type": "SWISS", "restWarnings": [],
+                                "execution": {"restCode": "UNIQUE", "adviceType": "SN_SN", "tagId": None,
+                                              "description": None, "valueCompensated": None, "executionDate": None,
+                                              "messageFromBank": None, "priority": "NORMAL"}, "status": None,
+                                "creationDate": None, "modificationDate": None, "dtaId": None, "permanentId": None,
+                                "transactionSigningTimestamp": None, "dta": False, "billId": None, "paynetNumber": None,
+                                "contributors": [{"index": 1, "date": None, "name": "GPUL", "contribution": 60}],
+                                "restSlips": [{"restType": "SWISS", "type": "SWISS",
+                                               "beneficiaryAddress": {"lines": ["prova test bot"]},
+                                               "reason": {"lines": []}, "accountId": None,
+                                               "bank": {"id": "8049747", "sic": "09000", "bic": "POFICHBEXXX",
+                                                        "esrCode": None, "postAccountCode": None,
+                                                        "address": "SWISS POST-POSTFINANCE  BERNE",
+                                                        "description": "SWISS POST-POSTFINANCE", "ban": None,
+                                                        "category": "BANK", "sepa": True}, "id": None,
+                                               "amount": {"value": None,
+                                                          "currency": {"isoCode": None, "ccyId": None, "priority": 2,
+                                                                       "fractionDigits": 2, "euroParity": None,
+                                                                       "roundingRule": 0.05}}, "warnings": [],
+                                               "infos": [], "restWarnings": []}]})
         return dataDumps
 
     def getUrlValidatePayment(self):
@@ -67,7 +85,7 @@ class ActionPaymentTracker(Action):
         else:
             message = "Tutti i dati sono stati completati! Pronuncia 'confermo la transazione' per continuare altrimenti 'rifiuto la transazione' per annullare!"
             dispatcher.utter_message(message.decode("ascii", "ignore"))
-        return[]
+        return []
 
 
 class ActionPaymentConfermation(Action):
@@ -76,7 +94,7 @@ class ActionPaymentConfermation(Action):
         return "ActionPaymentConfermation"
 
     def run(self, dispatcher, tracker, domain):
-        if (tracker.get_slot("valuePayment") is None ) and (tracker.get_slot("currencyPayment") is None):
+        if (tracker.get_slot("valuePayment") is None) and (tracker.get_slot("currencyPayment") is None):
             message = "Prima di confermare il pagamento per favore indica il valore del pagamento e in che valuta!"
         elif (tracker.get_slot("ibanReceiver") is None):
             message = "Prima di confermare il pagamento per favore inserisci il conto di destinazione!"
@@ -89,8 +107,10 @@ class ActionPaymentConfermation(Action):
             payload["execution"]["executionDate"] = int(round(time.time() * 1000 + 604800000))
             payload["contributors"][0]["date"] = payload["execution"]["executionDate"]
             url = serverInfo.getUrlValidatePayment()
-            cookies = {'JSESSIONID': str(tracker.get_slot("jsessionid")), 'XSRF-TOKEN': str(tracker.get_slot("xcsrftoken")), 'ls.lastAccess': 'tabSMS'}
-            headers = {'X-XSRF-TOKEN': str(tracker.get_slot("xcsrftoken")), 'Content-Type': 'application/json;charset=UTF-8'}
+            cookies = {'JSESSIONID': str(tracker.get_slot("jsessionid")),
+                       'XSRF-TOKEN': str(tracker.get_slot("xcsrftoken")), 'ls.lastAccess': 'tabSMS'}
+            headers = {'X-XSRF-TOKEN': str(tracker.get_slot("xcsrftoken")),
+                       'Content-Type': 'application/json;charset=UTF-8'}
             r = requests.post(url=url, data=json.dumps(payload), cookies=cookies, headers=headers)
             print(r.json())
             if r.status_code == requests.codes.ok:
@@ -113,7 +133,7 @@ class ActionPaymentConfermation(Action):
             else:
                 message = "Validazione del pagamento non riuscito, riprovare!"
         dispatcher.utter_message(message.decode("ascii", "ignore"))
-        return[]
+        return []
 
 
 class ActionPaymentReject(Action):
@@ -124,7 +144,7 @@ class ActionPaymentReject(Action):
     def run(self, dispatcher, tracker, domain):
         message = "Pagamento annullato!"
         dispatcher.utter_message(message.decode("ascii", "ignore"))
-        return[Restarted(timestamp=None)]
+        return [Restarted(timestamp=None)]
 
 
 class ActionRequestListAccount(Action):
@@ -143,7 +163,7 @@ class ActionRequestListAccount(Action):
             data = r.json()
         message = "Il tuo conto è: " + data[0]["description"].encode('utf8')
         dispatcher.utter_message(message.decode("ascii", "ignore"))
-        return[SlotSet('accountList', value=data, timestamp=None)]
+        return [SlotSet('accountList', value=data, timestamp=None)]
 
 
 '''
@@ -173,6 +193,7 @@ class ActionRequestTotalAccountValue(Action):
         dispatcher.utter_message(message.decode("ascii", "ignore"))
         return []
 '''
+
 
 class ActionGoodbye(Action):
 
