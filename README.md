@@ -189,6 +189,10 @@ Semplice test del funzionamento:
 
 ![testchat](resources/testChat.gif)
 
+La riprova del funzionamento effettivo della chat è dato dai movimenti del account usato per eseguire il pagamento:
+
+![testChat.png](resources/testChat.PNG)
+
 Il video completo è possibile vederlo ![qui](https://raw.githubusercontent.com/Wabri/ChatBotPayments/master/resources/testChat.webm).
 
 ## 6. Avvertenze
