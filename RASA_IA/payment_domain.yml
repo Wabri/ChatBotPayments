@@ -1,7 +1,7 @@
 slots:
   jsessionid:
     type: text
-  xcsrftoken:
+  xsrftoken:
     type: text
   accountList:
     type: text

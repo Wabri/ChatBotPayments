@@ -202,6 +202,6 @@ chiamate REST autenticate al server spring. Questi 2 valori vengono passati per 
 chiamate post di questo tipo:
 ```
 curl -XPOST http://192.168.170.120:5004/conversations/default/tracker/events -d '[{"event": "slot", "name": "jsessionid", "value": "..."}]'
-curl -XPOST http://192.168.170.120:5004/conversations/default/tracker/events -d '[{"event": "slot", "name": "xcsrftoken", "value": "..."}]'
+curl -XPOST http://192.168.170.120:5004/conversations/default/tracker/events -d '[{"event": "slot", "name": "xsrftoken", "value": "..."}]'
 ```
 2. Come già detto non ho allegato la parte backend in spring per motivi commerciali e di sicurezza.

@@ -108,8 +108,8 @@ class ActionPaymentConfermation(Action):
             payload["contributors"][0]["date"] = payload["execution"]["executionDate"]
             url = serverInfo.getUrlValidatePayment()
             cookies = {'JSESSIONID': str(tracker.get_slot("jsessionid")),
-                       'XSRF-TOKEN': str(tracker.get_slot("xcsrftoken")), 'ls.lastAccess': 'tabSMS'}
-            headers = {'X-XSRF-TOKEN': str(tracker.get_slot("xcsrftoken")),
+                       'XSRF-TOKEN': str(tracker.get_slot("xsrftoken")), 'ls.lastAccess': 'tabSMS'}
+            headers = {'X-XSRF-TOKEN': str(tracker.get_slot("xsrftoken")),
                        'Content-Type': 'application/json;charset=UTF-8'}
             r = requests.post(url=url, data=json.dumps(payload), cookies=cookies, headers=headers)
             print(r.json())
@@ -118,7 +118,7 @@ class ActionPaymentConfermation(Action):
                 r = requests.post(url=url, data=json.dumps(payload), cookies=cookies, headers=headers)
                 print(r.json())
                 if r.status_code == requests.codes.ok:
-                    headers = {'X-XSRF-TOKEN': str(tracker.get_slot("xcsrftoken"))}
+                    headers = {'X-XSRF-TOKEN': str(tracker.get_slot("xsrftoken"))}
                     url = serverInfo.getUrlSavePaymentTransaction(r.json()["transactionTokenKey"])
                     print(url)
                     r = requests.get(url=url, cookies=cookies, headers=headers)
@@ -157,8 +157,8 @@ class ActionRequestListAccount(Action):
         if data is None:
             URL = 'http://' + serverInfo.getIP() + ':' + serverInfo.getPort() + '/ibs-mvc/rest/domain/customers'
             jsessionid = str(tracker.get_slot("jsessionid"))
-            xcsrftoken = str(tracker.get_slot("xcsrftoken"))
-            cookie = {'JSESSIONID': jsessionid, 'XSRF-TOKEN': xcsrftoken}
+            xsrftoken = str(tracker.get_slot("xsrftoken"))
+            cookie = {'JSESSIONID': jsessionid, 'XSRF-TOKEN': xsrftoken}
             r = requests.get(url=URL, cookies=cookie)
             data = r.json()
         message = "Il tuo conto è: " + data[0]["description"].encode('utf8')
@@ -167,8 +167,8 @@ class ActionRequestListAccount(Action):
 
 
 '''
-# questa azione del bot servirebbe per ricavarsi la lista dei conti dell'utente, 
-# ho disabilitato questa funzionalità dato che per il prototipo usiamo solo l'utente con un solo account bancario 
+# questa azione del bot servirebbe per ricavarsi la lista dei conti dell'utente,
+# ho disabilitato questa funzionalità dato che per il prototipo usiamo solo l'utente con un solo account bancario
 class ActionRequestTotalAccountValue(Action):
 
     def name(self):
@@ -179,8 +179,8 @@ class ActionRequestTotalAccountValue(Action):
             if tracker.get_slot("accountList") is None:
                 URL = 'http://' + serverInfo.getIP() + ':' + serverInfo.getPort() + '/ibs-mvc/rest/domain/customers'
                 jsessionid = str(tracker.get_slot("jsessionid"))
-                xcsrftoken = str(tracker.get_slot("xcsrftoken"))
-                cookie = {'JSESSIONID': jsessionid, 'XSRF-TOKEN': xcsrftoken}
+                xsrftoken = str(tracker.get_slot("xsrftoken"))
+                cookie = {'JSESSIONID': jsessionid, 'XSRF-TOKEN': xsrftoken}
                 r = requests.get(url=URL, cookies=cookie)
                 data = r.json()
                 SlotSet("accountList", data)
