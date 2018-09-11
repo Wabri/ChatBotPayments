@@ -16,19 +16,22 @@ class Settings {
   expressPort: number;
   rasaIP: string;
   rasaPort: number;
+  token: string;
 
   constructor(
     version: string,
     sessionID: string,
     expressPort: number,
     rasaIP: string,
-    rasaPort: number
+    rasaPort: number,
+    token: string
   ) {
     this.version = version;
     this.sessionID = sessionID;
     this.expressPort = expressPort;
     this.rasaIP = rasaIP;
     this.rasaPort = rasaPort;
+    this.token = token;
   }
 }
 
@@ -37,8 +40,10 @@ const settingsApp: Settings = new Settings(
   process.env.SESSION_ID,
   process.env.SERVER_PORT_EXPRESS,
   process.env.SERVER_IP_RASA,
-  process.env.SERVER_PORT_RASA
+  process.env.SERVER_PORT_RASA,
+  process.env.TOKEN_RASA
 );
+
 // ----- fine implementazione oggetto in cui si trovano informazioni App ----- //
 
 // ----- Gestione comunicazione con rasa core ---- //
@@ -47,10 +52,11 @@ class comunicationRasaManager {
     socket: any,
     message: string,
     rasaAddress: string,
-    userID: string
+    userID: string,
+    token: string
   ) {
     try {
-      sa.post(rasaAddress + "/conversations/" + userID + "/parse")
+      sa.post(rasaAddress + "/conversations/" + userID + "/parse"+"?token="+token)
         .set("Content-Type", "application/json")
         .send({
           query: message
@@ -61,7 +67,7 @@ class comunicationRasaManager {
             console.log("Sender: " + arr.tracker["sender_id"]);
             console.log("next_action: " + arr.next_action);
             if (arr.next_action != "action_listen") {
-              sa.post(rasaAddress + "/conversations/" + userID + "/respond")
+              sa.post(rasaAddress + "/conversations/" + userID + "/respond?token="+token)
                 .set("Content-Type", "application/json")
                 .send({
                   query: message
@@ -98,9 +104,9 @@ class comunicationRasaManager {
     }
   }
 
-  static conversationReset(socket: any, rasaAddress: string, userID: string) {
+  static conversationReset(socket: any, rasaAddress: string, userID: string, token: string) {
     try {
-      sa.post(rasaAddress + "/conversations/" + userID + "/continue")
+      sa.post(rasaAddress + "/conversations/" + userID + "/continue?token="+token)
         .set("Content-Type", "application/json")
         .send({
           events: [{ event: "restart" }]
@@ -147,6 +153,7 @@ const server = app.listen(settingsApp.expressPort, () => {
     settingsApp.rasaPort
   );
 });
+
 // ----- fine creazione server ----- //
 
 // ----- gestione comunicazione tramite socket ----- //
@@ -175,10 +182,11 @@ socketIOServer.on("connection", socket => {
         socket,
         messageReceive,
         rasaAddress,
-        userID
+        userID,
+        settingsApp.token
       );
     } else {
-      comunicationRasaManager.conversationReset(socket, rasaAddress, userID);
+      comunicationRasaManager.conversationReset(socket, rasaAddress, userID, settingsApp.token);
     }
   });
 });
