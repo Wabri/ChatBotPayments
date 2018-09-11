@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="chatbot" content="width=device-width">
+
+	<title>Prototype of ChatBot</title>
+
+</head>
+
+<body>
+	<section>
+		<h1>BVChatBot</h1>
+
+		<button id="talk">
+			<i class="fa fa-microphone" aria-hidden="true"></i>
+		</button>
+		</br>
+		Te: {{userMessage}}
+		</br>
+		Bot: {{botMessage}}
+		<span ng-model="botMessage" id="botMessage"> </span>
+
+		<form id="messageForm">
+			<input ng-model="inputMessage" id="inputMessage" autocomplete="off" />
+			<button ng-click="sendUserMessage()" id="write">Send</button>
+		</form>
+
+	</section>
+</body>
+
+</html>
