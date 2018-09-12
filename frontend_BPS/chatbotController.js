@@ -8,7 +8,7 @@
     $scope.userMessage = "Il tuo messaggio";
     $scope.botMessage = "Il messaggio del bot";
 
-		var xsrfToken = $cookies.get($http.defaults.xsrfCookieName);
+    var xsrfToken = $cookies.get($http.defaults.xsrfCookieName);
 
     var id = ChatbotService.makeID();
 
@@ -20,26 +20,23 @@
 
     function sendUserMessage() {
 
-      $http.post("http://192.168.170.120:5004/conversations/" + id + "/parse?token=wabridev", {
-        "query": $scope.inputMessage
-      }, {
-        'withCredentials': false
-      }).then(function(response) {
+      ChatbotService.sendMessageToRasa(id, $scope).then(function(response) {
         $scope.userMessage = $scope.inputMessage;
-				$scope.inputMessage = "";
-				$http.post("http://192.168.170.120:5004/conversations/" + id + "/respond?token=wabridev", {
-	        "query": $scope.userMessage
-	      }, {
-	        'withCredentials': false
-	      }).then(function(response) {
-					try {
-          $scope.botMessage = response.data[0].text;
-        } catch (e) {
-          console.log("Testo non compreso")
-        }
-	      }, function() {});
+        $scope.inputMessage = "";
+        $http.post("http://192.168.11.24:5005/conversations/" + id + "/respond?token=wabridev", {
+          "query": $scope.userMessage
+        }, {
+          'withCredentials': false
+        }).then(function(response) {
+          try {
+            $scope.botMessage = response.data[0].text;
+          } catch (e) {
+            console.log("Testo non compreso")
+          }
+        }, function() {});
       }, function() {});
     }
+
   }
 
 })();

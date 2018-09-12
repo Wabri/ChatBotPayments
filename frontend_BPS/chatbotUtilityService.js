@@ -10,7 +10,7 @@
     self.makeID = makeID;
 
     function enstablishConnectionWithRasa(xsrfToken, id) {
-      $http.post("http://192.168.170.120:5004/conversations/" + id + "/tracker/events?token=wabridev",
+      $http.post("http://192.168.11.24:5005/conversations/" + id + "/tracker/events?token=wabridev",
         [{"event": "slot",
         "name": "xsrftoken",
         "value": xsrfToken }
@@ -32,5 +32,14 @@
       }
       return text;
     }
+
+    function sendMessageToRasa(id, vm) {
+    	return $http.post("http://192.168.11.24:5005/conversations/" + id + "/parse?token=wabridev", {
+            "query": vm.inputMessage
+        }, {
+          'withCredentials': false
+        });
+    }
+
   }
 })();
