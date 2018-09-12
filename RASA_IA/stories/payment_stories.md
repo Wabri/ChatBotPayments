@@ -11,7 +11,7 @@
 # richiesta conti
 * bankAccountsList
   - ActionRequestListAccount
-  
+
 # pagamento confermato
 * paymentRequest
   - ActionPaymentTracker

@@ -159,9 +159,9 @@ sudo -H python2.7 -m pip install rasa_core rasa_nlu[spacy]
 configurazione in base alla lingua del bot, nel nostro caso italiano. Scarichiamo quindi il dizionario per la lingua
 italiana:
 ```
-python -m spacy download it
+python -m spacy download it_core_news_sm
 ```
-Una volta risolte queste dipendenze è necessario eseguire i 2 training del NLU e del CORE e infine eseguire il server:
+Una volta risolte queste dipendenze è necessario spostarsi nella cartella RASA_AI ed eseguire i 2 training del NLU e del CORE, per poi eseguire il server:
 ```
 python2.7 -m rasa_nlu.train --config nluModelConfig.yml --data data/ --project current --fixed_model_name nlu --path models/
 
