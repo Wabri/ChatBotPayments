@@ -3,7 +3,7 @@
 --------------------
 
 
-Versione: 0.01.1
+Versione: 0.1.1
 
 Lingua: Italiano
 
