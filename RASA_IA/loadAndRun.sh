@@ -1,4 +1,4 @@
-pip install -r requirements.txt
+install -r requirements.txt
 
 spacy download it_core_news_sm
 
