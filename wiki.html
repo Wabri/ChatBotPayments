@@ -1,0 +1,397 @@
+
+= Prototype 1 (with [https://dialogflow.com Google Dialogflow] for NLU) =
+
+The VUI system has been be modeled considering two main modules:
+
+1. Speech recognition module (platform dependent): listens to the user and generates a transcription of the dialog, that is fed into the conversational engine to be analyzed
+
+2. Natural Language Understanding module (NLU, common to all devices): performs Natural Language Processing to extract the relevant pieces of information and integrates the conversation logic that allows a natural dialog interaction.
+
+Web application served by nodeJs server (saved in the <code>vui/</code> folder), integrated with banking server to make payments (source account is hardcoded).
+
+Speech recognition is done using Web Speech API (working in Chrome and Firefox at least).
+
+[https://dialogflow.com Google Dialogflow] is used as NLU engine.
+It can be customised rather easily via its UI. To restore the configuration and data I used, you can import the <code>Dialogflow_BankVUI.zip</code> file in Dialogflow.
+
+The web app client does not call Google directly, but it goes through the nodeJS server which calls the Dialogflow API via the <code>apiai</code> node module.
+
+The API services exposed by NodeJS are declared in <code>vui/routes/root.js</code> and include:
+
+<ul>
+<li> <code>POST '/it/message'</code>  to process a user message (in Italian)<br>
+body: <code>{ message: <user sentence to analyse>, [sessionId: <sessionId received with first response>] }</code><br>
+response: [https://dialogflow.com/docs/reference/agent/query (JSON) see official documentation]<br><br>
+</li>
+
+<li><code>POST '/customEntity'</code> to declare session-specific entities, expiring in 30 minutes (Note: you need to have already started a conversation via <code>'/it/message'</code> since you need the <code>sessionId</code>)</li>
+body:
+<pre>{
+  entities: [{
+    name: <entity name>,
+    extend: <false if it should override existing entity values>,
+    entries: [{
+      value: <entry name>,
+      synonyms:[ <...entry synonyms...> ]
+    }, ... ]
+  }],
+  sessionId
+}</pre>
+ response: [https://dialogflow.com/docs/reference/agent/userentities (JSON) see official documentation]</li>
+</ul>
+
+Dialogflow's webhooks are not possible since require a publicly accessible server. To make up for this limitation, the client needs to handle some conversation logic (see <code>vui/public/js/apiai.js</code>)
+
+Once all the required information has been provided by the user, the payment can be carried out by calling the banking API.<br>
+The nodeJS routes under <code>vui/routes/account.js</code> return the pre-formatted JSON payloads to be sent to the banking API:
+<ul>
+<li><code>POST 'account/<payerAccountId>'</code><br>
+body (Note: compatible with Dialogflow's payload <code>serverResponse.results</code>, with additional <code>username</code> field added inside <code>paramenters</code>):
+<pre>{
+  parameters: {
+    username,
+    to: <beneficiary alias>,
+    payment-type: <SWISS or ORANGE>,
+    amount: <payment money amount>,
+    currency: { currency: <payment money currency>  }
+  }
+}</pre>
+response: JSON payload accepted by <code>/ibs-mvc/rest/payments/validatepayment</code>
+</li>
+</ul>
+
+
+To install and run the web app, move in the <code>vui/</code> folder and in command line run the following
+<pre>
+  npm install
+  npm run start:dev
+</pre>
+
+= Prototype 2 (with [https://rasa.ai Rasa] for NLU) =
+Only part of the NLU engine has been implemented so far, for the <code>make-payment</code> feature, using the [https://rasa.ai Rasa] framework.<br>
+
+[https://core.rasa.ai Rasa Core] provides a programming interface for the conversation logic.<br>
+[https://nlu.rasa.ai Rasa NLU] is a tool for intent classification and entity extraction, which works with existing NLP and ML libraries: the installed backend for the prototype combines <code>spaCy + sklearn</code> (as suggested by the Rasa docs).
+
+Rasa is compatible with exported Dialogflow configurations (entities, intents, training samples...).<br>
+
+The project folder <code>rasa/</code> contains all configuration and data files, as well as the Python virtual environment that can be used to run the application without further installations.<br>
+To start the training and then run the application using the virtual environment, run the shell script <code>rasa/run.sh</code>
+
+If the virtual environment cannot be used, to install Rasa Core and NLU see their official documentation.<br>
+Then move to the <code>rasa/</code> folder and run the following instructions via command line (the first trains the system, the second starts the conversation app)
+<pre>
+python -m rasa_core.train -s data/BankVUI/stories.md -d domain.yml -o models/dialogue --epochs 300
+python -m rasa_core.run -d models/dialogue -u projects/default/current/
+</pre>
+
+At the moment the engine is built upon the data exported from Dialogflow. This seems to work well enough for the <code>make-payment</code> intent, but for the <code>get-account-info</code> there are issues recognizing the <code>account-type</code>, for instance.<br>
+The issue might be with the Dialogflow entities and intents being too intricate for Rasa, and it could be worth redefining them as well as the training data with the Rasa framework logic in mind.
+
+Files: \\srv-storage\common\asKit4GP\StageUSI2017\Vocal
+
+= Prototype 3 (with [https://github.com/Wabri/ChatBotPayments Repository ChatBotPayments]) =
+
+== Introduction ==
+Questo progetto di tesi e tirocinio è stato fatto da Gabriele Puliti per il corso di laurea in informatica presso l'Università degli studi di Firenze. Il progetto si basa sulla creazione di un servizio di chat bot che permetta di effettuare pagamenti. Lo sviluppo del prototipo è diviso in 2 parti: frontend e backend. Il frontend l'ho scritto in typescript e una volta compilato in javascript l'ho eseguito tramite node. Il backend è un insieme di linguaggi: per la parte di configurazione ho usato yaml e markdown, per la parte dello sviluppo effettivo dell'intelligenza python2.7.
+
+== Frontend ==
+
+Questa parte è suddivisa in 3 file: chatbot.html, chatbotController.js, chatbotUtilityService.js.
+
+=== Codice chatbot.html ===
+
+<pre>
+  <!DOCTYPE html>
+
+  <html>
+
+  <head>
+  	<meta charset="utf-8">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  	<meta name="chatbot" content="width=device-width">
+
+  	<title>Prototype of ChatBot</title>
+
+  </head>
+
+  <body>
+  	<section>
+  		<h1>BVChatBot</h1>
+
+  		<button id="talk">
+  			<i class="fa fa-microphone" aria-hidden="true"></i>
+  		</button>
+  		</br>
+  		Te: {{userMessage}}
+  		</br>
+  		Bot: {{botMessage}}
+  		<span ng-model="botMessage" id="botMessage"> </span>
+
+  		<form id="messageForm">
+  			<input ng-model="inputMessage" id="inputMessage" autocomplete="off" />
+  			<button ng-click="sendUserMessage()" id="write">Send</button>
+  		</form>
+
+  	</section>
+  </body>
+
+  </html>
+</pre>
+
+=== Codice chatbotController.js ===
+
+<pre>
+  (function() {
+    'use strict';
+
+    angular.module('revux').controller('ChatbotCtrl', ChatbotCtrl);
+
+    function ChatbotCtrl($http, $scope, $cookies, ChatbotService) {
+
+      $scope.userMessage = "Il tuo messaggio";
+      $scope.botMessage = "Il messaggio del bot";
+
+      var xsrfToken = $cookies.get($http.defaults.xsrfCookieName);
+
+      var id = ChatbotService.makeID();
+
+      ChatbotService.enstablishConnectionWithRasa(xsrfToken, id);
+
+      $scope.inputMessage = "Manda un messaggio al bot!";
+
+      $scope.sendUserMessage = sendUserMessage;
+
+      function sendUserMessage() {
+
+        ChatbotService.sendMessageToRasa(id, $scope).then(function(response) {
+          $scope.userMessage = $scope.inputMessage;
+          $scope.inputMessage = "";
+          $http.post("http://192.168.11.24:5005/conversations/" + id + "/respond?token=wabridev", {
+            "query": $scope.userMessage
+          }, {
+            'withCredentials': false
+          }).then(function(response) {
+            try {
+              $scope.botMessage = response.data[0].text;
+            } catch (e) {
+              console.log("Testo non compreso")
+            }
+          }, function() {});
+        }, function() {});
+      }
+
+    }
+  })();
+</pre>
+
+=== Codice chatbotUtilityService.js ===
+
+<pre>
+  (function() {
+    'use strict';
+
+    angular.module('revux').service("ChatbotService", ChatbotService);
+
+    function ChatbotService($http) {
+
+      var self = this;
+      self.enstablishConnectionWithRasa = enstablishConnectionWithRasa;
+      self.makeID = makeID;
+
+      function enstablishConnectionWithRasa(xsrfToken, id) {
+        $http.post("http://192.168.11.24:5005/conversations/" + id + "/tracker/events?token=wabridev",
+          [{"event": "slot",
+          "name": "xsrftoken",
+          "value": xsrfToken }
+        ],
+        {
+          'withCredentials': false
+        }).then(function(response) {
+          console.log("token salvato correttamente", response);
+        }, function() {
+          console.log("token impossibile da salvare");
+        });
+      }
+
+      function makeID() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        for (var i = 0; i < 29; i++) {
+          text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return text;
+      }
+
+      function sendMessageToRasa(id, vm) {
+      	return $http.post("http://192.168.11.24:5005/conversations/" + id + "/parse?token=wabridev", {
+              "query": vm.inputMessage
+          }, {
+            'withCredentials': false
+          });
+      }
+
+    }
+  })();
+</pre>
+
+== Backend Rasa ==
+
+Inizialmente questa parte veniva fatta da [https://dialogflow.com/ Dialogflow] strumento di casa google che permette di creare con un'interfaccia molto semplice un bot personalizzato. Per una questione di riservatezza dei dati sensibili è stato richiesto di cambiare strumento per costruire l'intelligenza artificiale. Dopo varie ricerche ho deciso di usare [https://rasa.com/ Rasa], open source che ha le stesse funzioni di dialogflow ma con una fase di configurazione e programmazione delle azioni più complessa. Rasa propone 2 funzionalità: Natural Language Understanding e Core.
+
+=== NLU ===
+
+Un'intelligenza artificiale di questo tipo (NLU è l'abbreviazione di natural language understanding) prende in input un testo e restituisce in output diverse informazioni: l'intento della frase (i cosidetti intents) e le parole chiave che è possibile estrapolare (chiamate entities). Prima di essere in grado di fare un riconoscimento vero e proprio è necessario allenare l'intelligenza con degli esempi. La creazione di questi dati viene fatta tramite dei file json:
+<pre>
+{
+  "rasa_nlu_data": {
+    "regex_features": [],
+    "entity_synonyms": [],
+    "common_examples": []
+  }
+}
+</pre>
+Sono molto semplici da comprendere: regex_features sono le espressioni regolari, entity_synonyms sono i sinonimi che è possibile incontrare, common_examples sono gli esempi che è necessario fornire per allenare l'intelligenza. Gli esempi che ho scritto io si trovano nella Repository Github [https://github.com/Wabri/ChatBotPayments/tree/master/RASA_IA/data/intents ChatBotPayments] suddivisi per tipo di intento. Potevo estrarre i dati generati con dialogflow, ma ho preferito riscriverli per non dipendere da uno strumento esterno in modo da rendere più facile da mantenere. Prima di allenare l'intelligenza è necessario creare il file di configurazione in cui indichiamo la lingua e lo strumento usato per fare training, ho quindi creato il file nluModelConfig che si trova [https://github.com/Wabri/ChatBotPayments/tree/master/RASA_IA/nluModelConfig.yml NLU Config] che ha questo contenuto:
+<pre>
+language: "it"
+
+pipeline: "spacy_sklearn"
+</pre>
+A questo punto è possibile eseguire il training che genererà un modello dell'intelligenza artificiale.
+
+=== CORE ===
+
+Questa è la parte fondamentale del progetto, il CORE è quello che effettivamente fa tutto il lavoro: esegue nlu, elabora una risposta e tiene traccia della conversazione. Per maggiori informazioni è possibile leggere il tutorial che ho scritto [https://github.com/Wabri/LearningRasa#rasacore Learning Rasa Core] oppure direttamente nei docs ufficiali [http://www.rasa.com/docs/core/quickstart/ Rasa Docs]. Per poter eseguire il server Rasa con tutte le funzionalità che vogliamo è necessario allenarlo a rispondere alle domande che gli poniamo, perchè con il solo NLU sa solo capire quello che gli diciamo ma non sa come elaborare una risposta. Il CORE è suddiviso in 3 parti: domain, stories e actions. Il DOMAIN è il dominio di interesse dell'intelligenza artificiale, questo viene configurato con un file scritto in Yaml in cui viengono definiti: intents e entities da tracciare e riconoscere (definiti precedentemente dal NLU), gli slots sono contenitori di informazioni che vengono (o possono) essere usati durante la conversazione per salvare dati, actions sono le azioni che il bot può eseguire per rispondere a una certa frase in input, templates sono azioni di default che possono essere usate durante una conversazione. Il domain di questo progetto è [https://github.com/Wabri/ChatBotPayments/tree/master/RASA_IA/payment_domain.yml Rasa CORE Domain], è possibile notare che le voci entities e templates non sono definite perchè non necessarie. Le ACTIONS sono definite in uno script in python chiamato [https://github.com/Wabri/ChatBotPayments/tree/master/RASA_IA/action.py actions.py] dove sono implementate le risposte del bot, questo script è dove viene effettivamente completato il pagamento. Precisamente è definito dalla riga 73 alla 116 in cui si trova la classe ActionPaymentConfermation che è una delle azioni del bot. Ultima parte ma non meno importante sono le cosìdette STORIES in cui vengono ricreate alcune conversazioni tipo dalla più semplice a quella più complessa, queste poi verranno usate dal training del modello che verrà poi usato dal server per rispondere. Un esempio molto semplice è:
+<pre>
+Utente: "Ciao bot"
+Bot: "Salve"
+Utente: "Arrivederci"
+Bot: "Alla prossima"
+</pre>
+Per far comprendere questo esempio all'intelligenza artificiale è necessario ricreare questa conversazione in un file di configurazione Markdown di questo tipo:
+<pre>
+# storia 1
+* inizio_conversazione
+    - risposta_inizio_conversazione
+* fine_conversazione
+    - risposta_fine_conversazione
+</pre>
+La prima riga rappresenta una descrizione della storia (non ha un riscontro effettivo sul training è solo utile a livello di sviluppo per differenziare le varie storie che vengono scritte), le righe successive sono divise in 2 simboli: con simbolo * viene indicato l'intento della frase proveniente dell'utente, mentre con il simbolo - viene definita l'azione che il bot deve eseguire come risposta. Le stories che ho generato per questo bot è possibile vederle in questo file [https://github.com/Wabri/ChatBotPayments/tree/master/RASA_IA/stories/payment_stories.md Stories]. A questo punto viene fatto il training dando in input questi 3 file: domain, actions, stories che a sua volta come il NLU genererà un modello di intelligenza artificiale che riesce a tenere una conversazione con un utente.
+
+== Requisiti ==
+
+Per le dipendenze Python ho creato grazie all'uso di un virtual environment un [https://github.com/Wabri/ChatBotPayments/tree/master/RASA_IA/requirements.txt requirements.txt] generato da pip (gestore dei packages di python) dove sono stilate tutte le dipendenze necessarie per eseguire il progetto. Per installare tramite questo file basterà eseguire nella cartella RASA_IA il comando:
+<pre>
+pip install -r requirements.txt
+</pre>
+Ho cercato di automatizzare il processo di installazione, training e run del server usando uno script in bash che è possibile trovare dentro la cartella RASA_IA con il nome di [https://github.com/Wabri/ChatBotPayments/tree/master/RASA_IA/loadAndRun.sh loadAndRun.sh]. Le istruzioni all'interno di questo file sono le seguenti:
+<pre>
+install -r requirements.txt
+
+spacy download it_core_news_sm
+
+spacy link it_core_news_sm it --force
+
+python -m rasa_nlu.train --config nluModelConfig.yml --data data/ --project current --fixed_model_name nlu --path models/
+
+python -m rasa_core.train -d payment_domain.yml -s stories/payment_stories.md -o models/current/core --epochs 300
+
+python -m rasa_core.server -d models/current/core -u models/current/nlu -o out.log --cors 'http://192.168.13.15:9001' --verbose --auth_token wabridev
+</pre>
+Il primo comando è già stato spiegato. Il secondo comando è un comando spacy (libreria python che viene usata dal NLU nella pipeline definita nelle config [https://github.com/Wabri/ChatBotPayments/tree/master/RASA_IA/nluModelConfig.yml NluModelConfig]), il suo scopo è scaricare il dizionario che verrà usato dall'intelligenza artificiale (nel nostro caso l'italiano). Per un qualsiasi altro dizionario è possibile vedere i modelli che sono messi a disposizione nella pagina web ufficiale
+[https://spacy.io/models/ spacy.io]. Il terzo comando è un comando molto importante che genera un soft link tra il dizionario e l'uso stesso del dizionario all'interno del codice spacy. Gli ultimi 3 comandi riguardano Rasa:
+<ol>
+<li> Training del NLU </li>
+<li> Training del Core </li>
+<li> Run del server </li>
+</ol>
+
+== Logica di funzionamento ==
+
+Ci sono 3 componenti fondamentali che permettono il funzionamento di tutto questo: Rasa Server, Spring Server e Revux.
+Il server Rasa è necessario eseguirlo in un server linux con python2.7, per provare l'effettivo funzionamento basterà accedere alla pagina ip_server:5005 e dovremmo avere una pagina html con scritto:
+<pre>
+  hello from Rasa Core: 0.10.4
+</pre>
+Se il risultato è questo dovremmo poter accedere a tutti i suoi servizi, a meno che non ci siano errori vari o problemi di cors in quel caso è necessario reimpostare il bash loadAndRun.sh modificando il campo cors con l'origin giusto.
+
+Una volta lanciato il server spring e revux sarà possibile eseguire il login e conseguentemente accedere alla chat. La prima cosa che viene fatta dal controller è generare un id unico per la conversazione, lo creo tramite il metodo makeID all'interno del chatbotUtilityService, ogni utente quindi avrà il suo identificativo specifico. Il passo successivo è quello di mandare il xsrfToken a rasa tramite una post, questo permetterà a rasa di storare all'interno dello slot 'xsrfToken' della conversation questo token necessario per la richiesta di pagamento perchè fa parte del cookie insieme al jsession. Dovrebbe inviare insieme a questo anche il jsession, ma ancora non ho trovato il modo di farlo infatti il primo punto del TODO è proprio questo.  Nella chat c'è un riferimento al pulsante del microfono (non ancora implementato durante l'integrazione, vedi TODO in fondo alla pagina), due campi che rappresentano il testo dell'utente e la risposta del bot, infine una zona di inserimento testo dove ci sta la frase che l'utente invia al bot. Quando viene scritto un messaggio all'interno di quella zona di testo il controller tramite una post invia la richiesta a rasa e subito dopo richiede la risposta. Quindi il botta e risposta tra utente e bot si completa in 2 passi:
+<ol>
+
+<li> Invio richiesta di parsing del testo tramite la post:
+<pre>
+$http.post("http://192.168.11.24:5005/conversations/" + id + "/parse?token=wabridev", {
+        "query": vm.inputMessage
+    }, {
+      'withCredentials': false
+});
+</pre>
+</li>
+
+<li> Invio della risposta da dare all'utente:
+<pre>
+$http.post("http://192.168.11.24:5005/conversations/" + id + "/respond?token=wabridev", {
+      "query": $scope.userMessage
+    }, {
+      'withCredentials': false
+});
+</pre>
+</li>
+
+</ol>
+Con conseguente modifica dei vari campi.
+Il bot riuscirà a comprendere l'intento della frase solo nei casi di: saluto, richiesta di pagamento, conferma del pagamento, rifiuto del pagamento, ringraziamento. Considerando il fatto che non ho creato un data set corposo per i training, l'intelligenza è possibile che ogni tanto non riesca a comprendere quello che stiamo cercando di dire. Se invece riuscirà a dare un senso alla frase inviata allora compirà l'azione corrispondente definita nello script python chiamato action.py, precedentemente definito durante la spiegazione di rasa core.
+
+== TODO ==
+
+<ol>
+
+<li> Il problema principale è l'invio del jsession a Rasa. Per eseguire un pagamento completo è necessario che il bot possegga i cookies per poi incorporarli nella chiamata effettiva del pagamento. L'architettura base nel bot esiste già quindi non è un problema backend rasa, ma è del frontend che non può inviare il jsession dell'utente. Nel mio prototipo standalone inviavo questo dato a mano usando una chiamata rest. Questo è un problema differente dal xsrfToken infatti è possibile vedere come all'interno del chatbotUtilityService.js c'è una funzione chiamata enstablishConnectionWithRasa che manda questo dato senza problemi. Il metodo completo dovrebbe essere di questo tipo:
+<pre>
+    function enstablishConnectionWithRasa(xsrfToken, jsession, id) {
+
+      // invio del xsrfToken
+      $http.post("http://192.168.11.24:5005/conversations/" + id + "/tracker/events?token=wabridev",
+        [{"event": "slot",
+        "name": "xsrftoken",
+        "value": xsrfToken }
+      ],
+      {
+        'withCredentials': false
+      }).then(function(response) {
+        console.log("token salvato correttamente", response);
+      }, function() {
+        console.log("token impossibile da salvare");
+      });
+
+      // invio della jsession
+      $http.post("http://192.168.11.24:5005/conversations/" + id + "/tracker/events?token=wabridev",
+        [{"event": "slot",
+        "name": "jsession",
+        "value": jsession }
+      ],
+      {
+        'withCredentials': false
+      }).then(function(response) {
+        console.log("jsession salvato correttamente", response);
+      }, function() {
+        console.log("jsession impossibile da salvare");
+      });
+    }
+</pre>
+Questo non è possibile farlo dato che dal frontend non ho accesso diretto alla jsession (che io sappia). Spero di essere stato chiaro.</li>
+
+<li>
+Manca da inserire la funzionalità di Speech Recognition e di Synth Voice. Non ho avuto tempo di trovare i sostituti durante l'integrazione. Quando verrà trovato lo SpeechRecognition basterà creare una funzione che cattura la voce dal microfono e trasferendola sotto forma di testo la invii a rasa. Per quanto riguarda il synth voice basterà inserire la funzione di synth del testo di risposta di rasa che trasformerà il testo in voce.
+</li>
+
+
+<li>
+  Il bottone di accesso alla pagina chat è a sfondo bianco con testo bianco. Mi dispiace ma non ho avuto tempo di modificarlo.
+</li>
+
+<li>
+  La pagina della chat è dei primi anno 90. Non c'è grafica. Mi dispiace ma ho sempre ritenuto questa cosa secondaria.
+</li>
+
+</ol>
