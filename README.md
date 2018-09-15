@@ -202,7 +202,7 @@ Ho cercato di automatizzare il processo di installazione, training e run del ser
 possibile trovare dentro la cartella RASA_IA con il nome di [loadAndRun.sh](RASA_IA/loadAndRun.sh). Le instruzioni
 all'interno di questo file sono le seguenti:
 ```
-install -r requirements.txt
+pip install -r requirements.txt
 
 spacy download it_core_news_sm
 
