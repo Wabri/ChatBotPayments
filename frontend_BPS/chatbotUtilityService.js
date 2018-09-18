@@ -33,9 +33,17 @@
       return text;
     }
 
-    function sendMessageToRasa(id, vm) {
+    function sendMessageToRasa(id, message) {
     	return $http.post("http://192.168.11.24:5005/conversations/" + id + "/parse?token=wabridev", {
-            "query": vm.inputMessage
+            "query": message
+        }, {
+          'withCredentials': false
+        });
+    }
+    
+    function reciveMessageFromRasa(id,message) {
+    	return $http.post("http://192.168.11.24:5005/conversations/" + id + "/respond?token=wabridev", {
+          "query":message
         }, {
           'withCredentials': false
         });

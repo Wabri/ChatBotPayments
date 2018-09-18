@@ -15,9 +15,6 @@
 	<section>
 		<h1>BVChatBot</h1>
 
-		<button id="talk">
-			<i class="fa fa-microphone" aria-hidden="true"></i>
-		</button>
 		</br>
 		Te: {{userMessage}}
 		</br>
@@ -27,6 +24,7 @@
 		<form id="messageForm">
 			<input ng-model="inputMessage" id="inputMessage" autocomplete="off" />
 			<button ng-click="sendUserMessage()" id="write">Send</button>
+			<button ng-click="listenUserMessage()" id="talk">Talk</button>
 		</form>
 
 	</section>
