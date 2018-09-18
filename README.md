@@ -280,7 +280,7 @@ con kernel linux, per motivi di sicurezza non esporrò l'indirizzo ip.
 
 ## 8. TODO
 
-[x] Il problema principale è l'invio del jsession a Rasa. Per eseguire un pagamento completo è necessario che il bot possegga i cookies per poi incorporarli nella chiamata effettiva del pagamento. L'architettura base nel bot esiste già quindi non è un problema backend rasa, ma è del frontend che non può inviare il jsession dell'utente. Nel mio prototipo standalone inviavo questo dato a mano usando una chiamata rest. Questo è un problema differente dal xsrfToken infatti è possibile vedere come all'interno del chatbotUtilityService.js c'è una funzione chiamata enstablishConnectionWithRasa che manda questo dato senza problemi. Il metodo completo dovrebbe essere di questo tipo:
+- [ ]  Il problema principale è l'invio del jsession a Rasa. Per eseguire un pagamento completo è necessario che il bot possegga i cookies per poi incorporarli nella chiamata effettiva del pagamento. L'architettura base nel bot esiste già quindi non è un problema backend rasa, ma è del frontend che non può inviare il jsession dell'utente. Nel mio prototipo standalone inviavo questo dato a mano usando una chiamata rest. Questo è un problema differente dal xsrfToken infatti è possibile vedere come all'interno del chatbotUtilityService.js c'è una funzione chiamata enstablishConnectionWithRasa che manda questo dato senza problemi. Il metodo completo dovrebbe essere di questo tipo:
 ```
     function enstablishConnectionWithRasa(xsrfToken, jsession, id) {
 
@@ -315,8 +315,8 @@ con kernel linux, per motivi di sicurezza non esporrò l'indirizzo ip.
 ```
 Questo non è possibile farlo dato che dal frontend non ho accesso diretto alla jsession (che io sappia). Spero di essere stato chiaro.
 
-[ ] Manca da inserire la funzionalità di Speech Recognition e di Synth Voice. Non ho avuto tempo di trovare i sostituti durante l'integrazione. Quando verrà trovato lo SpeechRecognition basterà creare una funzione che cattura la voce dal microfono e trasferendola sotto forma di testo la invii a rasa. Per quanto riguarda il synth voice basterà inserire la funzione di synth del testo di risposta di rasa che trasformerà il testo in voce.
+- [x]  Manca da inserire la funzionalità di Speech Recognition e di Synth Voice. Non ho avuto tempo di trovare i sostituti durante l'integrazione. Quando verrà trovato lo SpeechRecognition basterà creare una funzione che cattura la voce dal microfono e trasferendola sotto forma di testo la invii a rasa. Per quanto riguarda il synth voice basterà inserire la funzione di synth del testo di risposta di rasa che trasformerà il testo in voce.
 
-[ ] Il bottone di accesso alla pagina chat è a sfondo bianco con testo bianco. Mi dispiace ma non ho avuto tempo di modificarlo.
+- [ ]  Il bottone di accesso alla pagina chat è a sfondo bianco con testo bianco. Mi dispiace ma non ho avuto tempo di modificarlo.
 
-[ ] La pagina della chat è dei primi anno 90. Non c'è grafica. Mi dispiace ma ho sempre ritenuto questa cosa secondaria.
+- [ ]  La pagina della chat è dei primi anno 90. Non c'è grafica. Mi dispiace ma ho sempre ritenuto questa cosa secondaria.
