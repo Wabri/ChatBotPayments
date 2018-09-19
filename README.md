@@ -29,6 +29,7 @@ Lingua: Italiano
 6. [Avvertenze](#6-avvertenze)
 7. [Integrazione](#7-integrazione)
 8. [TODO](#8-todo)
+    - [Front](#81-frontend-bps)
 
 
 ## 0. Introduction
@@ -279,6 +280,8 @@ l'ho creato per staccare alcune funzionalità dal controller. Il server Rasa è 
 con kernel linux, per motivi di sicurezza non esporrò l'indirizzo ip.
 
 ## 8. TODO
+
+#### 8.1 Frontend-BPS
 
 - [ ]  Il problema principale è l'invio del jsession a Rasa. Per eseguire un pagamento completo è necessario che il bot possegga i cookies per poi incorporarli nella chiamata effettiva del pagamento. L'architettura base nel bot esiste già quindi non è un problema backend rasa, ma è del frontend che non può inviare il jsession dell'utente. Nel mio prototipo standalone inviavo questo dato a mano usando una chiamata rest. Questo è un problema differente dal xsrfToken infatti è possibile vedere come all'interno del chatbotUtilityService.js c'è una funzione chiamata enstablishConnectionWithRasa che manda questo dato senza problemi. Il metodo completo dovrebbe essere di questo tipo:
 ```
