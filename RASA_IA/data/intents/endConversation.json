@@ -22,6 +22,11 @@
         "text": "è stato un piacere",
         "intent": "endConversation",
         "entities": []
+      },
+      {
+        "text": "Ciao",
+        "intent": "endConversation",
+        "entities": []
       }
     ]
   }

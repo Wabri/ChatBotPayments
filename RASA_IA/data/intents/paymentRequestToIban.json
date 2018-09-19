@@ -192,6 +192,26 @@
           "value": "CH6621335353619845741",
           "entity": "ibanReceiver"
         }]
+      },
+      {
+        "text": "iban CH1133813672612289195",
+        "intent": "paymentRequestToIban",
+        "entities": [{
+          "start": 5,
+          "end": 26,
+          "value": "CH1133813672612289195",
+          "entity": "ibanReceiver"
+        }]
+      },
+      {
+        "text": "il numero di iban è CH6621335353619845741",
+        "intent": "paymentRequestToIban",
+        "entities": [{
+          "start": 20,
+          "end": 41,
+          "value": "CH6621335353619845741",
+          "entity": "ibanReceiver"
+        }]
       }
     ]
   }

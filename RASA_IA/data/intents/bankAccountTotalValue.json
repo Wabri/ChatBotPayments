@@ -1,7 +1,12 @@
 {
   "rasa_nlu_data": {
     "regex_features": [],
-    "entity_synonyms": [],
+    "entity_synonyms": [
+      {
+      "value": "1",
+      "synonyms": ["primo", "uno"]
+    }
+  ],
     "common_examples": [{
       "text": "voglio sapere il valore del conto numero 1",
       "intent": "bankAccountTotalValue",

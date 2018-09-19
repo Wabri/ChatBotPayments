@@ -4,7 +4,7 @@
     "entity_synonyms": [
       {
         "value": "euro",
-        "synonyms": ["€", "euro"]
+        "synonyms": ["€", "eur"]
       },
       {
         "value": "CHF",

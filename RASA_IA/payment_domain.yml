@@ -3,16 +3,12 @@ slots:
     type: text
   xsrftoken:
     type: text
-  accountList:
-    type: text
   valuePayment:
     type: float
   currencyPayment:
     type: text
   ibanReceiver:
     type: text
-  selectedAccount:
-    type: float
 
 entities:
   - accountList
