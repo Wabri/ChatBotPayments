@@ -23,7 +23,7 @@ Lingua: Italiano
     - [CORE](#22-core)
 3. [Requisiti](#3-requisiti)
     - [Frontend](#31-frontend)
-    - [Backend](#31-backend)
+    - [Backend](#32-backend)
 4. [Funzionamento](#4-logica-di-funzionamento)
 5. [Esecuzione](#5-esecuzione)
 6. [Avvertenze](#6-avvertenze)
