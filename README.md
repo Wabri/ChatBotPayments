@@ -29,7 +29,7 @@ Lingua: Italiano
 6. [Avvertenze](#6-avvertenze)
 7. [Integrazione](#7-integrazione)
 8. [TODO](#8-todo)
-    - [Front](#81-frontend-bps)
+    - [Frontend-bps](#81-frontend-bps)
 
 
 ## 0. Introduction
