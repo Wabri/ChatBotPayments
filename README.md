@@ -23,12 +23,13 @@ Lingua: Italiano
     - [CORE](#22-core)
 3. [Requisiti](#3-requisiti)
     - [Frontend](#31-frontend)
-    - [Backend](#31-backend)
+    - [Backend](#32-backend)
 4. [Funzionamento](#4-logica-di-funzionamento)
 5. [Esecuzione](#5-esecuzione)
 6. [Avvertenze](#6-avvertenze)
 7. [Integrazione](#7-integrazione)
 8. [TODO](#8-todo)
+    - [Frontend-bps](#81-frontend-bps)
 
 
 ## 0. Introduction
@@ -202,7 +203,7 @@ Ho cercato di automatizzare il processo di installazione, training e run del ser
 possibile trovare dentro la cartella RASA_IA con il nome di [loadAndRun.sh](RASA_IA/loadAndRun.sh). Le instruzioni
 all'interno di questo file sono le seguenti:
 ```
-install -r requirements.txt
+pip install -r requirements.txt
 
 spacy download it_core_news_sm
 
@@ -279,4 +280,46 @@ l'ho creato per staccare alcune funzionalità dal controller. Il server Rasa è 
 con kernel linux, per motivi di sicurezza non esporrò l'indirizzo ip.
 
 ## 8. TODO
-* Manca l'integrazione della funzione microfono nello script [chatbotController.js](frontend_BPS/chatbotController.js)
+
+#### 8.1 Frontend-BPS
+
+- [ ]  Il problema principale è l'invio del jsession a Rasa. Per eseguire un pagamento completo è necessario che il bot possegga i cookies per poi incorporarli nella chiamata effettiva del pagamento. L'architettura base nel bot esiste già quindi non è un problema backend rasa, ma è del frontend che non può inviare il jsession dell'utente. Nel mio prototipo standalone inviavo questo dato a mano usando una chiamata rest. Questo è un problema differente dal xsrfToken infatti è possibile vedere come all'interno del chatbotUtilityService.js c'è una funzione chiamata enstablishConnectionWithRasa che manda questo dato senza problemi. Il metodo completo dovrebbe essere di questo tipo:
+```
+    function enstablishConnectionWithRasa(xsrfToken, jsession, id) {
+
+      // invio del xsrfToken
+      $http.post("http://192.168.11.24:5005/conversations/" + id + "/tracker/events?token=wabridev",
+        [{"event": "slot",
+        "name": "xsrftoken",
+        "value": xsrfToken }
+      ],
+      {
+        'withCredentials': false
+      }).then(function(response) {
+        console.log("token salvato correttamente", response);
+      }, function() {
+        console.log("token impossibile da salvare");
+      });
+
+      // invio della jsession
+      $http.post("http://192.168.11.24:5005/conversations/" + id + "/tracker/events?token=wabridev",
+        [{"event": "slot",
+        "name": "jsession",
+        "value": jsession }
+      ],
+      {
+        'withCredentials': false
+      }).then(function(response) {
+        console.log("jsession salvato correttamente", response);
+      }, function() {
+        console.log("jsession impossibile da salvare");
+      });
+    }
+```
+Questo non è possibile farlo dato che dal frontend non ho accesso diretto alla jsession (che io sappia). Spero di essere stato chiaro.
+
+- [x]  Manca da inserire la funzionalità di Speech Recognition e di Synth Voice. Non ho avuto tempo di trovare i sostituti durante l'integrazione. Quando verrà trovato lo SpeechRecognition basterà creare una funzione che cattura la voce dal microfono e trasferendola sotto forma di testo la invii a rasa. Per quanto riguarda il synth voice basterà inserire la funzione di synth del testo di risposta di rasa che trasformerà il testo in voce.
+
+- [ ]  Il bottone di accesso alla pagina chat è a sfondo bianco con testo bianco. Mi dispiace ma non ho avuto tempo di modificarlo.
+
+- [ ]  La pagina della chat è dei primi anno 90. Non c'è grafica. Mi dispiace ma ho sempre ritenuto questa cosa secondaria.
