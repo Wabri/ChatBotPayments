@@ -8,10 +8,6 @@
 * thankYou OR endConversation
   - ActionGoodbye
 
-# richiesta conti
-* bankAccountsList
-  - ActionRequestListAccount
-
 # pagamento confermato
 * paymentRequest
   - ActionPaymentTracker

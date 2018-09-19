@@ -35,6 +35,5 @@ actions:
   - action.ActionGreetings
   - action.ActionPaymentTracker
   - action.ActionGoodbye
-  - action.ActionRequestListAccount
   - action.ActionPaymentConfermation
   - action.ActionPaymentReject

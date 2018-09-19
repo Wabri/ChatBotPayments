@@ -147,23 +147,23 @@ class ActionPaymentReject(Action):
         return [Restarted(timestamp=None)]
 
 
-class ActionRequestListAccount(Action):
-
-    def name(self):
-        return "ActionRequestListAccount"
-
-    def run(self, dispatcher, tracker, domain):
-        data = tracker.get_slot('accountList')
-        if data is None:
-            URL = 'http://' + serverInfo.getIP() + ':' + serverInfo.getPort() + '/ibs-mvc/rest/domain/customers'
-            jsessionid = str(tracker.get_slot("jsessionid"))
-            xsrftoken = str(tracker.get_slot("xsrftoken"))
-            cookie = {'JSESSIONID': jsessionid, 'XSRF-TOKEN': xsrftoken}
-            r = requests.get(url=URL, cookies=cookie)
-            data = r.json()
-        message = "Il tuo conto è: " + data[0]["description"].encode('utf8')
-        dispatcher.utter_message(message.decode("ascii", "ignore"))
-        return [SlotSet('accountList', value=data, timestamp=None)]
+# class ActionRequestListAccount(Action):
+#
+#     def name(self):
+#         return "ActionRequestListAccount"
+#
+#     def run(self, dispatcher, tracker, domain):
+#         data = tracker.get_slot('accountList')
+#         if data is None:
+#             URL = 'http://' + serverInfo.getIP() + ':' + serverInfo.getPort() + '/ibs-mvc/rest/domain/customers'
+#             jsessionid = str(tracker.get_slot("jsessionid"))
+#             xsrftoken = str(tracker.get_slot("xsrftoken"))
+#             cookie = {'JSESSIONID': jsessionid, 'XSRF-TOKEN': xsrftoken}
+#             r = requests.get(url=URL, cookies=cookie)
+#             data = r.json()
+#         message = "Il tuo conto è: " + data[0]["description"].encode('utf8')
+#         dispatcher.utter_message(message.decode("ascii", "ignore"))
+#         return [SlotSet('accountList', value=data, timestamp=None)]
 
 
 '''
