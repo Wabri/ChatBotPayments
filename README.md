@@ -28,8 +28,6 @@ Lingua: Italiano
 5. [Esecuzione](#5-esecuzione)
 6. [Avvertenze](#6-avvertenze)
 7. [Integrazione](#7-integrazione)
-8. [TODO](#8-todo)
-    - [Frontend-bps](#81-frontend-bps)
 
 
 ## 0. Introduction
