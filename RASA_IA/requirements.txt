@@ -78,7 +78,7 @@ python-crfsuite==0.9.6
 python-dateutil==2.7.3
 python-telegram-bot==10.1.0
 pytz==2018.5
-PyYAML==3.13
+PyYAML==5.4
 rasa-core==0.10.4
 rasa-nlu==0.13.2
 redis==2.10.6
